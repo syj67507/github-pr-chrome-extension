@@ -1,0 +1,14 @@
+{
+  "name": "GitHub Pull Requests",
+  "description": "See all of your repo's pull requests in one place!",
+  "version": "0.1",
+  "manifest_version": 3,
+  "permissions": ["alarms", "storage", "tabs"],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "action": {
+    "default_popup": "popup.html"
+  },
+  "options_page": "options.html"
+}
