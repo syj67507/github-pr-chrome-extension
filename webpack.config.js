@@ -39,7 +39,7 @@ module.exports = {
       filename: "options.html",
     }),
     new CopyPlugin({
-      patterns: [{ from: "public", to: "manifest.json" }],
+      patterns: [{ from: "public", to: "./" }],
     }),
   ],
   resolve: {
