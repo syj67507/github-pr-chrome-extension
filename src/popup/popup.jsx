@@ -3,7 +3,8 @@ const regeneratorRuntime = require("regenerator-runtime");
 
 import React, { useEffect, useState } from "react";
 import { render } from "react-dom";
-import { CssBaseline, Stack } from "@mui/material";
+import CssBaseline from "@mui/material/CssBaseline";
+import Stack from "@mui/material/Stack";
 import GitHubClient from "../githubClient";
 import RepoSection from "./components/RepoSection";
 import Header from "./components/Header";
