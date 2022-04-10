@@ -12,7 +12,7 @@ This extension is on Chrome's web store so usage will have to be done through ma
 
 2. Clone this repository
 
-3. Run `npm run build`. This will create a `dist` folder at the base of the project folder.
+3. Run `npm install` and then `npm run build`. This will create a `dist` folder at the base of the project folder.
 
 4. Go to `chrome://extensions` and enable `Developer Mode`
 
