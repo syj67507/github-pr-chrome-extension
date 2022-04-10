@@ -8,24 +8,14 @@ A Google Chrome extension that displays open pull requests for your favorite rep
 
 This extension is on Chrome's web store so usage will have to be done through manual developer mode.
 
-1. Install Node.js and NPM
+1. Install Node.js and NPM (This was developed on node v16.13.1 and npm v8.1.2)
 
 2. Clone this repository
 
-3. Create a `config.js` file in the `src` folder that looks like the following
+3. Run `npm run build`. This will create a `dist` folder at the base of the project folder.
 
-   ```js
-   {
-       GH_TOKEN: "<personal access token goes here>",
-   }
-   ```
+4. Go to `chrome://extensions` and enable `Developer Mode`
 
-4. Create a personal access token from the `Developer Settings` in your GitHub account and provide it the `repos` permissions. Fill in that token in the `config.js` and save.
+5. Click on `Load unpacked` and select the `dist` folder. You may turn off `Developer Mode` now if you wish.
 
-5. Run `npm run build`. This will create a `dist` folder at the base of the project folder.
-
-6. Go to `chrome://extensions` and enable `Developer Mode`
-
-7. Click on `Load unpacked` and select the `dist` folder. You may turn off `Developer Mode` now if you wish.
-
-You have successfully installed the Chrome extension. You can configure which repositories are connected by right clicking the extension icon and going to the options page.
+You have successfully installed the Chrome extension. You can configure the permissions and which repositories are connected by right clicking the extension icon and going to the options page.
