@@ -4,7 +4,7 @@ import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 
 
-export default function NoPullRequest() {
+export default function NoPullRequest({ repo }) {
     return (
         <Box 
             sx={{

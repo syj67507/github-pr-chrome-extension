@@ -19,7 +19,7 @@ export default function RepoSection({ repo, pullRequests }) {
           ))
         }
         {
-          pullRequests && pullRequests.length <= 0 && <NoPullRequest />
+          pullRequests && pullRequests.length <= 0 && <NoPullRequest repo={repo}/>
         }
       </Stack>
     </Box>

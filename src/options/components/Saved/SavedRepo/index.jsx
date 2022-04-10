@@ -1,19 +1,17 @@
 /* global chrome */
 import React from "react";
-import { Button, Stack, Typography } from "@mui/material";
+import { IconButton, Stack, Typography } from "@mui/material";
+import CloseIcon from '@mui/icons-material/Close';
 
-export default function index({ repo, setSavedRepos }) {
+export default function SavedRepo({ repo, setSavedRepos }) {
   return (
-    <Stack direction="row" spacing={2} alignItems="baseline">
-      <Button
-        sx={{
-          backgroundColor: "red",
-          borderRadius: 100,
-          "&:hover": {
-            backgroundColor: "darkred",
-          },
-        }}
-        variant="contained"
+    <Stack
+      direction="row"
+      spacing={2}
+      alignItems="center"
+      width="100%"
+    >
+      <IconButton aria-label="delete"
         onClick={async () => {
           const storage = await chrome.storage.sync.get();
           const savedRepos = storage.savedRepos;
@@ -26,8 +24,8 @@ export default function index({ repo, setSavedRepos }) {
           setSavedRepos(filtered);
         }}
       >
-        X
-      </Button>
+        <CloseIcon />
+      </IconButton>
       <Typography variant="subtitle1">{repo.user}/{repo.name}</Typography>
     </Stack>
   );

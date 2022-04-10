@@ -2,7 +2,6 @@
 const regeneratorRuntime = require("regenerator-runtime");
 const GitHubClient = require("../githubClient/index");
 
-const client = new GitHubClient();
 const alarmName = "fetchPRs";
 const delayInMinutes = 0;
 const periodInMinutes = 1;
@@ -21,6 +20,10 @@ chrome.runtime.onInstalled.addListener(async () => {
 
 // Periodically fetch pull requests and update the badge
 chrome.alarms.onAlarm.addListener(async (alarm) => {
+  const storage = await chrome.storage.sync.get();
+
+  const client = new GitHubClient(storage.token);
+
   try {
     console.log("Alarm activated!");
 

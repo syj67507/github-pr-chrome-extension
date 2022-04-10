@@ -1,5 +1,4 @@
 const regeneratorRuntime = require("regenerator-runtime");
-const { GH_TOKEN } = require("../config");
 
 /**
  * A client to provide a variety of functions that communicate with
@@ -7,8 +6,8 @@ const { GH_TOKEN } = require("../config");
  * from configuration.
  */
 class GitHubClient {
-  constructor() {
-    this.token = GH_TOKEN;
+  constructor(token) {
+    this.token = token;
   }
 
   /**

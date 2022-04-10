@@ -15,14 +15,18 @@ function Popup() {
 
   // On popup load, we need to fetch all the PRs
   useEffect(async () => {
-    const client = new GitHubClient();
+    // Create client to fetch data
     const storage = await chrome.storage.sync.get();
+    const client = new GitHubClient(storage.token);
+    
+    // Fetch the saved repos
     let savedRepos = storage.savedRepos;
     if (!savedRepos) {
       savedRepos = [];
     }
     console.log("POPUP: savedRepos", savedRepos)
 
+    // Fetch all the pull requests
     let allPullRequests = [];
     let count = 0;
     for (const repo of savedRepos) {

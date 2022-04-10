@@ -8,7 +8,7 @@ export default function Header() {
       sx={{
         width: "100%",
         padding: 1.5,
-        bgcolor: "#333333",
+        background: "linear-gradient(#333, #000)",
         display: "flex",
         justifyContent: "center",
       }}
