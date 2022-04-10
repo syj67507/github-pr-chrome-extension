@@ -6,7 +6,7 @@ A Google Chrome extension that displays open pull requests for your favorite rep
 
 ## Installation
 
-This extension is on Chrome's web store so usage will have to be done through manual developer mode.
+This extension is not on Chrome's web store so usage will have to be done through manual developer mode.
 
 1. Install Node.js and NPM (This was developed on node v16.13.1 and npm v8.1.2)
 
