@@ -7,7 +7,8 @@ import GitHubIcon from "@mui/icons-material/GitHub";
 export default function PullRequest({ pr, jiraTag }) {
   console.log("jiraTag", jiraTag);
   // Used for JIRA button
-  const ticketTagIndex = pr.title.indexOf(jiraTag);
+  const regex = new RegExp(jiraTag + "-\\d+", "g")
+  const ticketTags = pr.title.match(regex)
 
   return (
     <Stack
@@ -42,7 +43,7 @@ export default function PullRequest({ pr, jiraTag }) {
       </Button>
       <Button
         variant="contained"
-        disabled={ticketTagIndex === -1}
+        disabled={ticketTags === null}
         sx={{
           color: "white",
           bgcolor: "green",
@@ -53,18 +54,22 @@ export default function PullRequest({ pr, jiraTag }) {
           paddingY: 0,
         }}
         onClick={() => {
-          if (ticketTagIndex > -1) {
-            const ticketId = pr.title.substring(ticketTagIndex, ticketTagIndex + 8);
+          if (ticketTags !== null) {
+            // const ticketId = pr.title.substring(ticketTagIndex, ticketTagIndex + 8);
             chrome.tabs.create({
-              url: `https://jira.ncr.com/browse/${ticketId}`,
+              url: `https://jira.ncr.com/browse/${ticketTags[0]}`,
             });
           }
         }}
       >
         JIRA
       </Button>
-      <Typography variant="caption">
-        {pr.title.length > 30 ? `${pr.title.substring(0, 30)}...` : pr.title}
+      <Typography variant="caption" sx={{
+        overflow: "hidden",
+        whiteSpace: "nowrap",
+        textOverflow: "ellipsis",
+      }}>
+        {pr.title}
       </Typography>
     </Stack>
   );
