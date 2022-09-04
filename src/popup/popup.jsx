@@ -40,6 +40,19 @@ function Popup() {
     });
   }, []);
 
+  useEffect(() => {
+    console.log("TESTING")
+    async function asdf() {
+      const storage = await chrome.storage.sync.get();
+      const client = new GitHubClient(storage.token);
+      console.log("_getRepoData", await client._getRepoData({
+        user: "syj67507",
+        name: "discord-bot"
+      }));
+    }
+    asdf().catch((e) => console.error(`asdf ${e}`))
+  }, [])
+
   console.log("POPUP:", data);
   
   return (
