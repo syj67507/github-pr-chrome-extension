@@ -6,20 +6,20 @@ import PullRequest from "./PullRequest";
 import RepoTitle from "./RepoTitle";
 import NoPullRequest from "./NoPullRequest";
 
-export default function RepoSection({ repo, pullRequests }) {
+export default function RepoSection({ repo }) {
   return (
     <Box>
       <RepoTitle repo={repo} />
       <Stack width="100%" spacing={0}>
         { 
-          pullRequests &&
-          pullRequests.length > 0 &&
-          pullRequests.map((pullRequest, index) => (
-            <PullRequest key={index} pr={pullRequest} jiraTag={repo.jiraTag} />
+          repo.pullRequests &&
+          repo.pullRequests.length > 0 &&
+          repo.pullRequests.map((pullRequest, index) => (
+            <PullRequest key={index} pr={pullRequest}/>
           ))
         }
         {
-          pullRequests && pullRequests.length <= 0 && <NoPullRequest repo={repo}/>
+          repo.pullRequests && repo.pullRequests.length <= 0 && <NoPullRequest repo={repo}/>
         }
       </Stack>
     </Box>

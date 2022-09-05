@@ -1,14 +1,18 @@
 /* global chrome */
 import React, { useState } from "react";
-import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Stack from "@mui/material/Stack";
 import TextField from "@mui/material/TextField";
-import Typography from "@mui/material/Typography";
+import { addRepository } from "../../../data/chromeStorage";
 
-export default function Add({ setSavedRepos }) {
+export default function Add() {
   const [repository, setRepository] = useState("");
   const [jiraTag, setJiraTag] = useState("");
+  const [jiraDomain, setJiraDomain] = useState("");
+  
+  const saveEnabled1 = repository && (!jiraTag && !jiraDomain); // only repository field
+  const saveEnabled2 = repository && (jiraTag && jiraDomain); // specify both jira tags
+  const saveEnabled = saveEnabled1 || saveEnabled2
 
   return (
     <Stack padding={2} spacing={2} width="50%" direction="column" alignItems="center" justifyContent="center">
@@ -32,6 +36,16 @@ export default function Add({ setSavedRepos }) {
         }}
         fullWidth
       />
+      <TextField
+        label="JIRA Domain (optional)"
+        helperText="Domain to build the url to JIRA ticket [domain]/browse/TAG-1234"
+        variant="standard"
+        value={jiraDomain}
+        onChange={(e) => {
+          setJiraDomain(e.target.value);
+        }}
+        fullWidth
+      />
       <Stack width="100%" direction="row" justifyContent="flex-end" spacing={2}>
         <Button
           variant="contained"
@@ -45,33 +59,9 @@ export default function Add({ setSavedRepos }) {
         </Button>
         <Button
           variant="contained"
-          disabled={!repository}
+          disabled={!saveEnabled}
           onClick={async () => {
-            const storage = await chrome.storage.sync.get();
-            let savedRepos = storage.savedRepos;
-            if (savedRepos === undefined) {
-              console.log("Initializing saved repos...");
-              savedRepos = [];
-            }
-
-            // Fetch data from input
-            //https://github.com/syj67507/discord-bot
-            const [,,,username, repoName] = repository.split("/");
-            const repo = {
-              user: username,
-              name: repoName,
-              url: repository,
-              jiraTag: jiraTag ? jiraTag : undefined
-            };
-
-            const alreadyAdded = savedRepos.filter((savedRepo) => savedRepo.user === repo.user && savedRepo.name === repo.name).length > 0;
-            if (alreadyAdded) {
-              return; // Don't add if it is already there
-            }
-
-            savedRepos.push(repo);
-            chrome.storage.sync.set({ savedRepos: savedRepos });
-            setSavedRepos(savedRepos);
+            await addRepository(repository, jiraTag, jiraDomain);
           }}
         >
           Save

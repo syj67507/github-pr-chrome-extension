@@ -4,12 +4,7 @@ import Stack from "@mui/material/Stack"
 import Typography from "@mui/material/Typography"
 import GitHubIcon from "@mui/icons-material/GitHub";
 
-export default function PullRequest({ pr, jiraTag }) {
-  console.log("jiraTag", jiraTag);
-  // Used for JIRA button
-  const regex = new RegExp(jiraTag + "-\\d+", "g")
-  const ticketTags = pr.title.match(regex)
-
+export default function PullRequest({ pr }) {
   return (
     <Stack
       direction="row"
@@ -43,7 +38,7 @@ export default function PullRequest({ pr, jiraTag }) {
       </Button>
       <Button
         variant="contained"
-        disabled={ticketTags === null}
+        disabled={pr.jiraUrl === undefined}
         sx={{
           color: "white",
           bgcolor: "green",
@@ -54,10 +49,9 @@ export default function PullRequest({ pr, jiraTag }) {
           paddingY: 0,
         }}
         onClick={() => {
-          if (ticketTags !== null) {
-            // const ticketId = pr.title.substring(ticketTagIndex, ticketTagIndex + 8);
+          if (pr.jiraUrl !== undefined) {
             chrome.tabs.create({
-              url: `https://jira.ncr.com/browse/${ticketTags[0]}`,
+              url: pr.jiraUrl,
             });
           }
         }}
