@@ -39,6 +39,7 @@ export default function Add() {
       <TextField
         label="JIRA Domain (optional)"
         helperText="Domain to build the url to JIRA ticket [domain]/browse/TAG-1234"
+        placeholder="https://jira.company.com"
         variant="standard"
         value={jiraDomain}
         onChange={(e) => {

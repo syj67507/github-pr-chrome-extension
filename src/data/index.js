@@ -49,39 +49,52 @@ class GitHubClient {
   /**
    * Fetch all relevant repo and pull request data to display from the repository url.
    * If JIRA information was specified, this function will provide a URL to the JIRA ticket on success.
-   * @param url - The url to the repository's main page (ex: https://github.com/syj67507/discord-bot)
-   * @param jiraTag - The JIRA project tag
-   * @param jiraDomain - The base domain for the JIRA project
-   * @returns Repository information and it's pull request data
+   * @param reposData - An array where each element is an object of repo data, containing the url, jiraTag, and jiraDomain
+   * url - The url to the repository's main page (ex: https://github.com/syj67507/discord-bot)
+   * jiraTag - The JIRA project tag
+   * jiraDomain - The base domain for the JIRA project
+   * @returns An array of repository information and it's pull request data
    */
-  async getRepoData({ url, jiraTag, jiraDomain }) {
-    const parsed = url.split("/");
-    const owner = parsed[3]
-    const name = parsed[4]
-
-    let pullRequests = await this.getPullRequests({
-      owner,
-      name,
-    })
+  async getRepoData(reposData) { // { url, jiraTag, jiraDomain }) {
+    if (Array.isArray(reposData) === false) {
+      return [];
+    }
     
-    if (jiraDomain && jiraTag) {
-      pullRequests.forEach((pr) => {
-        // const regex = new RegExp(jiraTag + "-\\d+", "g")
-        const regex = new RegExp(jiraTag, "g")
-        const ticketTags = (pr.title.match(regex) || []).concat(pr.body.match(regex) || [])
+    const result = [];
+    for (const repoData of reposData) {
+      const { url, jiraTag, jiraDomain } = repoData;
 
-        if (ticketTags.length > 0) {
-          pr.jiraUrl = `${jiraDomain}/browse/${ticketTags[0]}`
-        }
+      const parsed = url.split("/");
+      const owner = parsed[3]
+      const name = parsed[4]
+  
+      let pullRequests = await this.getPullRequests({
+        owner,
+        name,
       })
+      
+      if (jiraDomain && jiraTag) {
+        pullRequests.forEach((pr) => {
+          const regex = new RegExp(jiraTag + "-\\d+", "g")
+          // const regex = new RegExp(jiraTag, "g") // For testing
+          const ticketTags = (pr.title.match(regex) || []).concat(pr.body.match(regex) || [])
+  
+          if (ticketTags.length > 0) {
+            pr.jiraUrl = `${jiraDomain}/browse/${ticketTags[0]}`
+          }
+        })
+      }
+      
+      result.push({
+        owner,
+        name,
+        url,
+        pullRequests,
+      }); 
     }
+
+    return result;
     
-    return {
-      owner,
-      name,
-      url,
-      pullRequests,
-    }
   }
 
 }
