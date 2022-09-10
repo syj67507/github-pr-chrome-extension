@@ -39,7 +39,6 @@ function Popup() {
     getPRs();
   }, []);
 
-  console.log("loading", loading)
   return (
     <>
       <CssBaseline />
