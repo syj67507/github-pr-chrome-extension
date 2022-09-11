@@ -55,7 +55,7 @@ class GitHubClient {
    * jiraDomain - The base domain for the JIRA project
    * @returns An array of repository information and it's pull request data
    */
-  async getRepoData(reposData) { // { url, jiraTag, jiraDomain }) {
+  async getRepoData(reposData) {
     if (Array.isArray(reposData) === false) {
       return [];
     }
