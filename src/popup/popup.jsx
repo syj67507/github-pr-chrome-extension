@@ -5,43 +5,40 @@ import React, { useEffect, useState } from "react";
 import { render } from "react-dom";
 import CssBaseline from "@mui/material/CssBaseline";
 import Stack from "@mui/material/Stack";
-import GitHubClient from "../githubClient";
+import GitHubClient from "../data";
 import RepoSection from "./components/RepoSection";
 import Header from "./components/Header";
 import Loading from "./components/Loading";
+import { getStorage, addRepository, setStorage, clearStorage, removeRepository, setToken, getToken, getRepositories } from "../data/chromeStorage";
 
 function Popup() {
   const [data, setData] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(false); // TODO display error
 
   // On popup load, we need to fetch all the PRs
-  useEffect(async () => {
-    // Create client to fetch data
-    const storage = await chrome.storage.sync.get();
-    const client = new GitHubClient(storage.token);
-    
-    // Fetch the saved repos
-    let savedRepos = storage.savedRepos;
-    if (!savedRepos) {
-      savedRepos = [];
-    }
-    console.log("POPUP: savedRepos", savedRepos)
+  useEffect(() => {
+    async function getPRs() {
+      try {
+        setLoading(true);
 
-    // Fetch all the pull requests
-    let allPullRequests = [];
-    let count = 0;
-    for (const repo of savedRepos) {
-      const prs = await client.fetchPullRequests(repo);
-      allPullRequests.push({ repo: repo, pullRequests: prs });
-      count += prs.length;
+        const token = await getToken();
+        const client = new GitHubClient(token)
+        
+        const repos = await getRepositories();
+        const reposData = await client.getRepoData(repos);
+
+        setData(reposData)
+        setLoading(false);
+      } catch (e) {
+        console.error(e);
+        setLoading(false);
+        setData(null);
+      }
     }
-    setData(allPullRequests);
-    chrome.action.setBadgeText({
-      text: `${count}`,
-    });
+    getPRs();
   }, []);
 
-  console.log("POPUP:", data);
-  
   return (
     <>
       <CssBaseline />
@@ -56,16 +53,17 @@ function Popup() {
 
         {/* Space out each repo section */}
         <Stack spacing={3} width="100%">
-          {data === null && <Loading />}
-          {data && data.map((repoData, index) => {
+          {loading && <Loading />}
+          {/* TODO error message when fetching */}
+          {data && data.length > 0 && data.map((repo, index) => {
             return (
               <RepoSection
                 key={index}
-                repo={repoData.repo}
-                pullRequests={repoData.pullRequests}
+                repo={repo}
               />
             );
           })}
+          {/* TODO Nothing to show when data.length === 0 */}
         </Stack>
       </Stack>
     </>

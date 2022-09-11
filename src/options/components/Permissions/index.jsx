@@ -4,6 +4,7 @@ import Link from "@mui/material/Link";
 import Stack from "@mui/material/Stack";
 import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
+import chrome from "../../../data/chromeStorage";
 
 export default function Permissions() {
     const [token, setToken] = useState("");
@@ -35,8 +36,8 @@ export default function Permissions() {
             <Stack width="100%" direction="row" justifyContent="flex-end" spacing={2}>
                 <Button 
                     variant="contained"
-                    onClick={() => {
-                        chrome.storage.sync.set({ token: token });
+                    onClick={async () => {
+                        await chrome.setToken(token);
                     }}
                     disabled={token === ""} 
                 >

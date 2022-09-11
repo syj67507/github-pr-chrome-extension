@@ -3,30 +3,32 @@ import React from "react";
 import { IconButton, Stack, Typography } from "@mui/material";
 import CloseIcon from '@mui/icons-material/Close';
 
-export default function SavedRepo({ repo, setSavedRepos }) {
+export default function SavedRepo({ repo, onRemove, bgcolor }) {
   return (
-    <Stack
-      direction="row"
-      spacing={2}
-      alignItems="center"
-      width="100%"
-    >
-      <IconButton aria-label="delete"
-        onClick={async () => {
-          const storage = await chrome.storage.sync.get();
-          const savedRepos = storage.savedRepos;
-          const filtered = savedRepos.filter((savedRepo) => {
-            return `${savedRepo.user}/${savedRepo.name}` !== `${repo.user}/${repo.name}` ;
-          });
-          chrome.storage.sync.set({
-            savedRepos: filtered,
-          });
-          setSavedRepos(filtered);
-        }}
+      <Stack
+        direction="column"
+        padding={1}
+        alignItems="flex-start"
+        width="100%"
+        bgcolor={bgcolor}
       >
-        <CloseIcon />
-      </IconButton>
-      <Typography variant="subtitle1">{repo.user}/{repo.name}</Typography>
+        <Stack
+          direction="row"
+          alignItems="center"
+          width="100%"
+          justifyContent="space-between"
+        >
+          <Typography variant="caption">{repo.url}</Typography>
+          <IconButton
+            aria-label="delete"
+            onClick={onRemove}
+            padding={0}
+          >
+          <CloseIcon />
+        </IconButton>
+        </Stack>
+        {repo.jiraDomain && <Typography variant="caption">{repo.jiraDomain}</Typography>}
+        {repo.jiraTag && <Typography variant="caption">{repo.jiraTag}</Typography>}
     </Stack>
   );
 }
