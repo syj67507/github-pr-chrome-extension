@@ -10,7 +10,7 @@ export default function Permissions() {
     const [token, setToken] = useState("");
 
     return (
-        <Stack direction="column" width="50%" padding={2} spacing={2}>
+        <Stack direction="column" width="100%" padding={2} spacing={2}>
             <Typography variant="body1" textAlign="center">
                 Set your personal access token here.
                 Create you personal access token under Developer Settings in your

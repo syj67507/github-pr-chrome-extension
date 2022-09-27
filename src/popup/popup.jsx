@@ -2,12 +2,13 @@ import { Box, Button, CssBaseline, Stack, Typography } from "@mui/material";
 import React, { useState } from "react";
 import { render } from "react-dom";
 import PRDisplay from "./components/PRDisplay";
-import Header from "./components/Header";
-import Options from "./components/Options";
+import Add from "./components/Options/components/Add";
+import Saved from "./components/Options/components/Saved";
+import Permissions from "./components/Options/components/Permissions";
 
 function Popup() {
 
-    const [page, setPage] = useState("PRs");
+    const [page, setPage] = useState("PR");
 
     return (
         <>
@@ -23,31 +24,53 @@ function Popup() {
                     sx={{
                         width: "100%",
                         padding: 1.5,
-                        background: "linear-gradient(#333, #000)",
+                        background: "linear-gradient(#222, #000)",
                         display: "flex",
                         justifyContent: "center",
                     }}
-                    >
+                >
                     <Button
                         // variant="h6"
                         sx={{
-                            color: "white",
+                            color: "whitesmoke",
+                            bgcolor: page === "PR" ? "#000" : undefined
                         }}
-                        onClick={() => setPage("PRs")}
+                        onClick={() => setPage("PR")}
                     >
-                        PRs
+                        PR
                     </Button>
                     <Button
                         sx={{
-                            color: "white",
+                            color: "whitesmoke",
+                            bgcolor: page === "Add" ? "#000" : undefined
                         }}
-                        onClick={() => setPage("Options")}
+                        onClick={() => setPage("Add")}
                     >
-                        Options
+                        Add
+                    </Button>
+                    <Button
+                        sx={{
+                            color: "whitesmoke",
+                            bgcolor: page === "Saved" ? "#000" : undefined
+                        }}
+                        onClick={() => setPage("Saved")}
+                    >
+                        Saved
+                    </Button>
+                    <Button
+                        sx={{
+                            color: "whitesmoke",
+                            bgcolor: page === "Permissions" ? "#000" : undefined
+                        }}
+                        onClick={() => setPage("Permissions")}
+                    >
+                        Permissions
                     </Button>
                 </Box>
-                {page === "PRs" && <PRDisplay />}
-                {page === "Options" && <Options />}
+                {page === "PR" && <PRDisplay />}
+                {page === "Add" && <Add />}
+                {page === "Saved" && <Saved />}
+                {page === "Permissions" && <Permissions />}
             </Stack>
         </>
     );

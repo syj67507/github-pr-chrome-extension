@@ -15,7 +15,14 @@ export default function Add() {
   const saveEnabled = saveEnabled1 || saveEnabled2
 
   return (
-    <Stack padding={2} spacing={2} width="50%" direction="column" alignItems="center" justifyContent="center">
+    <Stack
+      padding={2}
+      spacing={2}
+      width="100%"
+      direction="column"
+      alignItems="center"
+      justifyContent="center"
+    >
       <TextField
         label="Repository URL"
         helperText="https://github.com/<username>/<repositoryName>"
@@ -55,6 +62,14 @@ export default function Add() {
             setRepository("");
             setJiraTag("");
           }}
+          sx={{
+            bgcolor: "whitesmoke",
+            color: "#444",
+            '&:hover': {
+              bgcolor: "#dcdcdc",
+              color: "#444",
+            }
+          }}
         >
           Clear
         </Button>
@@ -63,6 +78,12 @@ export default function Add() {
           disabled={!saveEnabled}
           onClick={async () => {
             await addRepository(repository, jiraTag, jiraDomain);
+          }}
+          sx={{
+            bgcolor: "#6cc644",
+            '&:hover': {
+              bgcolor: "#4f982e",
+            }
           }}
         >
           Save
