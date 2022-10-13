@@ -25,6 +25,12 @@ module.exports = {
           },
         },
       },
+      // Allows for use of SVGs as React components
+      {
+        test: /\.svg$/i,
+        issuer: /\.[jt]sx?$/,
+        use: [{ loader: '@svgr/webpack', options: { icon: true }}],
+      },
     ],
   },
   plugins: [

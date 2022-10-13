@@ -1,8 +1,11 @@
 # TODO List
 
-- Rework the UI for options.html
-- Allow JIRA tag options for parsing
-  - There are issues because the domain in hard coded for JIRA
-- There is redundant data inside of pull request
-  - Figure out how to store the data (JIRA, REPO, PULL REQUEST)
+- Create button components for icons
+- Disabled should have its own styling and no tooltip around it
+- Enabled should have its own styling with a tooltip around it
+
+- Remove the options from webpack config
+- Remove the options from src folder
+- install typescript
+- install prettier and eslint
 - Allow options for hiding certain buttons like (JIRA)
