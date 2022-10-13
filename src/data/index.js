@@ -37,7 +37,7 @@ class GitHubClient {
           title: pullRequest.title,
           body: pullRequest.body || "",
           number: pullRequest.number,
-          url: pullRequest._links.html.href,
+          url: pullRequest.html_url,
         };
       });
     } catch (error) {
