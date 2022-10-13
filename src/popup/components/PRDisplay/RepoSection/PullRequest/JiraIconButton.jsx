@@ -4,7 +4,6 @@ import Tooltip from "@mui/material/Tooltip"
 import JiraIcon from "./jira-icon.svg";
 import DisabledJiraIcon from "./jira-icon-disabled.svg";
 
-// "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"
 function EnabledJiraIconButton({ jiraUrl }) {
     return (
         <Tooltip
