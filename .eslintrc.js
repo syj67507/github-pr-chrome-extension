@@ -18,4 +18,5 @@ module.exports = {
     "no-unused-vars": "warn",
     "no-console": "off",
   },
+  ignorePatterns: ["node_modules", "dist"],
 };
