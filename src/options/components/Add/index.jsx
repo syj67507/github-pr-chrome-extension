@@ -9,13 +9,20 @@ export default function Add() {
   const [repository, setRepository] = useState("");
   const [jiraTag, setJiraTag] = useState("");
   const [jiraDomain, setJiraDomain] = useState("");
-  
-  const saveEnabled1 = repository && (!jiraTag && !jiraDomain); // only repository field
-  const saveEnabled2 = repository && (jiraTag && jiraDomain); // specify both jira tags
-  const saveEnabled = saveEnabled1 || saveEnabled2
+
+  const saveEnabled1 = repository && !jiraTag && !jiraDomain; // only repository field
+  const saveEnabled2 = repository && jiraTag && jiraDomain; // specify both jira tags
+  const saveEnabled = saveEnabled1 || saveEnabled2;
 
   return (
-    <Stack padding={2} spacing={2} width="50%" direction="column" alignItems="center" justifyContent="center">
+    <Stack
+      padding={2}
+      spacing={2}
+      width="50%"
+      direction="column"
+      alignItems="center"
+      justifyContent="center"
+    >
       <TextField
         label="Repository URL"
         helperText="https://github.com/<username>/<repositoryName>"

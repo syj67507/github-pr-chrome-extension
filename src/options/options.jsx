@@ -14,16 +14,18 @@ function Options() {
     <>
       <CssBaseline />
       {/* Header Navigation */}
-      <Box sx={{
-        padding: 2,
-        gap: 1,
-        width: "100%",
-        background: "linear-gradient(#333, #000)",
-        color: "white",
-        display: "flex",
-        justifyContent: "center",
-      }}>
-        <Button 
+      <Box
+        sx={{
+          padding: 2,
+          gap: 1,
+          width: "100%",
+          background: "linear-gradient(#333, #000)",
+          color: "white",
+          display: "flex",
+          justifyContent: "center",
+        }}
+      >
+        <Button
           sx={{
             "&:hover": {
               backgroundColor: "#444",
@@ -34,7 +36,7 @@ function Options() {
         >
           Add
         </Button>
-        <Button 
+        <Button
           sx={{
             "&:hover": {
               backgroundColor: "#111",
@@ -45,7 +47,7 @@ function Options() {
         >
           Saved
         </Button>
-        <Button 
+        <Button
           sx={{
             "&:hover": {
               backgroundColor: "#111",
@@ -57,14 +59,16 @@ function Options() {
           Permissions
         </Button>
       </Box>
-      
+
       {/* Page content */}
-      <Box sx={{
-        width: "100%",
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-      }}>
+      <Box
+        sx={{
+          width: "100%",
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+      >
         {pageState === "Add" && <Add />}
         {pageState === "Saved" && <Saved />}
         {pageState === "Permissions" && <Permissions />}

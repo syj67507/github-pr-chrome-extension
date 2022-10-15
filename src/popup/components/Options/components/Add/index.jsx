@@ -9,10 +9,10 @@ export default function Add() {
   const [repository, setRepository] = useState("");
   const [jiraTag, setJiraTag] = useState("");
   const [jiraDomain, setJiraDomain] = useState("");
-  
-  const saveEnabled1 = repository && (!jiraTag && !jiraDomain); // only repository field
-  const saveEnabled2 = repository && (jiraTag && jiraDomain); // specify both jira tags
-  const saveEnabled = saveEnabled1 || saveEnabled2
+
+  const saveEnabled1 = repository && !jiraTag && !jiraDomain; // only repository field
+  const saveEnabled2 = repository && jiraTag && jiraDomain; // specify both jira tags
+  const saveEnabled = saveEnabled1 || saveEnabled2;
 
   return (
     <Stack
@@ -65,10 +65,10 @@ export default function Add() {
           sx={{
             bgcolor: "whitesmoke",
             color: "#444",
-            '&:hover': {
+            "&:hover": {
               bgcolor: "#dcdcdc",
               color: "#444",
-            }
+            },
           }}
         >
           Clear
@@ -81,9 +81,9 @@ export default function Add() {
           }}
           sx={{
             bgcolor: "#6cc644",
-            '&:hover': {
+            "&:hover": {
               bgcolor: "#4f982e",
-            }
+            },
           }}
         >
           Save

@@ -15,7 +15,7 @@ export default function RepoTitle({ repo }) {
           cursor: "pointer",
           bgcolor: "whitesmoke",
         },
-        padding: 1, 
+        padding: 1,
       }}
       onClick={() => {
         chrome.tabs.create({
@@ -23,9 +23,9 @@ export default function RepoTitle({ repo }) {
         });
       }}
     >
-        <Typography variant="subtitle1" sx={{ fontWeight: "bold" }}>
-          {`${repo.owner}/${repo.name}`}
-        </Typography>
+      <Typography variant="subtitle1" sx={{ fontWeight: "bold" }}>
+        {`${repo.owner}/${repo.name}`}
+      </Typography>
     </Box>
   );
 }

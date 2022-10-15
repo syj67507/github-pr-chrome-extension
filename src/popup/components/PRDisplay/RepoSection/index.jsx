@@ -11,16 +11,14 @@ export default function RepoSection({ repo }) {
     <Box>
       <RepoTitle repo={repo} />
       <Stack width="100%" spacing={0}>
-        { 
-          repo.pullRequests &&
+        {repo.pullRequests &&
           repo.pullRequests.length > 0 &&
           repo.pullRequests.map((pullRequest, index) => (
-            <PullRequest key={index} pr={pullRequest}/>
-          ))
-        }
-        {
-          repo.pullRequests && repo.pullRequests.length <= 0 && <NoPullRequest repo={repo}/>
-        }
+            <PullRequest key={index} pr={pullRequest} />
+          ))}
+        {repo.pullRequests && repo.pullRequests.length <= 0 && (
+          <NoPullRequest repo={repo} />
+        )}
       </Stack>
     </Box>
   );

@@ -1,11 +1,15 @@
 /* global chrome */
-const regeneratorRuntime = require("regenerator-runtime");
+require("regenerator-runtime");
 const GitHubClient = require("../data/index");
-const { getToken, setToken, clearStorage, getRepositories, addRepository } = require("../data/chromeStorage");
+const {
+  getToken,
+  clearStorage,
+  getRepositories,
+} = require("../data/chromeStorage");
 
 const alarmName = "fetchPRs";
 const delayInMinutes = 0;
-const periodInMinutes = 1;
+const periodInMinutes = 1 / 60;
 
 // Install logic
 chrome.runtime.onInstalled.addListener(async () => {
@@ -13,8 +17,8 @@ chrome.runtime.onInstalled.addListener(async () => {
 
   console.log("Creating alarm...");
   chrome.alarms.create(alarmName, {
-    delayInMinutes: delayInMinutes,
-    periodInMinutes: periodInMinutes,
+    delayInMinutes,
+    periodInMinutes,
   });
   console.log("Created!", await chrome.alarms.get(alarmName));
 
@@ -22,22 +26,24 @@ chrome.runtime.onInstalled.addListener(async () => {
 });
 
 // Periodically fetch pull requests and update the badge
-chrome.alarms.onAlarm.addListener(async (alarm) => {
+chrome.alarms.onAlarm.addListener(async () => {
   try {
     const token = await getToken();
     if (token === undefined) {
-      console.log("Personal access token not set. User must go to options to set personal access token.");
+      console.log(
+        "Personal access token not set. User must go to options to set personal access token."
+      );
       return;
     }
-  
+
     const repositories = await getRepositories();
     const client = new GitHubClient(token);
-  
+
     let count = 0;
     const reposData = await client.getRepoData(repositories);
-    for (const repoData of reposData) {
+    reposData.forEach((repoData) => {
       count += repoData.pullRequests.length;
-    }
+    });
     chrome.action.setBadgeText({
       text: `${count}`,
     });
@@ -48,5 +54,4 @@ chrome.alarms.onAlarm.addListener(async (alarm) => {
     console.error(`There was an error in setting the badge`);
     console.error(e);
   }
-  
 });
