@@ -8,8 +8,8 @@
     "dev": "webpack --watch --config webpack.dev.js",
     "build": "webpack --config webpack.prod.js",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "lint": "eslint .",
-    "lint:fix": "eslint --fix ."
+    "lint": "eslint --ext .jsx --ext .js .",
+    "lint:fix": "eslint --fix --ext .jsx --ext .js ."
   },
   "keywords": [],
   "author": "",
