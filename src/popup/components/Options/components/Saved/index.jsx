@@ -49,7 +49,7 @@ export default function Saved() {
       {repos &&
         repos.map((repo, index) => (
           <SavedRepo
-            key={index}
+            key={repo.url}
             repo={repo}
             bgcolor={index % 2 === 0 ? "whitesmoke" : "white"}
             onRemove={async () => {

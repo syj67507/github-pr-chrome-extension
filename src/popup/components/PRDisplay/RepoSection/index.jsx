@@ -1,4 +1,3 @@
-/* global chrome */
 import React from "react";
 import Box from "@mui/material/Box";
 import Stack from "@mui/material/Stack";
@@ -13,8 +12,8 @@ export default function RepoSection({ repo }) {
       <Stack width="100%" spacing={0}>
         {repo.pullRequests &&
           repo.pullRequests.length > 0 &&
-          repo.pullRequests.map((pullRequest, index) => (
-            <PullRequest key={index} pr={pullRequest} />
+          repo.pullRequests.map((pullRequest) => (
+            <PullRequest key={repo.url} pr={pullRequest} />
           ))}
         {repo.pullRequests && repo.pullRequests.length <= 0 && (
           <NoPullRequest repo={repo} />

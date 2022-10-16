@@ -5,13 +5,12 @@ import GitHubClient from "../../../data";
 import RepoSection from "./RepoSection";
 import Loading from "../Loading";
 import { getToken, getRepositories } from "../../../data/chromeStorage";
-
-const regeneratorRuntime = require("regenerator-runtime");
+import "regenerator-runtime";
 
 export default function Popup() {
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(false); // TODO display error
+  // const [error, setError] = useState(false); // TODO display error
 
   // On popup load, we need to fetch all the PRs
   useEffect(() => {
@@ -42,8 +41,8 @@ export default function Popup() {
       {/* TODO error message when fetching */}
       {data &&
         data.length > 0 &&
-        data.map((repo, index) => {
-          return <RepoSection key={index} repo={repo} />;
+        data.map((repo) => {
+          return <RepoSection key={repo.url} repo={repo} />;
         })}
       {/* TODO Nothing to show when data.length === 0 */}
     </Stack>
