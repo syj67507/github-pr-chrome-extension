@@ -1,17 +1,16 @@
 /** global chrome */
-const regeneratorRuntime = require("regenerator-runtime");
-
 import React, { useEffect, useState } from "react";
 import Stack from "@mui/material/Stack";
 import GitHubClient from "../../../data";
 import RepoSection from "./RepoSection";
 import Loading from "../Loading";
 import { getToken, getRepositories } from "../../../data/chromeStorage";
+import "regenerator-runtime";
 
 export default function Popup() {
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(false); // TODO display error
+  // const [error, setError] = useState(false); // TODO display error
 
   // On popup load, we need to fetch all the PRs
   useEffect(() => {
@@ -20,12 +19,12 @@ export default function Popup() {
         setLoading(true);
 
         const token = await getToken();
-        const client = new GitHubClient(token)
-        
+        const client = new GitHubClient(token);
+
         const repos = await getRepositories();
         const reposData = await client.getRepoData(repos);
 
-        setData(reposData)
+        setData(reposData);
         setLoading(false);
       } catch (e) {
         console.error(e);
@@ -37,20 +36,15 @@ export default function Popup() {
   }, []);
 
   return (
-    <>
-      <Stack spacing={3} width="100%">
-        {loading && <Loading />}
-        {/* TODO error message when fetching */}
-        {data && data.length > 0 && data.map((repo, index) => {
-          return (
-            <RepoSection
-              key={index}
-              repo={repo}
-            />
-          );
+    <Stack spacing={3} width="100%">
+      {loading && <Loading />}
+      {/* TODO error message when fetching */}
+      {data &&
+        data.length > 0 &&
+        data.map((repo) => {
+          return <RepoSection key={repo.url} repo={repo} />;
         })}
-        {/* TODO Nothing to show when data.length === 0 */}
-      </Stack>
-    </>
+      {/* TODO Nothing to show when data.length === 0 */}
+    </Stack>
   );
 }

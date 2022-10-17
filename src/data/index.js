@@ -1,4 +1,4 @@
-const regeneratorRuntime = require("regenerator-runtime");
+require("regenerator-runtime");
 
 /**
  * A client to provide a variety of functions that communicate with
@@ -12,11 +12,10 @@ class GitHubClient {
 
   /**
    * Fetches pull request data for the provided repository
-   * @param {object} repo The repository's metadata 
+   * @param {object} repo The repository's metadata
    * @returns An array of pull request metadata for the provided repository
    */
   async getPullRequests(repo) {
-
     const headersList = {
       Accept: "application/json",
       Authorization: `token ${this.token}`,
@@ -30,8 +29,11 @@ class GitHubClient {
           headers: headersList,
         }
       );
-  
+
       const data = await response.json();
+      if (response.status !== 200) {
+        throw new Error(data.message);
+      }
       return data.map((pullRequest) => {
         return {
           title: pullRequest.title,
@@ -59,44 +61,48 @@ class GitHubClient {
     if (Array.isArray(reposData) === false) {
       return [];
     }
-    
-    const result = [];
-    for (const repoData of reposData) {
+
+    // map repoData to each of its pull requests
+    const reposDataWithPullRequests = reposData.map(async (repoData) => {
       const { url, jiraTag, jiraDomain } = repoData;
 
       const parsed = url.split("/");
-      const owner = parsed[3]
-      const name = parsed[4]
-  
+      const owner = parsed[3];
+      const name = parsed[4];
+
       let pullRequests = await this.getPullRequests({
         owner,
         name,
-      })
-      
+      });
+
       if (jiraDomain && jiraTag) {
-        pullRequests.forEach((pr) => {
-          const regex = new RegExp(jiraTag + "-\\d+", "g")
+        pullRequests = pullRequests.map((pr) => {
+          const regex = new RegExp(`${jiraTag}-\\d+`, "g");
           // const regex = new RegExp(jiraTag, "g") // For testing
-          const ticketTags = (pr.title.match(regex) || []).concat(pr.body.match(regex) || [])
-  
-          if (ticketTags.length > 0) {
-            pr.jiraUrl = `${jiraDomain}/browse/${ticketTags[0]}`
-          }
-        })
+          const ticketTags = (pr.title.match(regex) || []).concat(
+            pr.body.match(regex) || []
+          );
+
+          return {
+            ...pr,
+            jiraUrl:
+              ticketTags.length > 0
+                ? `${jiraDomain}/browse/${ticketTags[0]}`
+                : undefined,
+          };
+        });
       }
-      
-      result.push({
+
+      return {
         owner,
         name,
         url,
         pullRequests,
-      }); 
-    }
+      };
+    });
 
-    return result;
-    
+    return Promise.all(reposDataWithPullRequests);
   }
-
 }
 
 module.exports = GitHubClient;
