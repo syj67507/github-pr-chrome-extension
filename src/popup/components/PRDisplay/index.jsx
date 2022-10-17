@@ -38,18 +38,22 @@ export default function Popup() {
   }, []);
 
   return (
-    <Stack spacing={3} width="100%">
+    <Stack spacing={2} width="100%">
       {loading && <Loading />}
       {/* TODO error message when fetching */}
 
       {/* Filtering search box */}
-      <TextField
-        variant="standard"
-        placeholder="Filter"
-        value={filter}
-        onChange={(e) => setFilter(e.target.value)}
-        inputProps={{ style: { textAlign: "center" } }}
-      />
+      {data && data.length > 0 && (
+        <TextField
+          variant="standard"
+          placeholder="Filter"
+          value={filter}
+          onChange={(e) => setFilter(e.target.value)}
+          inputProps={{
+            style: { textAlign: "center" },
+          }}
+        />
+      )}
 
       {data &&
         data.length > 0 &&

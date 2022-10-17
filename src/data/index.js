@@ -40,6 +40,7 @@ class GitHubClient {
           body: pullRequest.body || "",
           number: pullRequest.number,
           url: pullRequest.html_url,
+          user: pullRequest.user.login,
         };
       });
     } catch (error) {
