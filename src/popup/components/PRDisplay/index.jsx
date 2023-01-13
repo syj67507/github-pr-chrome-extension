@@ -38,7 +38,7 @@ export default function Popup() {
   }, []);
 
   return (
-    <Stack spacing={2} width="100%">
+    <Stack width="100%">
       {loading && <Loading />}
       {/* TODO error message when fetching */}
 
@@ -46,7 +46,7 @@ export default function Popup() {
       {data && data.length > 0 && (
         <TextField
           variant="standard"
-          placeholder="Filter"
+          placeholder="filter"
           value={filter}
           onChange={(e) => setFilter(e.target.value)}
           inputProps={{

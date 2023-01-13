@@ -79,7 +79,7 @@ class GitHubClient {
       if (jiraDomain && jiraTag) {
         pullRequests = pullRequests.map((pr) => {
           const regex = new RegExp(`${jiraTag}-\\d+`, "g");
-          // const regex = new RegExp(jiraTag, "g") // For testing
+          // const regex = new RegExp(jiraTag, "g"); // For testing
           const ticketTags = (pr.title.match(regex) || []).concat(
             pr.body.match(regex) || []
           );

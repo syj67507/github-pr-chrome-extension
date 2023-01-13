@@ -19,8 +19,13 @@ function EnabledJiraIconButton({ jiraUrl }) {
             });
           }
         }}
+        size="small"
       >
-        <JiraIcon />
+        <JiraIcon
+          sx={{
+            fontSize: 20,
+          }}
+        />
       </IconButton>
     </Tooltip>
   );
@@ -33,8 +38,13 @@ function DisabledJiraIconButton() {
       sx={{
         border: "2px solid #ddd",
       }}
+      size="small"
     >
-      <DisabledJiraIcon />
+      <DisabledJiraIcon
+        sx={{
+          fontSize: 20,
+        }}
+      />
     </IconButton>
   );
 }

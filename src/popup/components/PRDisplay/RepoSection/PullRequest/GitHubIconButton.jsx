@@ -21,8 +21,13 @@ export default function GitHubIconButton({ pr }) {
             url: pr.url,
           });
         }}
+        size="small"
       >
-        <GitHubIcon />
+        <GitHubIcon
+          sx={{
+            fontSize: 20,
+          }}
+        />
       </IconButton>
     </Tooltip>
   );
