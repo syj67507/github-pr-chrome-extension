@@ -18,16 +18,21 @@ export default function PullRequest({ pr }) {
     >
       <GitHubIconButton pr={pr} />
       <JiraIconButton jiraUrl={pr.jiraUrl} />
-      <Typography
-        variant="caption"
-        sx={{
-          overflow: "hidden",
-          whiteSpace: "nowrap",
-          textOverflow: "ellipsis",
-        }}
-      >
-        {pr.title}
-      </Typography>
+      <Stack overflow="hidden">
+        <Typography variant="caption" fontStyle="italic">
+          {pr.user}
+        </Typography>
+        <Typography
+          variant="caption"
+          sx={{
+            overflow: "hidden",
+            whiteSpace: "nowrap",
+            textOverflow: "ellipsis",
+          }}
+        >
+          {pr.title}
+        </Typography>
+      </Stack>
     </Stack>
   );
 }

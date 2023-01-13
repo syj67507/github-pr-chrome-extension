@@ -1,6 +1,7 @@
 /** global chrome */
 import React, { useEffect, useState } from "react";
 import Stack from "@mui/material/Stack";
+import TextField from "@mui/material/TextField";
 import GitHubClient from "../../../data";
 import RepoSection from "./RepoSection";
 import Loading from "../Loading";
@@ -11,6 +12,7 @@ export default function Popup() {
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
   // const [error, setError] = useState(false); // TODO display error
+  const [filter, setFilter] = useState("");
 
   // On popup load, we need to fetch all the PRs
   useEffect(() => {
@@ -36,13 +38,27 @@ export default function Popup() {
   }, []);
 
   return (
-    <Stack spacing={3} width="100%">
+    <Stack width="100%">
       {loading && <Loading />}
       {/* TODO error message when fetching */}
+
+      {/* Filtering search box */}
+      {data && data.length > 0 && (
+        <TextField
+          variant="standard"
+          placeholder="filter"
+          value={filter}
+          onChange={(e) => setFilter(e.target.value)}
+          inputProps={{
+            style: { textAlign: "center" },
+          }}
+        />
+      )}
+
       {data &&
         data.length > 0 &&
         data.map((repo) => {
-          return <RepoSection key={repo.url} repo={repo} />;
+          return <RepoSection key={repo.url} repo={repo} filter={filter} />;
         })}
       {/* TODO Nothing to show when data.length === 0 */}
     </Stack>

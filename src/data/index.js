@@ -40,6 +40,7 @@ class GitHubClient {
           body: pullRequest.body || "",
           number: pullRequest.number,
           url: pullRequest.html_url,
+          user: pullRequest.user.login,
         };
       });
     } catch (error) {
@@ -78,7 +79,7 @@ class GitHubClient {
       if (jiraDomain && jiraTag) {
         pullRequests = pullRequests.map((pr) => {
           const regex = new RegExp(`${jiraTag}-\\d+`, "g");
-          // const regex = new RegExp(jiraTag, "g") // For testing
+          // const regex = new RegExp(jiraTag, "g"); // For testing
           const ticketTags = (pr.title.match(regex) || []).concat(
             pr.body.match(regex) || []
           );
