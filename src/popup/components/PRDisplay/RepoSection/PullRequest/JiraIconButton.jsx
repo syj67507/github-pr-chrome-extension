@@ -1,9 +1,9 @@
-/* global chrome */
 import React from "react";
 import IconButton from "@mui/material/IconButton";
 import Tooltip from "@mui/material/Tooltip";
 import JiraIcon from "./jira-icon.svg";
 import DisabledJiraIcon from "./jira-icon-disabled.svg";
+import { createTab } from "../../../../../data/extension";
 
 function EnabledJiraIconButton({ jiraUrl }) {
   return (
@@ -14,9 +14,7 @@ function EnabledJiraIconButton({ jiraUrl }) {
         }}
         onClick={() => {
           if (jiraUrl !== undefined) {
-            chrome.tabs.create({
-              url: jiraUrl,
-            });
+            createTab(jiraUrl);
           }
         }}
         size="small"

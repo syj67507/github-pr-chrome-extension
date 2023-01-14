@@ -4,7 +4,7 @@ import TextField from "@mui/material/TextField";
 import GitHubClient from "../../../data";
 import RepoSection from "./RepoSection";
 import Loading from "../Loading";
-import { getToken, getRepositories } from "../../../data/chromeStorage";
+import { getToken, getRepositories, setBadge } from "../../../data/extension";
 import "regenerator-runtime";
 
 export default function Popup() {
@@ -27,6 +27,13 @@ export default function Popup() {
 
         setData(reposData);
         setLoading(false);
+
+        // Updates the browser action badge
+        let count = 0;
+        reposData.forEach((repoData) => {
+          count += repoData.pullRequests.length;
+        });
+        setBadge(count);
       } catch (e) {
         console.error(e);
         setLoading(false);

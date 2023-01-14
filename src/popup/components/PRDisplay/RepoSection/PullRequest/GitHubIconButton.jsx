@@ -1,8 +1,8 @@
-/* global chrome */
 import React from "react";
 import IconButton from "@mui/material/IconButton";
 import Tooltip from "@mui/material/Tooltip";
 import GitHubIcon from "@mui/icons-material/GitHub";
+import { createTab } from "../../../../../data/extension";
 
 export default function GitHubIconButton({ pr }) {
   return (
@@ -17,9 +17,7 @@ export default function GitHubIconButton({ pr }) {
           border: "2px solid #000",
         }}
         onClick={() => {
-          chrome.tabs.create({
-            url: pr.url,
-          });
+          createTab(pr.url);
         }}
         size="small"
       >

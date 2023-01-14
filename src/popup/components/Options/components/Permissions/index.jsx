@@ -4,7 +4,7 @@ import Link from "@mui/material/Link";
 import Stack from "@mui/material/Stack";
 import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
-import chrome from "../../../../../data/chromeStorage";
+import chrome from "../../../../../data/extension";
 
 export default function Permissions() {
   const [token, setToken] = useState("");
