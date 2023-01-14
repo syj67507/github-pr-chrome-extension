@@ -1,4 +1,3 @@
-/** global chrome */
 import React, { useEffect, useState } from "react";
 import Stack from "@mui/material/Stack";
 import TextField from "@mui/material/TextField";
