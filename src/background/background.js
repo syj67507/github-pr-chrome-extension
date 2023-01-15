@@ -1,6 +1,8 @@
 /* global chrome */
+import GitHubClient from "../data/index";
+
 require("regenerator-runtime");
-const GitHubClient = require("../data/index");
+
 const {
   getToken,
   clearStorage,
@@ -10,7 +12,7 @@ const {
 
 const alarmName = "fetchPRs";
 const delayInMinutes = 0;
-const periodInMinutes = 1;
+const periodInMinutes = 1 / 60;
 
 // Install logic
 chrome.runtime.onInstalled.addListener(async () => {
@@ -28,6 +30,7 @@ chrome.runtime.onInstalled.addListener(async () => {
 
 // Periodically fetch pull requests and update the badge
 chrome.alarms.onAlarm.addListener(async () => {
+  console.log("--- Start ---");
   try {
     const token = await getToken();
     if (token === undefined) {
@@ -50,4 +53,5 @@ chrome.alarms.onAlarm.addListener(async () => {
     console.error(`There was an error in setting the badge`);
     console.error(e);
   }
+  console.log("--- End ---");
 });
