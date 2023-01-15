@@ -12,7 +12,7 @@ const {
 
 const alarmName = "fetchPRs";
 const delayInMinutes = 0;
-const periodInMinutes = 1 / 60;
+const periodInMinutes = 1;
 
 // Install logic
 chrome.runtime.onInstalled.addListener(async () => {
