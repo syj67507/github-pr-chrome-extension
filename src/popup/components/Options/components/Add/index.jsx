@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import Button from "@mui/material/Button";
 import Stack from "@mui/material/Stack";
 import TextField from "@mui/material/TextField";
-import { addRepository } from "../../../../../data/chromeStorage";
+import { addRepository } from "../../../../../data/extension";
 
 export default function Add() {
   const [repository, setRepository] = useState("");

@@ -7,7 +7,7 @@
 /**
  * The storage key for this extension.
  * All stored values will be stored in chrome's sync storage using
- * at this key.
+ * this key.
  */
 const storageKey = "ghpr-ext";
 
@@ -15,7 +15,7 @@ const storageKey = "ghpr-ext";
  * Gets the storage values for this extension
  * @returns the storage object
  */
-async function getStorage() {
+export async function getStorage() {
   const storage = await chrome.storage.sync.get([storageKey]);
   return storage[storageKey];
 }
@@ -23,7 +23,7 @@ async function getStorage() {
 /**
  * Clears the storage values for this extension
  */
-async function clearStorage() {
+export async function clearStorage() {
   await chrome.storage.sync.set({ [storageKey]: {} });
   console.log("ghpr-ext cleared.");
 }
@@ -32,7 +32,7 @@ async function clearStorage() {
  * Updates the storage values for this extension
  * @param {object} value The new update storage object
  */
-async function setStorage(value) {
+export async function setStorage(value) {
   await chrome.storage.sync.set({ [storageKey]: value });
 }
 
@@ -40,7 +40,7 @@ async function setStorage(value) {
  * Adds a repository's url to chrome storage. If the repository is already added,
  * then this function will do nothing.
  */
-async function addRepository(repoUrl, jiraTag, jiraDomain) {
+export async function addRepository(repoUrl, jiraTag, jiraDomain) {
   const repoToAdd = {
     url: repoUrl,
   };
@@ -67,7 +67,7 @@ async function addRepository(repoUrl, jiraTag, jiraDomain) {
 /**
  * Removes a repository's url from chrome storage
  */
-async function removeRepository(repoUrl) {
+export async function removeRepository(repoUrl) {
   const storage = await getStorage();
   if (storage.repos && Array.isArray(storage.repos)) {
     storage.repos = storage.repos.filter((repo) => repo.url !== repoUrl);
@@ -75,7 +75,7 @@ async function removeRepository(repoUrl) {
   setStorage(storage);
 }
 
-async function getRepositories() {
+export async function getRepositories() {
   const storage = await getStorage();
   return storage.repos;
 }
@@ -85,7 +85,7 @@ async function getRepositories() {
  * GitHub API requests.
  * @param {string} token The personal access token
  */
-async function setToken(token) {
+export async function setToken(token) {
   const storage = await getStorage();
   storage.token = token;
   await setStorage(storage);
@@ -96,18 +96,30 @@ async function setToken(token) {
  * GitHub API requests.
  * @returns {string} token The personal access token
  */
-async function getToken() {
+export async function getToken() {
   const storage = await getStorage();
   return storage.token;
 }
 
-module.exports = {
-  getStorage,
-  setStorage,
-  clearStorage,
-  getRepositories,
-  addRepository,
-  removeRepository,
-  getToken,
-  setToken,
-};
+/**
+ * Set's the badge contents of the browser action (the extension icon)
+ * @param {string} text The contents of the badge, will be converted into a string
+ */
+export function setBadge(text) {
+  chrome.action.setBadgeText({
+    text: `${text}`,
+  });
+  chrome.action.setBadgeBackgroundColor({
+    color: "black",
+  });
+}
+
+/**
+ * Creates a new tab and navigates to the provided URL
+ * @param {string} url The URL to navigate to in the new tab
+ */
+export function createTab(url) {
+  chrome.tabs.create({
+    url: `${url}`,
+  });
+}

@@ -5,7 +5,7 @@ require("regenerator-runtime");
  * GitHub's REST API. Creating a new client reads the authentication token
  * from configuration.
  */
-class GitHubClient {
+export default class GitHubClient {
   constructor(token) {
     this.token = token;
   }
@@ -105,5 +105,3 @@ class GitHubClient {
     return Promise.all(reposDataWithPullRequests);
   }
 }
-
-module.exports = GitHubClient;

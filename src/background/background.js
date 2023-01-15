@@ -5,7 +5,8 @@ const {
   getToken,
   clearStorage,
   getRepositories,
-} = require("../data/chromeStorage");
+  setBadge,
+} = require("../data/extension");
 
 const alarmName = "fetchPRs";
 const delayInMinutes = 0;
@@ -44,12 +45,7 @@ chrome.alarms.onAlarm.addListener(async () => {
     reposData.forEach((repoData) => {
       count += repoData.pullRequests.length;
     });
-    chrome.action.setBadgeText({
-      text: `${count}`,
-    });
-    chrome.action.setBadgeBackgroundColor({
-      color: "red",
-    });
+    setBadge(count);
   } catch (e) {
     console.error(`There was an error in setting the badge`);
     console.error(e);

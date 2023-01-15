@@ -1,9 +1,9 @@
-/* global chrome */
 import React from "react";
 import Box from "@mui/material/Box";
 import ExpandMore from "@mui/icons-material/ExpandMore";
 import IconButton from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
+import { createTab } from "../../../../data/extension";
 
 export default function RepoTitle({ repo }) {
   return (
@@ -25,9 +25,7 @@ export default function RepoTitle({ repo }) {
           gap: 1,
         }}
         onClick={() => {
-          chrome.tabs.create({
-            url: repo.url,
-          });
+          createTab(repo.url);
         }}
       >
         <Typography variant="subtitle1" sx={{ fontWeight: "bold" }}>

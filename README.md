@@ -18,4 +18,4 @@ This extension is not on Chrome's web store so usage will have to be done throug
 
 5. Click on `Load unpacked` and select the `dist` folder. You may turn off `Developer Mode` now if you wish.
 
-You have successfully installed the Chrome extension. You can configure the permissions and which repositories are connected by right clicking the extension icon and going to the options page.
+You have successfully installed the Chrome extension. You can configure the permissions and which repositories are connected by clicking on the extension's icon and navigating to the respective views.

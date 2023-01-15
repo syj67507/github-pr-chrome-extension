@@ -1,6 +1,6 @@
 import { CircularProgress, Stack, Typography } from "@mui/material";
 import React, { useEffect, useState } from "react";
-import { getStorage, setStorage } from "../../../../../data/chromeStorage";
+import { getStorage, setStorage } from "../../../../../data/extension";
 import SavedRepo from "./SavedRepo";
 
 export default function Saved() {
