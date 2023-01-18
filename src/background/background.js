@@ -1,36 +1,36 @@
-/* global chrome */
+import Browser from "webextension-polyfill";
+import "regenerator-runtime";
 import GitHubClient from "../data/index";
-
-require("regenerator-runtime");
-
-const {
+import {
   getToken,
   clearStorage,
   getRepositories,
   setBadge,
-} = require("../data/extension");
+} from "../data/extension";
 
 const alarmName = "fetchPRs";
 const delayInMinutes = 0;
 const periodInMinutes = 1;
 
 // Install logic
-chrome.runtime.onInstalled.addListener(async () => {
+Browser.runtime.onInstalled.addListener(async () => {
   console.log("Installed!");
 
   console.log("Creating alarm...");
-  chrome.alarms.create(alarmName, {
+  Browser.alarms.create(alarmName, {
     delayInMinutes,
     periodInMinutes,
   });
-  console.log("Created!", await chrome.alarms.get(alarmName));
+  console.log("Created!", await Browser.alarms.get(alarmName));
 
   await clearStorage();
 });
 
 // Periodically fetch pull requests and update the badge
-chrome.alarms.onAlarm.addListener(async () => {
-  console.log("--- Start ---");
+Browser.alarms.onAlarm.addListener(async (alarm) => {
+  if (alarm.name !== alarmName) {
+    return;
+  }
   try {
     const token = await getToken();
     if (token === undefined) {
@@ -53,5 +53,4 @@ chrome.alarms.onAlarm.addListener(async () => {
     console.error(`There was an error in setting the badge`);
     console.error(e);
   }
-  console.log("--- End ---");
 });

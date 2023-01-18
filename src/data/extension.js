@@ -1,8 +1,11 @@
-/* global chrome */
 /**
- * This file is responsible for any functions related to reading and
- * writing data to Chrome's storage system.
+ * This file is responsible for any functions related to interacting with
+ * the extension's storage, interface, action, etc.
+ * With the use of the webextension-polyfill package, most functionality defined
+ * here will work across both Chrome and Firefox.
  */
+
+import Browser from "webextension-polyfill";
 
 /**
  * The storage key for this extension.
@@ -16,7 +19,7 @@ const storageKey = "ghpr-ext";
  * @returns the storage object
  */
 export async function getStorage() {
-  const storage = await chrome.storage.sync.get([storageKey]);
+  const storage = await Browser.storage.sync.get([storageKey]);
   return storage[storageKey];
 }
 
@@ -24,7 +27,7 @@ export async function getStorage() {
  * Clears the storage values for this extension
  */
 export async function clearStorage() {
-  await chrome.storage.sync.set({ [storageKey]: {} });
+  await Browser.storage.sync.set({ [storageKey]: {} });
   console.log("ghpr-ext cleared.");
 }
 
@@ -33,7 +36,7 @@ export async function clearStorage() {
  * @param {object} value The new update storage object
  */
 export async function setStorage(value) {
-  await chrome.storage.sync.set({ [storageKey]: value });
+  await Browser.storage.sync.set({ [storageKey]: value });
 }
 
 /**
@@ -106,10 +109,10 @@ export async function getToken() {
  * @param {string} text The contents of the badge, will be converted into a string
  */
 export function setBadge(text) {
-  chrome.action.setBadgeText({
+  Browser.action.setBadgeText({
     text: `${text}`,
   });
-  chrome.action.setBadgeBackgroundColor({
+  Browser.action.setBadgeBackgroundColor({
     color: "black",
   });
 }
@@ -119,7 +122,7 @@ export function setBadge(text) {
  * @param {string} url The URL to navigate to in the new tab
  */
 export function createTab(url) {
-  chrome.tabs.create({
+  Browser.tabs.create({
     url: `${url}`,
   });
 }
