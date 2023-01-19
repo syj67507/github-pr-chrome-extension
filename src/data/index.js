@@ -65,7 +65,7 @@ export default class GitHubClient {
 
     // map repoData to each of its pull requests
     const reposDataWithPullRequests = reposData.map(async (repoData) => {
-      const { url, jiraTag, jiraDomain } = repoData;
+      const { url, jiraTags, jiraDomain } = repoData;
 
       const parsed = url.split("/");
       const owner = parsed[3];
@@ -76,19 +76,29 @@ export default class GitHubClient {
         name,
       });
 
-      if (jiraDomain && jiraTag) {
+      if (jiraDomain && jiraTags) {
         pullRequests = pullRequests.map((pr) => {
-          const regex = new RegExp(`${jiraTag}-\\d+`, "g");
-          // const regex = new RegExp(jiraTag, "g"); // For testing
-          const ticketTags = (pr.title.match(regex) || []).concat(
-            pr.body.match(regex) || []
-          );
+          // Find a JIRA ticket with provided
+          const ticketTags = [];
+          jiraTags.forEach((jiraTag) => {
+            const regex = new RegExp(`${jiraTag}-\\d+`, "g");
+            // const regex = new RegExp(jiraTag, "g"); // For testing
 
+            const ticketsInTitle = pr.title.match(regex);
+            const ticketsInBody = pr.body.match(regex);
+
+            if (ticketsInTitle !== null) {
+              ticketTags.push(...ticketsInTitle);
+            }
+            if (ticketsInBody !== null) {
+              ticketTags.push(...ticketsInBody);
+            }
+          });
           return {
             ...pr,
             jiraUrl:
               ticketTags.length > 0
-                ? `${jiraDomain}/browse/${ticketTags[0]}`
+                ? `${jiraDomain}/browse/${ticketTags[0]}` // grabs the first ticket detected
                 : undefined,
           };
         });

@@ -43,13 +43,13 @@ export async function setStorage(value) {
  * Adds a repository's url to chrome storage. If the repository is already added,
  * then this function will do nothing.
  */
-export async function addRepository(repoUrl, jiraTag, jiraDomain) {
+export async function addRepository(repoUrl, jiraTags, jiraDomain) {
   const repoToAdd = {
     url: repoUrl,
   };
 
-  if (jiraTag && jiraDomain) {
-    repoToAdd.jiraTag = jiraTag;
+  if (jiraTags && jiraDomain) {
+    repoToAdd.jiraTags = jiraTags;
     repoToAdd.jiraDomain = jiraDomain;
   }
 
