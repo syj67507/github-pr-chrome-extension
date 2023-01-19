@@ -54,7 +54,7 @@ export default class GitHubClient {
    * If JIRA information was specified, this function will provide a URL to the JIRA ticket on success.
    * @param reposData - An array where each element is an object of repo data, containing the url, jiraTag, and jiraDomain
    * url - The url to the repository's main page (ex: https://github.com/syj67507/discord-bot)
-   * jiraTag - The JIRA project tag
+   * jiraTags - An array of JIRA project tags
    * jiraDomain - The base domain for the JIRA project
    * @returns An array of repository information and it's pull request data
    */
