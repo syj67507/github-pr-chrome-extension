@@ -17,8 +17,8 @@ export default function SavedRepo({ repo, onRemove, bgcolor }) {
         {repo.jiraDomain && (
           <Typography variant="caption">{repo.jiraDomain}</Typography>
         )}
-        {repo.jiraTag && (
-          <Typography variant="caption">{repo.jiraTag}</Typography>
+        {repo.jiraTags && (
+          <Typography variant="caption">{repo.jiraTags.join(",")}</Typography>
         )}
       </Stack>
 

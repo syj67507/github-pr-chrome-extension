@@ -6,11 +6,11 @@ import { addRepository } from "../../../../../data/extension";
 
 export default function Add() {
   const [repository, setRepository] = useState("");
-  const [jiraTag, setJiraTag] = useState("");
+  const [rawJiraTags, setRawJiraTags] = useState("");
   const [jiraDomain, setJiraDomain] = useState("");
 
-  const saveEnabled1 = repository && !jiraTag && !jiraDomain; // only repository field
-  const saveEnabled2 = repository && jiraTag && jiraDomain; // specify both jira tags
+  const saveEnabled1 = repository && !rawJiraTags && !jiraDomain; // only repository field
+  const saveEnabled2 = repository && rawJiraTags && jiraDomain; // specify both jira tags
   const saveEnabled = saveEnabled1 || saveEnabled2;
 
   return (
@@ -24,7 +24,7 @@ export default function Add() {
     >
       <TextField
         label="Repository URL"
-        helperText="https://github.com/<username>/<repositoryName>"
+        placeholder="https://github.com/<username>/<repositoryName>"
         variant="standard"
         value={repository}
         onChange={(e) => {
@@ -33,18 +33,21 @@ export default function Add() {
         fullWidth
       />
       <TextField
-        label="JIRA Tag (optional)"
+        label="(Optional) JIRA Project Tag"
         helperText="'TAG' as in TAG-1234"
+        placeholder="TAG,PROJ,..."
         variant="standard"
-        value={jiraTag}
+        value={rawJiraTags}
         onChange={(e) => {
-          setJiraTag(e.target.value);
+          setRawJiraTags(e.target.value);
         }}
         fullWidth
       />
       <TextField
-        label="JIRA Domain (optional)"
-        helperText="Domain to build the url to JIRA ticket [domain]/browse/TAG-1234"
+        label="(Optional) JIRA Domain"
+        helperText={`Domain to build the url to JIRA ticket ${
+          jiraDomain || "<domain>"
+        }/browse/TAG-1234`}
         placeholder="https://jira.company.com"
         variant="standard"
         value={jiraDomain}
@@ -59,7 +62,8 @@ export default function Add() {
           color="error"
           onClick={async () => {
             setRepository("");
-            setJiraTag("");
+            setRawJiraTags("");
+            setJiraDomain("");
           }}
           sx={{
             bgcolor: "whitesmoke",
@@ -76,7 +80,7 @@ export default function Add() {
           variant="contained"
           disabled={!saveEnabled}
           onClick={async () => {
-            await addRepository(repository, jiraTag, jiraDomain);
+            await addRepository(repository, rawJiraTags.split(","), jiraDomain);
           }}
           sx={{
             bgcolor: "#6cc644",
