@@ -1,6 +1,6 @@
 import React from "react";
 import Box from "@mui/material/Box";
-import ExpandMore from "@mui/icons-material/ExpandMore";
+import OpenInNewIcon from "@mui/icons-material/OpenInNew";
 import IconButton from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
 import { createTab } from "../../../../data/extension";
@@ -24,9 +24,6 @@ export default function RepoTitle({ repo }) {
           justifyContent: "center",
           gap: 1,
         }}
-        onClick={() => {
-          createTab(repo.url);
-        }}
       >
         <Typography variant="subtitle1" sx={{ fontWeight: "bold" }}>
           {`${repo.owner}/${repo.name}`}
@@ -43,8 +40,11 @@ export default function RepoTitle({ repo }) {
               bgcolor: "transparent",
             },
           }}
+          onClick={() => {
+            createTab(repo.url);
+          }}
         >
-          <ExpandMore
+          <OpenInNewIcon
             sx={{
               fontSize: 16,
               color: "rgba(119, 119, 119, 0.5)",
