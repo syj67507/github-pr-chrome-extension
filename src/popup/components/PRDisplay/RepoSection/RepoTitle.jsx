@@ -1,63 +1,70 @@
 import React from "react";
 import Box from "@mui/material/Box";
-import ExpandMore from "@mui/icons-material/ExpandMore";
+import OpenInNewIcon from "@mui/icons-material/OpenInNew";
 import IconButton from "@mui/material/IconButton";
+import Tooltip from "@mui/material/Tooltip";
 import Typography from "@mui/material/Typography";
 import { createTab } from "../../../../data/extension";
 
 export default function RepoTitle({ repo }) {
   return (
-    <Box
-      sx={{
-        width: "100%",
-        display: "flex",
-        flexDirection: "row",
-        padding: 1,
-        borderBottom: "1px solid whitesmoke",
-      }}
+    <Tooltip
+      title={`${repo.pullRequests.length} open`}
+      followCursor
+      disableInteractive
     >
       <Box
         sx={{
+          width: "100%",
           display: "flex",
           flexDirection: "row",
-          flex: 1,
-          justifyContent: "center",
-          gap: 1,
-        }}
-        onClick={() => {
-          createTab(repo.url);
+          padding: 1,
+          borderBottom: "1px solid whitesmoke",
         }}
       >
-        <Typography variant="subtitle1" sx={{ fontWeight: "bold" }}>
-          {`${repo.owner}/${repo.name}`}
-        </Typography>
-      </Box>
-      <Box
-        sx={{
-          flex: 0,
-        }}
-      >
-        <IconButton
+        <Box
           sx={{
-            "&:hover": {
-              bgcolor: "transparent",
-            },
+            display: "flex",
+            flexDirection: "row",
+            flex: 1,
+            justifyContent: "center",
+            gap: 1,
           }}
         >
-          <ExpandMore
+          <Typography variant="subtitle1" sx={{ fontWeight: "bold" }}>
+            {`${repo.owner}/${repo.name}`}
+          </Typography>
+        </Box>
+        <Box
+          sx={{
+            flex: 0,
+          }}
+        >
+          <IconButton
             sx={{
-              fontSize: 16,
-              color: "rgba(119, 119, 119, 0.5)",
               "&:hover": {
-                color: "rgba(119, 119, 119, 0.75)",
-              },
-              "&:active": {
-                color: "rgba(119, 119, 119, 1)",
+                bgcolor: "transparent",
               },
             }}
-          />
-        </IconButton>
+            onClick={() => {
+              createTab(repo.url);
+            }}
+          >
+            <OpenInNewIcon
+              sx={{
+                fontSize: 16,
+                color: "rgba(119, 119, 119, 0.25)",
+                "&:hover": {
+                  color: "rgba(119, 119, 119, 0.75)",
+                },
+                "&:active": {
+                  color: "rgba(119, 119, 119, 1)",
+                },
+              }}
+            />
+          </IconButton>
+        </Box>
       </Box>
-    </Box>
+    </Tooltip>
   );
 }
