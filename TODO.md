@@ -6,7 +6,6 @@
 - install prettier and eslint
 - Allow options for hiding certain buttons like (JIRA)
 
-- move the permissions in the folder structure
 - fix the imports to try and reduce the bundle size
 
 - create a privacy policy
