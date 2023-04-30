@@ -2,8 +2,8 @@ import { Box, Button, CssBaseline, Stack } from "@mui/material";
 import React, { useState } from "react";
 import { render } from "react-dom";
 import PRDisplay from "./components/PRDisplay";
-import Permissions from "./components/Options/components/Permissions";
-import Repos from "./components/Options/components/Repos";
+import Permissions from "./components/Permissions";
+import RepoOptions from "./components/RepoOptions";
 
 function Popup() {
   const [page, setPage] = useState("PR");
@@ -56,7 +56,7 @@ function Popup() {
         </Button>
       </Box>
       {page === "PR" && <PRDisplay />}
-      {page === "Repos" && <Repos />}
+      {page === "Repos" && <RepoOptions />}
       {page === "Permissions" && <Permissions />}
     </Stack>
   );

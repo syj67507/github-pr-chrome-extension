@@ -8,7 +8,7 @@ import {
   getRepositories,
   getStorage,
   removeRepository,
-} from "../../../../../data/extension";
+} from "../../../data/extension";
 
 export default function Repos() {
   const [repos, setRepos] = useState(null);
