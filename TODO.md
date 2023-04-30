@@ -13,3 +13,6 @@
   https://crxmouse.com/privacy/
   https://theorycraft.gg/terms
   https://betterttv.com/privacy
+
+- make individual build script for each browsers
+- make a build script that calls the individual ones
