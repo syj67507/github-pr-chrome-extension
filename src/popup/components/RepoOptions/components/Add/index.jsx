@@ -2,9 +2,9 @@ import React, { useState } from "react";
 import Button from "@mui/material/Button";
 import Stack from "@mui/material/Stack";
 import TextField from "@mui/material/TextField";
-import { addRepository } from "../../../../../data/extension";
+import Typography from "@mui/material/Typography";
 
-export default function Add() {
+export default function Add({ onSave }) {
   const [repository, setRepository] = useState("");
   const [rawJiraTags, setRawJiraTags] = useState("");
   const [jiraDomain, setJiraDomain] = useState("");
@@ -21,7 +21,11 @@ export default function Add() {
       direction="column"
       alignItems="center"
       justifyContent="center"
+      borderBottom="1px solid whitesmoke"
     >
+      <Typography variant="body1" textAlign="center">
+        Add a repository by filling out the following fields and clicking save.
+      </Typography>
       <TextField
         label="Repository URL"
         placeholder="https://github.com/<username>/<repositoryName>"
@@ -79,8 +83,9 @@ export default function Add() {
         <Button
           variant="contained"
           disabled={!saveEnabled}
-          onClick={async () => {
-            await addRepository(repository, rawJiraTags.split(","), jiraDomain);
+          onClick={() => {
+            // implementation of onSave passed in as prop from Repos component
+            onSave(repository, rawJiraTags.split(","), jiraDomain);
           }}
           sx={{
             bgcolor: "#6cc644",

@@ -1,5 +1,7 @@
 import React from "react";
-import { IconButton, Stack, Typography } from "@mui/material";
+import IconButton from "@mui/material/IconButton";
+import Stack from "@mui/material/Stack";
+import Typography from "@mui/material/Typography";
 import CloseIcon from "@mui/icons-material/Close";
 
 export default function SavedRepo({ repo, onRemove, bgcolor }) {

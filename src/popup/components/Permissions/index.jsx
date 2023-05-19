@@ -4,7 +4,7 @@ import Link from "@mui/material/Link";
 import Stack from "@mui/material/Stack";
 import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
-import * as chrome from "../../../../../data/extension";
+import * as browser from "../../../data/extension";
 
 export default function Permissions() {
   const [token, setToken] = useState("");
@@ -36,7 +36,7 @@ export default function Permissions() {
         <Button
           variant="contained"
           onClick={async () => {
-            await chrome.setToken(token);
+            await browser.setToken(token);
           }}
           disabled={token === ""}
         >

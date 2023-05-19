@@ -1,27 +1,10 @@
-import { CircularProgress, Stack, Typography } from "@mui/material";
-import React, { useEffect, useState } from "react";
-import { getStorage, setStorage } from "../../../../../data/extension";
+import CircularProgress from "@mui/material/CircularProgress";
+import Stack from "@mui/material/Stack";
+import Typography from "@mui/material/Typography";
+import React from "react";
 import SavedRepo from "./SavedRepo";
 
-export default function Saved() {
-  const [repos, setRepos] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(false);
-
-  // Fetch repos on page load
-  useEffect(() => {
-    async function getRepos() {
-      setLoading(true);
-      const storage = await getStorage();
-      setRepos(storage.repos || []);
-      setLoading(false);
-    }
-    getRepos().catch((e) => {
-      console.error(e);
-      setError(true);
-    });
-  }, []);
-
+export default function Saved({ repos, loading, error, onRemove }) {
   return (
     <Stack padding={2} width="100%" spacing={1}>
       {loading && (
@@ -53,14 +36,7 @@ export default function Saved() {
             repo={repo}
             bgcolor={index % 2 === 0 ? "whitesmoke" : "white"}
             onRemove={async () => {
-              const storage = await getStorage();
-              const savedRepos = storage.repos;
-              const filtered = savedRepos.filter((savedRepo) => {
-                return savedRepo.url !== repo.url;
-              });
-              storage.repos = filtered;
-              await setStorage(storage);
-              setRepos(filtered);
+              onRemove(repo);
             }}
           />
         ))}
