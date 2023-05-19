@@ -1,12 +1,11 @@
 # TODO List
 
-- Remove the options from webpack config
-- Remove the options from src folder
 - install typescript
 - install prettier and eslint
 - Allow options for hiding certain buttons like (JIRA)
 
 - fix the imports to try and reduce the bundle size
+- make the bundle still look like the src code for review
 
 - create a privacy policy
   examples
