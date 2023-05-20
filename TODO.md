@@ -15,11 +15,3 @@
 
 - make individual build script for each browsers
 - make a build script that calls the individual ones
-
----
-
-Firefox differences
-
-- manifest version 2
-- homepage url -> github
-- action -> browser_action
