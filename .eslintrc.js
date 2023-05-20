@@ -19,5 +19,5 @@ module.exports = {
     "no-console": "off",
     "react/prop-types": "off", // Temporary
   },
-  ignorePatterns: ["node_modules", "dist"],
+  ignorePatterns: ["node_modules", "dist", "webpack"],
 };

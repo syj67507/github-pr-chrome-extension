@@ -1,0 +1,51 @@
+const path = require("path");
+const CopyPlugin = require("copy-webpack-plugin");
+const HtmlWebpackPlugin = require("html-webpack-plugin");
+
+module.exports = {
+  entry: {
+    popup: "./src/popup/popup.jsx",
+    background: "./src/background/background.js",
+  },
+  output: {
+    path: path.resolve(__dirname, "..", "..", "dist", "chrome"),
+    filename: "[name].js",
+  },
+  module: {
+    rules: [
+      // Used to transpile all React code
+      {
+        test: /\.(js|jsx)$/,
+        exclude: /node_modules/,
+        use: {
+          loader: "babel-loader",
+          options: {
+            presets: ["@babel/preset-env", "@babel/preset-react"],
+          },
+        },
+      },
+      // Allows for use of SVGs as React components
+      {
+        test: /\.svg$/i,
+        issuer: /\.[jt]sx?$/,
+        use: [{ loader: "@svgr/webpack", options: { icon: true } }],
+      },
+    ],
+  },
+  plugins: [
+    new HtmlWebpackPlugin({
+      template: "./src/popup/popup.html",
+      chunks: ["popup"],
+      filename: "popup.html",
+    }),
+    new CopyPlugin({
+      patterns: [
+        { from: "public/manifest.chrome.json", to: "./manifest.json" },
+        { from: "public/icon512.png", to: "./" },
+      ],
+    }),
+  ],
+  resolve: {
+    extensions: [".js", ".jsx"],
+  },
+};

@@ -12,9 +12,24 @@ function Popup() {
     <Stack
       spacing={0}
       padding={0}
-      width="100%"
       alignItems="flex-start"
       bgcolor="white"
+      sx={{
+        width: "400px",
+        maxHeight: "600px",
+        overflowY: "scroll",
+        "&::-webkit-scrollbar": {
+          width: 8,
+        },
+        "&::-webkit-scrollbar-track": {
+          background: "rgba(0, 0, 0, 0.1)",
+        },
+        "&::-webkit-scrollbar-thumb": {
+          background: "rgba(0, 0, 0, 0.4)",
+        },
+        scrollbarColor: "rgba(0, 0, 0, 0.4) rgba(0, 0, 0, 0.1)",
+        scrollbarWidth: "thin",
+      }}
     >
       <CssBaseline />
       <Box

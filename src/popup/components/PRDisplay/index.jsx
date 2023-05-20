@@ -7,7 +7,7 @@ import Loading from "../Loading";
 import { getToken, getRepositories, setBadge } from "../../../data/extension";
 import "regenerator-runtime";
 
-export default function Popup() {
+export default function PRDisplay() {
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
   // const [error, setError] = useState(false); // TODO display error
