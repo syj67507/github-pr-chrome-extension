@@ -8,7 +8,7 @@ module.exports = {
     background: "./src/background/background.js",
   },
   output: {
-    path: path.resolve(__dirname, "dist"),
+    path: path.resolve(__dirname, "..", "..", "dist", "firefox"),
     filename: "[name].js",
   },
   module: {
@@ -39,7 +39,10 @@ module.exports = {
       filename: "popup.html",
     }),
     new CopyPlugin({
-      patterns: [{ from: "public", to: "./" }],
+      patterns: [
+        { from: "public/manifest.firefox.json", to: "./manifest.json" },
+        { from: "public/icon512.png", to: "./" },
+      ],
     }),
   ],
   resolve: {

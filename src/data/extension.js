@@ -106,13 +106,17 @@ export async function getToken() {
 
 /**
  * Set's the badge contents of the browser action (the extension icon)
+ *
+ * NOTE: Chrome does not support browserAction APIs in Manifest Version 3. To solve this, the 'browserAction' API is
+ * checked first. If this is defined, then it will be used. If undefined, then it will fall back to the 'action' API
  * @param {string} text The contents of the badge, will be converted into a string
  */
 export function setBadge(text) {
-  Browser.action.setBadgeText({
+  const browserAction = Browser.browserAction || Browser.action;
+  browserAction.setBadgeText({
     text: `${text}`,
   });
-  Browser.action.setBadgeBackgroundColor({
+  browserAction.setBadgeBackgroundColor({
     color: "black",
   });
 }

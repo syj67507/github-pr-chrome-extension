@@ -5,8 +5,12 @@
   "main": "index.js",
   "scripts": {
     "clean": "rimraf -rf dist",
-    "dev": "webpack --watch --config webpack.dev.js",
-    "build": "webpack --config webpack.prod.js",
+    "dev:chrome": "webpack --watch --config webpack/chrome/webpack.dev.chrome.js",
+    "dev:firefox": "webpack --watch --config webpack/firefox/webpack.dev.chrome.js",
+    "dev": "webpack --watch --config webpack/chrome/webpack.dev.chrome.js webpack/firefox/webpack.dev.firefox.js",
+    "build:chrome": "webpack --config webpack/chrome/webpack.prod.chrome.js",
+    "build:firefox": "webpack --config webpack/firefox/webpack.prod.firefox.js",
+    "build": "webpack --config webpack/chrome/webpack.prod.chrome.js webpack/firefox/webpack.prod.firefox.js",
     "test": "echo \"Error: no test specified\" && exit 1",
     "lint": "eslint --ext .jsx --ext .js .",
     "lint:fix": "eslint --fix --ext .jsx --ext .js ."
