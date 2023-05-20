@@ -10,7 +10,6 @@
   "action": {
     "default_popup": "popup.html"
   },
-  "options_page": "options.html",
   "icons": {
     "512": "icon512.png"
   }

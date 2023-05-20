@@ -6,7 +6,6 @@ module.exports = {
   entry: {
     popup: "./src/popup/popup.jsx",
     background: "./src/background/background.js",
-    options: "./src/options/options.jsx",
   },
   output: {
     path: path.resolve(__dirname, "dist"),
@@ -38,11 +37,6 @@ module.exports = {
       template: "./src/popup/popup.html",
       chunks: ["popup"],
       filename: "popup.html",
-    }),
-    new HtmlWebpackPlugin({
-      template: "./src/options/options.html",
-      chunks: ["options"],
-      filename: "options.html",
     }),
     new CopyPlugin({
       patterns: [{ from: "public", to: "./" }],
