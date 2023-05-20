@@ -16,7 +16,7 @@ This extension collects the personal access token through a text field under the
 
 ## Information Use
 
-This extension requires the personal access token in order to function successfully. This token is simply an API key that is used for authenticating requests to GitHub's REST API. All requests are read only requests and do not call any endpoints that have the ability to manipulate in any way.
+This extension requires the personal access token in order to function successfully. This token is simply an API key that is used for authenticating requests to GitHub's REST API. All requests are read only requests and do not call any endpoints that have the ability to manipulate repository information in any way.
 
 ## Security
 
