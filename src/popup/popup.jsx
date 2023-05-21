@@ -1,4 +1,7 @@
-import { Box, Button, CssBaseline, Stack } from "@mui/material";
+import Box from "@mui/material/Box";
+import Button from "@mui/material/Button";
+import CssBaseline from "@mui/material/CssBaseline";
+import Stack from "@mui/material/Stack";
 import React, { useState } from "react";
 import { render } from "react-dom";
 import PRDisplay from "./components/PRDisplay";

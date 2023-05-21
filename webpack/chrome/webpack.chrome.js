@@ -24,6 +24,16 @@ module.exports = {
           },
         },
       },
+      // Compiles all TypeScript code
+      {
+        rules: [
+          {
+            test: /\.(ts|tsx)?$/,
+            use: "ts-loader",
+            exclude: /node_modules/,
+          },
+        ],
+      },
       // Allows for use of SVGs as React components
       {
         test: /\.svg$/i,
@@ -46,6 +56,6 @@ module.exports = {
     }),
   ],
   resolve: {
-    extensions: [".js", ".jsx"],
+    extensions: [".js", ".jsx", ".ts", ".tsx"],
   },
 };

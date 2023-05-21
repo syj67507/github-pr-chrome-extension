@@ -35,7 +35,7 @@ export async function clearStorage() {
  * Updates the storage values for this extension
  * @param {object} value The new update storage object
  */
-export async function setStorage(value) {
+export async function setStorage(value: any) {
   await Browser.storage.sync.set({ [storageKey]: value });
 }
 
@@ -43,9 +43,11 @@ export async function setStorage(value) {
  * Adds a repository's url to chrome storage. If the repository is already added,
  * then this function will do nothing.
  */
-export async function addRepository(repoUrl, jiraTags, jiraDomain) {
+export async function addRepository(repoUrl: any, jiraTags: any, jiraDomain: any) {
   const repoToAdd = {
     url: repoUrl,
+    jiraTags: undefined,
+    jiraDomain: undefined
   };
 
   if (jiraTags && jiraDomain) {
@@ -59,7 +61,7 @@ export async function addRepository(repoUrl, jiraTags, jiraDomain) {
   }
 
   // Do nothing if already added
-  if (storage.repos.find((repo) => repo.url === repoUrl)) {
+  if (storage.repos.find((repo: { url: any; }) => repo.url === repoUrl)) {
     return;
   }
 
@@ -70,10 +72,10 @@ export async function addRepository(repoUrl, jiraTags, jiraDomain) {
 /**
  * Removes a repository's url from chrome storage
  */
-export async function removeRepository(repoUrl) {
+export async function removeRepository(repoUrl: any) {
   const storage = await getStorage();
   if (storage.repos && Array.isArray(storage.repos)) {
-    storage.repos = storage.repos.filter((repo) => repo.url !== repoUrl);
+    storage.repos = storage.repos.filter((repo: { url: any; }) => repo.url !== repoUrl);
   }
   setStorage(storage);
 }
@@ -88,7 +90,7 @@ export async function getRepositories() {
  * GitHub API requests.
  * @param {string} token The personal access token
  */
-export async function setToken(token) {
+export async function setToken(token: string) {
   const storage = await getStorage();
   storage.token = token;
   await setStorage(storage);
@@ -111,7 +113,7 @@ export async function getToken() {
  * checked first. If this is defined, then it will be used. If undefined, then it will fall back to the 'action' API
  * @param {string} text The contents of the badge, will be converted into a string
  */
-export function setBadge(text) {
+export function setBadge(text: number) {
   const browserAction = Browser.browserAction || Browser.action;
   browserAction.setBadgeText({
     text: `${text}`,
@@ -125,7 +127,7 @@ export function setBadge(text) {
  * Creates a new tab and navigates to the provided URL
  * @param {string} url The URL to navigate to in the new tab
  */
-export function createTab(url) {
+export function createTab(url: string) {
   Browser.tabs.create({
     url: `${url}`,
   });
