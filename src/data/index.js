@@ -44,7 +44,7 @@ export default class GitHubClient {
         };
       });
     } catch (error) {
-      console.log("e", error);
+      console.error("e", error);
       return [];
     }
   }
