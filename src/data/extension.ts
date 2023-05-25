@@ -12,13 +12,24 @@ import Browser from "webextension-polyfill";
  * All stored values will be stored in chrome's sync storage using
  * this key.
  */
-const storageKey = "ghpr-ext";
+const storageKey = "@ghpr-ext";
+
+interface StorageRepo {
+  url: string;
+  jiraDomain?: string;
+  jiraTags?: string[];
+}
+
+interface Storage {
+  repos: StorageRepo[];
+  token: string;
+}
 
 /**
  * Gets the storage values for this extension
  * @returns the storage object
  */
-export async function getStorage() {
+export async function getStorage(): Promise<Storage> {
   const storage = await Browser.storage.sync.get([storageKey]);
   return storage[storageKey];
 }
@@ -26,7 +37,7 @@ export async function getStorage() {
 /**
  * Clears the storage values for this extension
  */
-export async function clearStorage() {
+export async function clearStorage(): Promise<void> {
   await Browser.storage.sync.set({ [storageKey]: {} });
   console.log("ghpr-ext cleared.");
 }
@@ -35,7 +46,7 @@ export async function clearStorage() {
  * Updates the storage values for this extension
  * @param {object} value The new update storage object
  */
-export async function setStorage(value: any) {
+export async function setStorage(value: any): Promise<void> {
   await Browser.storage.sync.set({ [storageKey]: value });
 }
 
@@ -43,17 +54,16 @@ export async function setStorage(value: any) {
  * Adds a repository's url to chrome storage. If the repository is already added,
  * then this function will do nothing.
  */
-export async function addRepository(repoUrl: any, jiraTags: any, jiraDomain: any) {
-  const repoToAdd = {
+export async function addRepository(
+  repoUrl: StorageRepo["url"],
+  jiraTags: StorageRepo["jiraTags"],
+  jiraDomain: StorageRepo["jiraDomain"]
+): Promise<void> {
+  const repoToAdd: StorageRepo = {
     url: repoUrl,
-    jiraTags: undefined,
-    jiraDomain: undefined
+    jiraTags,
+    jiraDomain,
   };
-
-  if (jiraTags && jiraDomain) {
-    repoToAdd.jiraTags = jiraTags;
-    repoToAdd.jiraDomain = jiraDomain;
-  }
 
   const storage = await getStorage();
   if (storage.repos === undefined || !Array.isArray(storage.repos)) {
@@ -61,7 +71,9 @@ export async function addRepository(repoUrl: any, jiraTags: any, jiraDomain: any
   }
 
   // Do nothing if already added
-  if (storage.repos.find((repo: { url: any; }) => repo.url === repoUrl)) {
+  if (
+    storage.repos.find((repo: { url: any }) => repo.url === repoUrl) != null
+  ) {
     return;
   }
 
@@ -72,15 +84,19 @@ export async function addRepository(repoUrl: any, jiraTags: any, jiraDomain: any
 /**
  * Removes a repository's url from chrome storage
  */
-export async function removeRepository(repoUrl: any) {
+export async function removeRepository(
+  repoUrl: StorageRepo["url"]
+): Promise<void> {
   const storage = await getStorage();
-  if (storage.repos && Array.isArray(storage.repos)) {
-    storage.repos = storage.repos.filter((repo: { url: any; }) => repo.url !== repoUrl);
+  if (storage.repos !== undefined && Array.isArray(storage.repos)) {
+    storage.repos = storage.repos.filter(
+      (repo: { url: any }) => repo.url !== repoUrl
+    );
   }
-  setStorage(storage);
+  await setStorage(storage);
 }
 
-export async function getRepositories() {
+export async function getRepositories(): Promise<StorageRepo[]> {
   const storage = await getStorage();
   return storage.repos;
 }
@@ -90,7 +106,7 @@ export async function getRepositories() {
  * GitHub API requests.
  * @param {string} token The personal access token
  */
-export async function setToken(token: string) {
+export async function setToken(token: string): Promise<void> {
   const storage = await getStorage();
   storage.token = token;
   await setStorage(storage);
@@ -101,7 +117,7 @@ export async function setToken(token: string) {
  * GitHub API requests.
  * @returns {string} token The personal access token
  */
-export async function getToken() {
+export async function getToken(): Promise<Storage["token"]> {
   const storage = await getStorage();
   return storage.token;
 }
@@ -113,12 +129,16 @@ export async function getToken() {
  * checked first. If this is defined, then it will be used. If undefined, then it will fall back to the 'action' API
  * @param {string} text The contents of the badge, will be converted into a string
  */
-export function setBadge(text: number) {
-  const browserAction = Browser.browserAction || Browser.action;
-  browserAction.setBadgeText({
+export async function setBadge(text: number): Promise<void> {
+  console.log(Browser.browserAction);
+  const browserAction =
+    Browser.browserAction !== undefined
+      ? Browser.browserAction
+      : Browser.action;
+  await browserAction.setBadgeText({
     text: `${text}`,
   });
-  browserAction.setBadgeBackgroundColor({
+  await browserAction.setBadgeBackgroundColor({
     color: "black",
   });
 }
@@ -127,8 +147,8 @@ export function setBadge(text: number) {
  * Creates a new tab and navigates to the provided URL
  * @param {string} url The URL to navigate to in the new tab
  */
-export function createTab(url: string) {
-  Browser.tabs.create({
+export async function createTab(url: StorageRepo["url"]): Promise<void> {
+  await Browser.tabs.create({
     url: `${url}`,
   });
 }

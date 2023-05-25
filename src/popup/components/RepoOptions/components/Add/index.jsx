@@ -85,7 +85,11 @@ export default function Add({ onSave }) {
           disabled={!saveEnabled}
           onClick={() => {
             // implementation of onSave passed in as prop from Repos component
-            onSave(repository, rawJiraTags.split(","), jiraDomain);
+            const jiraTagsSanizited =
+              rawJiraTags.length > 0 ? rawJiraTags.split(",") : undefined;
+            const jiraDomainSanizited =
+              jiraDomain.length > 0 ? jiraDomain : undefined;
+            onSave(repository, jiraTagsSanizited, jiraDomainSanizited);
           }}
           sx={{
             bgcolor: "#6cc644",
