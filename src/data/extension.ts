@@ -14,13 +14,13 @@ import Browser from "webextension-polyfill";
  */
 const storageKey = "@ghpr-ext";
 
-interface StorageRepo {
+export interface StorageRepo {
   url: string;
   jiraDomain?: string;
   jiraTags?: string[];
 }
 
-interface Storage {
+export interface Storage {
   repos: StorageRepo[];
   token: string;
 }

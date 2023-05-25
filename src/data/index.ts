@@ -1,4 +1,22 @@
+import { type StorageRepo, type Storage } from "./extension";
+
 require("regenerator-runtime");
+
+interface GitHubAPIPullRequest {
+  title: string;
+  body: string;
+  number: number;
+  html_url: string;
+  user: { login: string };
+}
+
+interface ParsedPullRequests {
+  title: string;
+  body: string;
+  number: number;
+  url: StorageRepo["url"];
+  user: string;
+}
 
 /**
  * A client to provide a variety of functions that communicate with
@@ -6,7 +24,9 @@ require("regenerator-runtime");
  * from configuration.
  */
 export default class GitHubClient {
-  constructor(token) {
+  token: Storage["token"];
+
+  constructor(token: Storage["token"]) {
     this.token = token;
   }
 
@@ -15,7 +35,10 @@ export default class GitHubClient {
    * @param {object} repo The repository's metadata
    * @returns An array of pull request metadata for the provided repository
    */
-  async getPullRequests(repo) {
+  async getPullRequests(repo: {
+    owner: string;
+    name: string;
+  }): Promise<ParsedPullRequests[]> {
     const headersList = {
       Accept: "application/json",
       Authorization: `token ${this.token}`,
@@ -34,10 +57,11 @@ export default class GitHubClient {
       if (response.status !== 200) {
         throw new Error(data.message);
       }
-      return data.map((pullRequest) => {
+
+      return data.map((pullRequest: GitHubAPIPullRequest) => {
         return {
           title: pullRequest.title,
-          body: pullRequest.body || "",
+          body: pullRequest.body !== null ? pullRequest.body : "",
           number: pullRequest.number,
           url: pullRequest.html_url,
           user: pullRequest.user.login,
@@ -58,8 +82,15 @@ export default class GitHubClient {
    * jiraDomain - The base domain for the JIRA project
    * @returns An array of repository information and it's pull request data
    */
-  async getRepoData(reposData) {
-    if (Array.isArray(reposData) === false) {
+  async getRepoData(reposData: StorageRepo[]): Promise<
+    Array<{
+      owner: string;
+      name: string;
+      url: StorageRepo["url"];
+      pullRequests: ParsedPullRequests[];
+    }>
+  > {
+    if (!Array.isArray(reposData)) {
       return [];
     }
 
@@ -76,10 +107,10 @@ export default class GitHubClient {
         name,
       });
 
-      if (jiraDomain && jiraTags) {
+      if (jiraDomain !== undefined && jiraTags !== undefined) {
         pullRequests = pullRequests.map((pr) => {
           // Find a JIRA ticket with provided
-          const ticketTags = [];
+          const ticketTags: StorageRepo["jiraTags"] = [];
           jiraTags.forEach((jiraTag) => {
             const regex = new RegExp(`${jiraTag}-\\d+`, "g");
             // const regex = new RegExp(jiraTag, "g"); // For testing
