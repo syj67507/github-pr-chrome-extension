@@ -13,6 +13,7 @@ const delayInMinutes = 0;
 const periodInMinutes = 1;
 
 // Install logic
+// eslint-disable-next-line @typescript-eslint/no-misused-promises
 Browser.runtime.onInstalled.addListener(async () => {
   console.log("Installed!");
 
@@ -27,6 +28,7 @@ Browser.runtime.onInstalled.addListener(async () => {
 });
 
 // Periodically fetch pull requests and update the badge
+// eslint-disable-next-line @typescript-eslint/no-misused-promises
 Browser.alarms.onAlarm.addListener(async (alarm) => {
   if (alarm.name !== alarmName) {
     return;
@@ -48,7 +50,7 @@ Browser.alarms.onAlarm.addListener(async (alarm) => {
     reposData.forEach((repoData) => {
       count += repoData.pullRequests.length;
     });
-    setBadge(count);
+    await setBadge(count);
   } catch (e) {
     console.error(`There was an error in setting the badge`);
     console.error(e);
