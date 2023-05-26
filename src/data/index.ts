@@ -2,19 +2,39 @@ import { type StorageRepo, type Storage } from "./extension";
 
 require("regenerator-runtime");
 
+/**
+ * The raw JSON response body when fetching a pull request from
+ * GitHub's API
+ */
 interface GitHubAPIPullRequest {
+  /** The title of the pull request */
   title: string;
+  /** The description of the pull request */
   body: string;
+  /** The issue number of the pull request */
   number: number;
+  /** The url of the pull request */
   html_url: string;
-  user: { login: string };
+  /** The user who is the author of the pull request */
+  user: {
+    /** The login username */
+    login: string;
+  };
 }
 
+/**
+ * The parsed information of a pull request
+ */
 interface ParsedPullRequests {
+  /** The title of the pull request */
   title: string;
+  /** The description of the pull request */
   body: string;
+  /** The issue number of the pull request */
   number: number;
+  /** The url of the pull request */
   url: StorageRepo["url"];
+  /** The login username of the author of the pull request */
   user: string;
 }
 

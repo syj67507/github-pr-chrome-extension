@@ -14,14 +14,27 @@ import Browser from "webextension-polyfill";
  */
 const storageKey = "@ghpr-ext";
 
+/**
+ * The data that represents a configured repo by the user that
+ * is stored in the browser's synced storage
+ */
 export interface StorageRepo {
+  /** The url to the repository */
   url: string;
+  /** The domain of the Jira project ex: https://company.jira.com/ */
   jiraDomain?: string;
+  /** A list of Jira project tags to be configured for a repository */
   jiraTags?: string[];
 }
 
+/**
+ * The data that represents what is stored for this extension in
+ * the browser's synced storage
+ */
 export interface Storage {
+  /** A list of user configured repos */
   repos: StorageRepo[];
+  /** The GitHub personal access token */
   token: string;
 }
 
