@@ -40,7 +40,7 @@ export interface Storage {
 
 /**
  * Gets the storage values for this extension
- * @returns the storage object
+ * @returns All stored values for this extension
  */
 export async function getStorage(): Promise<Storage> {
   const storage = await Browser.storage.sync.get([storageKey]);
@@ -57,15 +57,18 @@ export async function clearStorage(): Promise<void> {
 
 /**
  * Updates the storage values for this extension
- * @param {object} value The new update storage object
+ * @param value The new updated storage object
  */
-export async function setStorage(value: any): Promise<void> {
+export async function setStorage(value: Storage): Promise<void> {
   await Browser.storage.sync.set({ [storageKey]: value });
 }
 
 /**
  * Adds a repository's url to chrome storage. If the repository is already added,
  * then this function will do nothing.
+ * @param repoUrl The url of the repository
+ * @param jiraTags A list of Jira project tags to be configured for a repository
+ * @param jiraDomain The domain of the Jira project ex: https://company.jira.com/
  */
 export async function addRepository(
   repoUrl: StorageRepo["url"],
@@ -96,6 +99,7 @@ export async function addRepository(
 
 /**
  * Removes a repository's url from chrome storage
+ * @param repoUrl The url of the repository
  */
 export async function removeRepository(
   repoUrl: StorageRepo["url"]
@@ -109,6 +113,10 @@ export async function removeRepository(
   await setStorage(storage);
 }
 
+/**
+ * Get all the repositories that have been configured
+ * @returns Returns all the repositories that have been configured
+ */
 export async function getRepositories(): Promise<StorageRepo[]> {
   const storage = await getStorage();
   return storage.repos;
@@ -117,7 +125,7 @@ export async function getRepositories(): Promise<StorageRepo[]> {
 /**
  * Sets the user's personal access token. Needed for authenticating
  * GitHub API requests.
- * @param {string} token The personal access token
+ * @param token The GitHub personal access token
  */
 export async function setToken(token: string): Promise<void> {
   const storage = await getStorage();
@@ -128,7 +136,7 @@ export async function setToken(token: string): Promise<void> {
 /**
  * Gets the user's personal access token. Needed for authenticating
  * GitHub API requests.
- * @returns {string} token The personal access token
+ * @returns The GitHub personal access token
  */
 export async function getToken(): Promise<Storage["token"]> {
   const storage = await getStorage();
