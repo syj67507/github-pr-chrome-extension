@@ -4,26 +4,30 @@ import Tooltip from "@mui/material/Tooltip";
 import JiraIcon from "./jira-icon.svg";
 import DisabledJiraIcon from "./jira-icon-disabled.svg";
 import { createTab } from "../../../../../data/extension";
+import { type ParsedPullRequest } from "../../../../../data";
 
-function EnabledJiraIconButton({ jiraUrl }) {
+interface JiraIconButtonProps {
+  /** The URL to the Jira Ticket */
+  jiraUrl: ParsedPullRequest["jiraUrl"];
+}
+
+function EnabledJiraIconButton({ jiraUrl }: JiraIconButtonProps) {
   return (
-    <Tooltip title={jiraUrl} placement="top">
+    <Tooltip title={jiraUrl ?? ""} placement="top">
       <IconButton
         sx={{
           border: "2px solid #2684ff",
         }}
         onClick={() => {
           if (jiraUrl !== undefined) {
-            createTab(jiraUrl);
+            createTab(jiraUrl).catch(() => {
+              console.error(`Failed to create a tab with url ${jiraUrl}`);
+            });
           }
         }}
         size="small"
       >
-        <JiraIcon
-          sx={{
-            fontSize: 20,
-          }}
-        />
+        <JiraIcon />
       </IconButton>
     </Tooltip>
   );
@@ -38,17 +42,13 @@ function DisabledJiraIconButton() {
       }}
       size="small"
     >
-      <DisabledJiraIcon
-        sx={{
-          fontSize: 20,
-        }}
-      />
+      <DisabledJiraIcon />
     </IconButton>
   );
 }
 
-export default function JiraIconButton({ jiraUrl }) {
-  if (jiraUrl) {
+export default function JiraIconButton({ jiraUrl }: JiraIconButtonProps) {
+  if (jiraUrl !== undefined) {
     return <EnabledJiraIconButton jiraUrl={jiraUrl} />;
   }
 

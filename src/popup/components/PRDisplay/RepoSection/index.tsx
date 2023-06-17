@@ -7,8 +7,16 @@ import Stack from "@mui/material/Stack";
 import PullRequest from "./PullRequest";
 import RepoTitle from "./RepoTitle";
 import NoPullRequest from "./NoPullRequest";
+import { type RepoData } from "../../../../data";
 
-export default function RepoSection({ repo, filter }) {
+interface RepoSectionProps {
+  /** The data of the repo to show for this section */
+  repo: RepoData;
+  /** The string to filter what pull requests to show for this repo section */
+  filter: string;
+}
+
+export default function RepoSection({ repo, filter }: RepoSectionProps) {
   const { pullRequests } = repo;
   const prsToShow = pullRequests.filter((pullRequest) =>
     JSON.stringify(pullRequest).toLowerCase().includes(filter.toLowerCase())
@@ -47,12 +55,12 @@ export default function RepoSection({ repo, filter }) {
           }}
         >
           <Stack width="100%" spacing={0}>
-            {prsToShow &&
+            {prsToShow !== undefined &&
               prsToShow.length > 0 &&
               prsToShow.map((pullRequest) => (
                 <PullRequest key={pullRequest.url} pr={pullRequest} />
               ))}
-            {prsToShow && prsToShow.length <= 0 && (
+            {prsToShow !== undefined && prsToShow.length <= 0 && (
               <NoPullRequest repo={repo} />
             )}
           </Stack>

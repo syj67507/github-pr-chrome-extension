@@ -3,8 +3,13 @@ import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
 import JiraIconButton from "./JiraIconButton";
 import GitHubIconButton from "./GitHubIconButton";
+import type { ParsedPullRequest } from "../../../../../data";
 
-export default function PullRequest({ pr }) {
+interface PullRequestProps {
+  pr: ParsedPullRequest;
+}
+
+export default function PullRequest({ pr }: PullRequestProps) {
   return (
     <Stack
       direction="row"

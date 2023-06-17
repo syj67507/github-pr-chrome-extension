@@ -5,8 +5,14 @@ import IconButton from "@mui/material/IconButton";
 import Tooltip from "@mui/material/Tooltip";
 import Typography from "@mui/material/Typography";
 import { createTab } from "../../../../data/extension";
+import { type RepoData } from "../../../../data";
 
-export default function RepoTitle({ repo }) {
+interface RepoTitleProps {
+  /** The data of the repo to show for this section */
+  repo: RepoData;
+}
+
+export default function RepoTitle({ repo }: RepoTitleProps) {
   return (
     <Box
       sx={{
@@ -26,7 +32,9 @@ export default function RepoTitle({ repo }) {
           gap: 1,
         }}
         onClick={() => {
-          createTab(repo.url);
+          createTab(repo.url).catch(() => {
+            console.error(`failed to create tab with url: ${repo.url}`);
+          });
         }}
       >
         <Typography variant="subtitle1" sx={{ fontWeight: "bold" }}>

@@ -3,14 +3,25 @@ import Button from "@mui/material/Button";
 import Stack from "@mui/material/Stack";
 import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
+import { type StorageRepo } from "../../../../../data/extension";
 
-export default function Add({ onSave }) {
+interface AddProps {
+  onSave: (
+    repo: StorageRepo["url"],
+    jiraTags: StorageRepo["jiraTags"],
+    jiraDomain: StorageRepo["jiraDomain"]
+  ) => Promise<void>;
+}
+
+export default function Add({ onSave }: AddProps) {
   const [repository, setRepository] = useState("");
   const [rawJiraTags, setRawJiraTags] = useState("");
   const [jiraDomain, setJiraDomain] = useState("");
 
-  const saveEnabled1 = repository && !rawJiraTags && !jiraDomain; // only repository field
-  const saveEnabled2 = repository && rawJiraTags && jiraDomain; // specify both jira tags
+  const saveEnabled1 =
+    repository !== "" && rawJiraTags === "" && jiraDomain === ""; // only repository field
+  const saveEnabled2 =
+    repository !== "" && rawJiraTags !== "" && jiraDomain !== ""; // specify both jira tags
   const saveEnabled = saveEnabled1 || saveEnabled2;
 
   return (
@@ -50,7 +61,7 @@ export default function Add({ onSave }) {
       <TextField
         label="(Optional) JIRA Domain"
         helperText={`Domain to build the url to JIRA ticket ${
-          jiraDomain || "<domain>"
+          jiraDomain ?? "<domain>"
         }/browse/TAG-1234`}
         placeholder="https://jira.company.com"
         variant="standard"
@@ -64,7 +75,7 @@ export default function Add({ onSave }) {
         <Button
           variant="contained"
           color="error"
-          onClick={async () => {
+          onClick={() => {
             setRepository("");
             setRawJiraTags("");
             setJiraDomain("");
@@ -89,7 +100,15 @@ export default function Add({ onSave }) {
               rawJiraTags.length > 0 ? rawJiraTags.split(",") : undefined;
             const jiraDomainSanizited =
               jiraDomain.length > 0 ? jiraDomain : undefined;
-            onSave(repository, jiraTagsSanizited, jiraDomainSanizited);
+            onSave(repository, jiraTagsSanizited, jiraDomainSanizited).catch(
+              (e) => {
+                console.error(
+                  `failed to save repo ${repository}, ${jiraDomain}, ${rawJiraTags}
+                  }`,
+                  e
+                );
+              }
+            );
           }}
           sx={{
             bgcolor: "#6cc644",
