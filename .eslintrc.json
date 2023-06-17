@@ -26,5 +26,6 @@
     "@typescript-eslint",
     "prettier"
   ],
-  "rules": {}
+  "rules": {},
+  "ignorePatterns": [ "webpack/**/*.js" ]
 }
