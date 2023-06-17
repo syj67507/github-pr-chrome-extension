@@ -4,7 +4,7 @@ const HtmlWebpackPlugin = require("html-webpack-plugin");
 
 module.exports = {
   entry: {
-    popup: "./src/popup/popup.jsx",
+    popup: "./src/popup/popup.tsx",
     background: "./src/background/background.ts",
   },
   output: {
