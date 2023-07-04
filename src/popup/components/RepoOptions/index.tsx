@@ -43,7 +43,7 @@ export default function Repos() {
         repos={repos}
         loading={loading}
         error={error}
-        onRemove={async (repo: any) => {
+        onRemove={async (repo) => {
           console.log("onRemove", repo.url);
           await removeRepository(repo.url);
           setRepos(await getRepositories());
