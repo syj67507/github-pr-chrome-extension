@@ -50,7 +50,9 @@ function Popup() {
             color: "whitesmoke",
             bgcolor: page === "PR" ? "#000" : undefined,
           }}
-          onClick={() => setPage("PR")}
+          onClick={() => {
+            setPage("PR");
+          }}
         >
           PR
         </Button>
@@ -59,7 +61,9 @@ function Popup() {
             color: "whitesmoke",
             bgcolor: page === "Add" ? "#000" : undefined,
           }}
-          onClick={() => setPage("Repos")}
+          onClick={() => {
+            setPage("Repos");
+          }}
         >
           Repos
         </Button>
@@ -68,7 +72,9 @@ function Popup() {
             color: "whitesmoke",
             bgcolor: page === "Permissions" ? "#000" : undefined,
           }}
-          onClick={() => setPage("Permissions")}
+          onClick={() => {
+            setPage("Permissions");
+          }}
         >
           Permissions
         </Button>

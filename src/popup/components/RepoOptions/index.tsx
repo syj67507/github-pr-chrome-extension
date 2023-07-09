@@ -4,6 +4,7 @@ import Box from "@mui/material/Box";
 import Add from "./components/Add";
 import Saved from "./components/Saved";
 import {
+  type StorageRepo,
   addRepository,
   getRepositories,
   getStorage,
@@ -11,7 +12,7 @@ import {
 } from "../../../data/extension";
 
 export default function Repos() {
-  const [repos, setRepos] = useState(null);
+  const [repos, setRepos] = useState<StorageRepo[] | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
 
@@ -20,7 +21,7 @@ export default function Repos() {
     async function getRepos() {
       setLoading(true);
       const storage = await getStorage();
-      setRepos(storage.repos || []);
+      setRepos(storage.repos ?? []);
       setLoading(false);
     }
     getRepos().catch((e) => {

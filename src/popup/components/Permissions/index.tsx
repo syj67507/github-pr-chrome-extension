@@ -35,8 +35,10 @@ export default function Permissions() {
       <Stack width="100%" direction="row" justifyContent="flex-end" spacing={2}>
         <Button
           variant="contained"
-          onClick={async () => {
-            await browser.setToken(token);
+          onClick={() => {
+            browser.setToken(token).catch(() => {
+              console.error("Failed to save personal access token");
+            });
           }}
           disabled={token === ""}
         >

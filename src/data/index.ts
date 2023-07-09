@@ -22,10 +22,21 @@ interface GitHubAPIPullRequest {
   };
 }
 
+export interface RepoData {
+  /** The owner of the repo */
+  owner: string;
+  /** The name of the repo */
+  name: string;
+  /** The url of the repo */
+  url: StorageRepo["url"];
+  /** All the pull requests open for this repo */
+  pullRequests: ParsedPullRequest[];
+}
+
 /**
  * The parsed information of a pull request
  */
-interface ParsedPullRequests {
+export interface ParsedPullRequest {
   /** The title of the pull request */
   title: string;
   /** The description of the pull request */
@@ -36,6 +47,8 @@ interface ParsedPullRequests {
   url: StorageRepo["url"];
   /** The login username of the author of the pull request */
   user: string;
+  /** The url of the detected Jira ticket */
+  jiraUrl?: string;
 }
 
 /**
@@ -58,7 +71,7 @@ export default class GitHubClient {
   async getPullRequests(repo: {
     owner: string;
     name: string;
-  }): Promise<ParsedPullRequests[]> {
+  }): Promise<ParsedPullRequest[]> {
     const headersList = {
       Accept: "application/json",
       Authorization: `token ${this.token}`,
@@ -102,14 +115,7 @@ export default class GitHubClient {
    * jiraDomain - The base domain for the JIRA project
    * @returns An array of repository information and it's pull request data
    */
-  async getRepoData(reposData: StorageRepo[]): Promise<
-    Array<{
-      owner: string;
-      name: string;
-      url: StorageRepo["url"];
-      pullRequests: ParsedPullRequests[];
-    }>
-  > {
+  async getRepoData(reposData: StorageRepo[]): Promise<RepoData[]> {
     if (!Array.isArray(reposData)) {
       return [];
     }
