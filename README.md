@@ -1,20 +1,18 @@
-# GitHub Pull Request Chrome Extension
+# GitHub Pull Requests Browser Extension / Add on
 
 ## About
 
-A Google Chrome extension that displays open pull requests for your favorite repositories. Configure which repositories you would like to see in the options.
+A browser extension / add on that displays open pull requests for your favorite repositories. Configure which repositories you would like to see in the options.
 
-## Quick Start
+This extension is currently live and available in [Chrome's web store](https://chrome.google.com/webstore/detail/github-pull-requests/knfpkdjfepghlhlndeapopnijbapcjcg).
 
-This extension is not in Chrome's web store so installation must be done through Chrome's manual developer mode.
+## Custom Developer Install
 
-1. Download the [latest release][latest-release] archive (`github-pr-chrome-extension.zip` or `github-pr-chrome-extension.tgz`)
+If you wish to install through developer mode, you may use one of the releases available in this repository.
+
+1. Download the [latest release][latest-release] archive (`ghpr-ext-<browser>-<version>.zip` or `github-pr-<browser>-<version>.tgz`) based on your browser.
 2. Unpack the archive
-3. Go to `chrome://extensions` and enable `Developer Mode`
-4. Click on `Load unpacked` and select the the extracted archive folder (`github-pr-chrome-extension`)
-5. [Optional]: Disable `Developer Mode`
-
-You have successfully installed the Chrome extension. You can configure the permissions and which repositories are connected by right clicking the extension icon and going to the options page.
+3. Load the extension / add on. For Firefox, you can follow [this page](https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/Your_first_WebExtension#installing). For Chrome, you can follow [this page](https://developer.chrome.com/docs/extensions/mv3/getstarted/development-basics/#load-unpacked).
 
 ## Development
 
@@ -23,7 +21,6 @@ Development and testing requires Node.js and NPM. This extension was developed u
 1. Install Node.js and NPM
 2. Clone this repository
 3. Run `npm install` and then `npm run build`. This will create a `dist` folder at the base of the project folder.
-4. Go to `chrome://extensions` and enable `Developer Mode`
-5. Click on `Load unpacked` and select the `dist` folder. You may turn off `Developer Mode` now if you wish.
+4. Load the extension / add on. For Firefox, you can follow [this page](https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/Your_first_WebExtension#installing). For Chrome, you can follow [this page](https://developer.chrome.com/docs/extensions/mv3/getstarted/development-basics/#load-unpacked).
 
 [latest-release]: https://github.com/syj67507/github-pr-chrome-extension/releases/latest
