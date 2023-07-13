@@ -1,0 +1,22 @@
+{
+  "name": "GitHub Pull Requests",
+  "description": "See all of your repo's pull requests in one place!",
+  "version": "0.0.1",
+  "homepage_url": "https://github.com/syj67507/github-pr-chrome-extension",
+  "manifest_version": 2,
+  "permissions": ["alarms", "storage", "tabs"],
+  "background": {
+    "scripts": ["background.js"]
+  },
+  "browser_action": {
+    "default_popup": "popup.html"
+  },
+  "icons": {
+    "512": "icon512.png"
+  },
+  "browser_specific_settings": {
+    "gecko": {
+      "id": "@ghpr-ext"
+    }
+  }
+}

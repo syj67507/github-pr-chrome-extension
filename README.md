@@ -18,7 +18,7 @@ You have successfully installed the Chrome extension. You can configure the perm
 
 ## Development
 
-Development and testing requires Node.js and NPM. This extension was developed using node `16.13.1` and npm v`8.1.2`.
+Development and testing requires Node.js and NPM. This extension was developed using node `v18.13.0` and npm `v8.19.3`.
 
 1. Install Node.js and NPM
 2. Clone this repository
