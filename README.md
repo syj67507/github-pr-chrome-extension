@@ -6,6 +6,8 @@ A browser extension / add on that displays open pull requests for your favorite 
 
 This extension is currently live and available in [Chrome's web store](https://chrome.google.com/webstore/detail/github-pull-requests/knfpkdjfepghlhlndeapopnijbapcjcg).
 
+Firefox support is still in process.
+
 ## Custom Developer Install
 
 If you wish to install through developer mode, you may use one of the releases available in this repository.
