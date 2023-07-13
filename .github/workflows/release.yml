@@ -28,13 +28,15 @@ jobs:
 
       - name: Create Archives
         run: |
-          mv dist github-pr-chrome-extension
-          zip -r github-pr-chrome-extension.zip github-pr-chrome-extension
-          tar -czf github-pr-chrome-extension.tgz github-pr-chrome-extension
+          cd dist
+          zip -r ghpr-ext-chrome-${{ github.ref_name }}.zip chrome
+          zip -r ghpr-ext-firefox-${{ github.ref_name }}.zip firefox
+          tar -czf ghpr-ext-chrome-${{ github.ref_name }}.tgz chrome
+          tar -czf ghpr-ext-firefox-${{ github.ref_name }}.tgz firefox
 
       - name: Upload Release
         uses: ncipollo/release-action@v1
         with:
-          artifacts: github-pr-chrome-extension.zip, github-pr-chrome-extension.tgz
+          artifacts:  ghpr-ext-chrome-${{ github.ref_name }}.zip, ghpr-ext-firefox-${{ github.ref_name }}.zip, ghpr-ext-chrome-${{ github.ref_name }}.tgz, ghpr-ext-firefox-${{ github.ref_name }}.tgz
           draft: true
           token: ${{ secrets.GITHUB_TOKEN }}
