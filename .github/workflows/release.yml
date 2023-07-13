@@ -1,0 +1,42 @@
+name: Extension Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  Release:
+    name: Release Extension
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+
+      - name: Install Node
+        uses: actions/setup-node@v2
+        with:
+          node-version: "16"
+
+      - name: Install Dependencies
+        run: npm ci
+
+      - name: Build
+        run: npm run build
+
+      - name: Create Archives
+        run: |
+          cd dist
+          zip -r ghpr-ext-chrome-${{ github.ref_name }}.zip chrome
+          zip -r ghpr-ext-firefox-${{ github.ref_name }}.zip firefox
+          tar -czf ghpr-ext-chrome-${{ github.ref_name }}.tgz chrome
+          tar -czf ghpr-ext-firefox-${{ github.ref_name }}.tgz firefox
+
+      - name: Upload Release
+        uses: ncipollo/release-action@v1
+        with:
+          artifacts:  ghpr-ext-chrome-${{ github.ref_name }}.zip, ghpr-ext-firefox-${{ github.ref_name }}.zip, ghpr-ext-chrome-${{ github.ref_name }}.tgz, ghpr-ext-firefox-${{ github.ref_name }}.tgz
+          draft: true
+          token: ${{ secrets.GITHUB_TOKEN }}
