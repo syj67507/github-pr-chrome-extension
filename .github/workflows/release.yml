@@ -30,11 +30,11 @@ jobs:
         run: |
           cd dist
           cd chrome
-          zip -r ghpr-ext-chrome-${{ github.ref_name }}.zip chrome
-          zip -r ghpr-ext-firefox-${{ github.ref_name }}.zip firefox
+          zip -r ghpr-ext-chrome-${{ github.ref_name }}.zip .
+          zip -r ghpr-ext-firefox-${{ github.ref_name }}.zip .
           cd ../firefox
-          tar -czf ghpr-ext-chrome-${{ github.ref_name }}.tgz chrome
-          tar -czf ghpr-ext-firefox-${{ github.ref_name }}.tgz firefox
+          tar -czf ghpr-ext-chrome-${{ github.ref_name }}.tgz .
+          tar -czf ghpr-ext-firefox-${{ github.ref_name }}.tgz .
 
       - name: Upload Release
         uses: ncipollo/release-action@v1
