@@ -30,16 +30,16 @@ jobs:
         run: |
           cd dist
           cd chrome
-          zip -r ghpr-ext-chrome-${{ github.ref_name }}.zip .
-          zip -r ghpr-ext-firefox-${{ github.ref_name }}.zip .
+          zip -r ../ghpr-ext-chrome-${{ github.ref_name }}.zip .
+          zip -r ../ghpr-ext-firefox-${{ github.ref_name }}.zip .
           cd ../firefox
-          tar -czf ghpr-ext-chrome-${{ github.ref_name }}.tgz .
-          tar -czf ghpr-ext-firefox-${{ github.ref_name }}.tgz .
+          tar -czf ../ghpr-ext-chrome-${{ github.ref_name }}.tgz .
+          tar -czf ../ghpr-ext-firefox-${{ github.ref_name }}.tgz .
 
       - name: Upload Release
         uses: ncipollo/release-action@v1
         with:
-          artifacts: ./dist/chrome/ghpr-ext-chrome-${{ github.ref_name }}.zip, ./dist/firefox/ghpr-ext-firefox-${{ github.ref_name }}.zip, ./dist/chrome/ghpr-ext-chrome-${{ github.ref_name }}.tgz, ./dist/firefox/ghpr-ext-firefox-${{ github.ref_name }}.tgz
+          artifacts: ./dist/ghpr-ext-chrome-${{ github.ref_name }}.zip, ./dist/ghpr-ext-firefox-${{ github.ref_name }}.zip, ./dist/ghpr-ext-chrome-${{ github.ref_name }}.tgz, ./dist/ghpr-ext-firefox-${{ github.ref_name }}.tgz
           draft: true
           generateReleaseNotes: true
           token: ${{ secrets.GITHUB_TOKEN }}
