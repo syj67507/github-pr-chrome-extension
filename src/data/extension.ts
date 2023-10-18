@@ -43,7 +43,7 @@ export interface Storage {
  * @returns All stored values for this extension
  */
 export async function getStorage(): Promise<Storage> {
-  const storage = await Browser.storage.sync.get([storageKey]);
+  const storage = await Browser.storage.local.get([storageKey]);
   return storage[storageKey];
 }
 
@@ -51,7 +51,7 @@ export async function getStorage(): Promise<Storage> {
  * Clears the storage values for this extension
  */
 export async function clearStorage(): Promise<void> {
-  await Browser.storage.sync.set({ [storageKey]: {} });
+  await Browser.storage.local.set({ [storageKey]: {} });
   console.log("ghpr-ext cleared.");
 }
 
@@ -60,7 +60,7 @@ export async function clearStorage(): Promise<void> {
  * @param value The new updated storage object
  */
 export async function setStorage(value: Storage): Promise<void> {
-  await Browser.storage.sync.set({ [storageKey]: value });
+  await Browser.storage.local.set({ [storageKey]: value });
 }
 
 /**
