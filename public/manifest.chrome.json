@@ -1,7 +1,7 @@
 {
   "name": "GitHub Pull Requests",
   "description": "See all of your repo's pull requests in one place!",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "manifest_version": 3,
   "permissions": ["alarms", "storage", "tabs"],
   "background": {
