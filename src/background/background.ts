@@ -23,8 +23,6 @@ Browser.runtime.onInstalled.addListener(async () => {
     periodInMinutes,
   });
   console.log("Created!", await Browser.alarms.get(alarmName));
-
-  await clearStorage();
 });
 
 // Periodically fetch pull requests and update the badge
