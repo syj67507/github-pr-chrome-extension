@@ -1,7 +1,7 @@
 {
   "name": "GitHub Pull Requests",
   "description": "See all of your repo's pull requests in one place!",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "homepage_url": "https://github.com/syj67507/github-pr-chrome-extension",
   "manifest_version": 2,
   "permissions": ["alarms", "storage", "tabs"],
