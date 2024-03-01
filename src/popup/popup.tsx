@@ -5,7 +5,7 @@ import Stack from "@mui/material/Stack";
 import React, { useState } from "react";
 import { render } from "react-dom";
 import PRDisplay from "./components/PRDisplay";
-import Permissions from "./components/Permissions";
+import Settings from "./components/Settings";
 import RepoOptions from "./components/RepoOptions";
 
 function Popup() {
@@ -70,18 +70,18 @@ function Popup() {
         <Button
           sx={{
             color: "whitesmoke",
-            bgcolor: page === "Permissions" ? "#000" : undefined,
+            bgcolor: page === "Settings" ? "#000" : undefined,
           }}
           onClick={() => {
-            setPage("Permissions");
+            setPage("Settings");
           }}
         >
-          Permissions
+          Settings
         </Button>
       </Box>
       {page === "PR" && <PRDisplay />}
       {page === "Repos" && <RepoOptions />}
-      {page === "Permissions" && <Permissions />}
+      {page === "Settings" && <Settings />}
     </Stack>
   );
 }

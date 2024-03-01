@@ -1,16 +1,22 @@
-import React, { useState } from "react";
-import Button from "@mui/material/Button";
-import Link from "@mui/material/Link";
 import Stack from "@mui/material/Stack";
-import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
+import Link from "@mui/material/Link";
+import TextField from "@mui/material/TextField";
+import Button from "@mui/material/Button";
+import React, { useState } from "react";
 import * as browser from "../../../data/extension";
 
-export default function Permissions() {
+export default function AccessTokenSetting() {
   const [token, setToken] = useState("");
 
   return (
-    <Stack direction="column" width="100%" padding={2} spacing={2}>
+    <Stack
+      direction="column"
+      width="100%"
+      padding={2}
+      spacing={2}
+      borderBottom="1px solid whitesmoke"
+    >
       <Typography variant="body1" textAlign="center">
         Set your personal access token here. Create you personal access token
         under Developer Settings in your GitHub account.
