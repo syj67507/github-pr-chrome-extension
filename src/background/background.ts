@@ -1,7 +1,13 @@
 import Browser from "webextension-polyfill";
 import "regenerator-runtime";
 import GitHubClient from "../data/index";
-import { getToken, getRepositories, setBadge } from "../data/extension";
+import {
+  getToken,
+  getRepositories,
+  setBadge,
+  getStorage,
+  resetStorage,
+} from "../data/extension";
 
 const alarmName = "fetchPRs";
 const delayInMinutes = 0;
@@ -18,6 +24,13 @@ Browser.runtime.onInstalled.addListener(async () => {
     periodInMinutes,
   });
   console.log("Created!", await Browser.alarms.get(alarmName));
+
+  // Initializing storage
+  // Checking if it exists to not override previous data
+  if ((await getStorage()) === undefined) {
+    console.log("No storage data detected, resetting storage...");
+    await resetStorage();
+  }
 });
 
 // Periodically fetch pull requests and update the badge

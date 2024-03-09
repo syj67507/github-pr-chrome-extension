@@ -15,7 +15,7 @@ export default function ClearStorageSetting() {
           variant="contained"
           color="error"
           onClick={() => {
-            browser.clearStorage().catch(() => {
+            browser.resetStorage().catch(() => {
               console.error("Failed to clear storage.");
             });
           }}

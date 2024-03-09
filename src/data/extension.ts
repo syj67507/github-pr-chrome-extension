@@ -50,9 +50,9 @@ export async function getStorage(): Promise<Storage> {
 /**
  * Clears the storage values for this extension
  */
-export async function clearStorage(): Promise<void> {
+export async function resetStorage(): Promise<void> {
   await Browser.storage.sync.set({ [storageKey]: {} });
-  console.log("ghpr-ext cleared.");
+  console.log("ghpr-ext storage reset.");
 }
 
 /**
