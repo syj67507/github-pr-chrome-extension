@@ -6,7 +6,7 @@ require("regenerator-runtime");
  * The raw JSON response body when fetching a pull request from
  * GitHub's API
  */
-interface GitHubAPIPullRequest {
+interface PullRequestResponse {
   /** The title of the pull request */
   title: string;
   /** The description of the pull request */
@@ -20,6 +20,8 @@ interface GitHubAPIPullRequest {
     /** The login username */
     login: string;
   };
+  /** Indicates if this pull request is in draft */
+  draft: boolean;
 }
 
 export interface RepoData {
@@ -30,13 +32,13 @@ export interface RepoData {
   /** The url of the repo */
   url: StorageRepo["url"];
   /** All the pull requests open for this repo */
-  pullRequests: ParsedPullRequest[];
+  pullRequests: PullRequestData[];
 }
 
 /**
  * The parsed information of a pull request
  */
-export interface ParsedPullRequest {
+export interface PullRequestData {
   /** The title of the pull request */
   title: string;
   /** The description of the pull request */
@@ -49,6 +51,8 @@ export interface ParsedPullRequest {
   user: string;
   /** The url of the detected Jira ticket */
   jiraUrl?: string;
+  /** Indicates if this pull request is in draft */
+  draft: boolean;
 }
 
 /**
@@ -71,7 +75,7 @@ export default class GitHubClient {
   async getPullRequests(repo: {
     owner: string;
     name: string;
-  }): Promise<ParsedPullRequest[]> {
+  }): Promise<PullRequestData[]> {
     const headersList = {
       Accept: "application/json",
       Authorization: `token ${this.token}`,
@@ -91,13 +95,14 @@ export default class GitHubClient {
         throw new Error(data.message);
       }
 
-      return data.map((pullRequest: GitHubAPIPullRequest) => {
+      return data.map((pullRequest: PullRequestResponse) => {
         return {
           title: pullRequest.title,
           body: pullRequest.body !== null ? pullRequest.body : "",
           number: pullRequest.number,
           url: pullRequest.html_url,
           user: pullRequest.user.login,
+          draft: pullRequest.draft,
         };
       });
     } catch (error) {

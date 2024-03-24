@@ -3,10 +3,10 @@ import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
 import JiraIconButton from "./JiraIconButton";
 import GitHubIconButton from "./GitHubIconButton";
-import type { ParsedPullRequest } from "../../../../../data";
+import type { PullRequestData } from "../../../../../data";
 
 interface PullRequestProps {
-  pr: ParsedPullRequest;
+  pr: PullRequestData;
 }
 
 export default function PullRequest({ pr }: PullRequestProps) {
