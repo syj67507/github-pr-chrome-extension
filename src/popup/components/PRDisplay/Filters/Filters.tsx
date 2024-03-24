@@ -7,11 +7,16 @@ import Tooltip from "@mui/material/Tooltip";
 import React from "react";
 
 interface FiltersProps {
+  /** Object that contains the current state of user filters */
   filters: {
+    /** Determines whether to show the user's pull requests */
     showMine: boolean;
+    /** Determines whether or not to include drafts in the display */
     includeDrafts: boolean;
+    /** Text filter to look for pull requests that only have this text in it */
     textFilter: string;
   };
+  /** set function from the useState hook to set the state of the filters prop */
   setFilters: React.Dispatch<
     React.SetStateAction<{
       showMine: boolean;
