@@ -82,7 +82,7 @@ export default function PRDisplay() {
           });
 
           // Show only the users pull requests if specified by the user
-          if (filters.showMine) {
+          if (filters.showMine && username !== "") {
             filtered = filtered.filter(
               (pullRequest) => pullRequest.username === username
             );

@@ -201,20 +201,30 @@ export default class GitHubClient {
    * @return An object that holds various pieces of information about the current user
    */
   async getAuthenticatedUser(): Promise<AuthenticatedUserData> {
-    const headersList = {
-      Accept: "application/json",
-      Authorization: `token ${this.token}`,
-    };
+    try {
+      const headersList = {
+        Accept: "application/json",
+        Authorization: `token ${this.token}`,
+      };
 
-    const response = await fetch(`https://api.github.com/user`, {
-      method: "GET",
-      headers: headersList,
-    });
+      const response = await fetch(`https://api.github.com/user`, {
+        method: "GET",
+        headers: headersList,
+      });
 
-    const data: AuthenticatedUserResponse = await response.json();
+      if (response.status !== 200) {
+        throw new Error((await response.json()).message);
+      }
+      const data: AuthenticatedUserResponse = await response.json();
 
-    return {
-      username: data.login,
-    };
+      return {
+        username: data.login,
+      };
+    } catch (error) {
+      console.error("e");
+      return {
+        username: "",
+      };
+    }
   }
 }
