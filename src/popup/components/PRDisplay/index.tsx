@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import Stack from "@mui/material/Stack";
+import Typography from "@mui/material/Typography";
 import GitHubClient, { type RepoData } from "../../../data";
 import RepoSection from "./RepoSection";
 import Loading from "../Loading";
@@ -67,12 +68,9 @@ export default function PRDisplay() {
   return (
     <Stack width="100%">
       {/* Filtering search box */}
-
       <Filters filters={filters} setFilters={setFilters} />
-
       {loading && <Loading />}
       {/* TODO error message when fetching */}
-
       {data != null &&
         data.length > 0 &&
         data.map((repo) => {
@@ -103,6 +101,14 @@ export default function PRDisplay() {
             </RepoSection>
           );
         })}
+      {data != null && data.length === 0 && (
+        <Stack justifyContent="center" alignItems="center" padding={1}>
+          <Typography variant="body2" textAlign="center">
+            You don&apos;t have any repositories configured. Click on REPOS at
+            the top to configure some.
+          </Typography>
+        </Stack>
+      )}
     </Stack>
   );
 }
