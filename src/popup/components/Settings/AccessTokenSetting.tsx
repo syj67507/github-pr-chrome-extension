@@ -4,9 +4,18 @@ import Link from "@mui/material/Link";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import React, { useState } from "react";
+import { type AlertColor } from "@mui/material/Alert";
 import * as browser from "../../../data/extension";
 
-export default function AccessTokenSetting() {
+interface AccessTokenSettingProps {
+  setAlertType: React.Dispatch<React.SetStateAction<AlertColor | "none">>;
+  setAlertMessage: React.Dispatch<React.SetStateAction<string>>;
+}
+
+export default function AccessTokenSetting({
+  setAlertType,
+  setAlertMessage,
+}: AccessTokenSettingProps) {
   const [token, setToken] = useState("");
 
   return (
@@ -42,9 +51,18 @@ export default function AccessTokenSetting() {
         <Button
           variant="contained"
           onClick={() => {
-            browser.setToken(token).catch(() => {
-              console.error("Failed to save personal access token");
-            });
+            browser
+              .setToken(token)
+              .then(() => {
+                setAlertType("success");
+                setAlertMessage("Personal access token saved!");
+                setToken("");
+              })
+              .catch(() => {
+                console.error("Failed to save personal access token");
+                setAlertType("error");
+                setAlertMessage("Failed to save personal access token.");
+              });
           }}
           disabled={token === ""}
         >
