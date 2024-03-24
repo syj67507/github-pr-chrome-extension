@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import Stack from "@mui/material/Stack";
-import TextField from "@mui/material/TextField";
 import GitHubClient, { type RepoData } from "../../../data";
 import RepoSection from "./RepoSection";
 import Loading from "../Loading";
@@ -8,12 +7,16 @@ import { getToken, getRepositories, setBadge } from "../../../data/extension";
 import "regenerator-runtime";
 import PullRequest from "./RepoSection/PullRequest";
 import NoPullRequest from "./RepoSection/NoPullRequest";
+import Filters from "./Filters/Filters";
 
 export default function PRDisplay() {
   const [data, setData] = useState<RepoData[] | null>(null);
   const [loading, setLoading] = useState(true);
   // const [error, setError] = useState(false); // TODO display error
-  const [filter, setFilter] = useState("");
+  const [filters, setFilters] = useState({
+    showDrafts: false,
+    textFilter: "",
+  });
 
   // On popup load, we need to fetch all the PRs
   useEffect(() => {
@@ -52,17 +55,8 @@ export default function PRDisplay() {
   return (
     <Stack width="100%">
       {/* Filtering search box */}
-      <TextField
-        variant="standard"
-        placeholder="filter"
-        value={filter}
-        onChange={(e) => {
-          setFilter(e.target.value);
-        }}
-        inputProps={{
-          style: { textAlign: "center" },
-        }}
-      />
+
+      <Filters filters={filters} setFilters={setFilters} />
 
       {loading && <Loading />}
       {/* TODO error message when fetching */}
@@ -70,11 +64,17 @@ export default function PRDisplay() {
       {data != null &&
         data.length > 0 &&
         data.map((repo) => {
-          const filtered = repo.pullRequests.filter((pullRequest) =>
+          let filtered = repo.pullRequests.filter((pullRequest) =>
             JSON.stringify(pullRequest)
               .toLowerCase()
-              .includes(filter.toLowerCase())
+              .includes(filters.textFilter.toLowerCase())
           );
+
+          // Show draft pull requests if specified by the user
+          if (!filters.showDrafts) {
+            filtered = filtered.filter((pr) => !pr.draft);
+          }
+
           return (
             <RepoSection key={repo.url} repo={repo}>
               {filtered.length > 0

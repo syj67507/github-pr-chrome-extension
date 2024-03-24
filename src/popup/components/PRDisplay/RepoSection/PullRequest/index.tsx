@@ -20,6 +20,7 @@ export default function PullRequest({ pr }: PullRequestProps) {
         "&:hover": { bgcolor: "whitesmoke" },
       }}
       padding={1}
+      bgcolor={pr.draft ? "red" : "white"}
     >
       <GitHubIconButton pr={pr} />
       <JiraIconButton jiraUrl={pr.jiraUrl} />
