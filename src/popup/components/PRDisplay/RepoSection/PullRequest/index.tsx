@@ -3,10 +3,10 @@ import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
 import JiraIconButton from "./JiraIconButton";
 import GitHubIconButton from "./GitHubIconButton";
-import type { ParsedPullRequest } from "../../../../../data";
+import type { PullRequestData } from "../../../../../data";
 
 interface PullRequestProps {
-  pr: ParsedPullRequest;
+  pr: PullRequestData;
 }
 
 export default function PullRequest({ pr }: PullRequestProps) {
@@ -20,12 +20,13 @@ export default function PullRequest({ pr }: PullRequestProps) {
         "&:hover": { bgcolor: "whitesmoke" },
       }}
       padding={1}
+      color={pr.draft ? "#AAA" : "black"}
     >
       <GitHubIconButton pr={pr} />
       <JiraIconButton jiraUrl={pr.jiraUrl} />
       <Stack overflow="hidden">
         <Typography variant="caption" fontStyle="italic">
-          {pr.user}
+          {pr.username}
         </Typography>
         <Typography
           variant="caption"
@@ -35,6 +36,7 @@ export default function PullRequest({ pr }: PullRequestProps) {
             textOverflow: "ellipsis",
           }}
         >
+          {pr.draft && "DRAFT - "}
           {pr.title}
         </Typography>
       </Stack>

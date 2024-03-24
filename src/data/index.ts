@@ -6,7 +6,7 @@ require("regenerator-runtime");
  * The raw JSON response body when fetching a pull request from
  * GitHub's API
  */
-interface GitHubAPIPullRequest {
+interface PullRequestResponse {
   /** The title of the pull request */
   title: string;
   /** The description of the pull request */
@@ -20,6 +20,17 @@ interface GitHubAPIPullRequest {
     /** The login username */
     login: string;
   };
+  /** Indicates if this pull request is in draft */
+  draft: boolean;
+}
+
+/**
+ * The raw JSON response body when fetching the authenticated user from
+ * GitHub's API
+ */
+interface AuthenticatedUserResponse {
+  /** The login username */
+  login: string;
 }
 
 export interface RepoData {
@@ -30,13 +41,13 @@ export interface RepoData {
   /** The url of the repo */
   url: StorageRepo["url"];
   /** All the pull requests open for this repo */
-  pullRequests: ParsedPullRequest[];
+  pullRequests: PullRequestData[];
 }
 
 /**
  * The parsed information of a pull request
  */
-export interface ParsedPullRequest {
+export interface PullRequestData {
   /** The title of the pull request */
   title: string;
   /** The description of the pull request */
@@ -46,9 +57,19 @@ export interface ParsedPullRequest {
   /** The url of the pull request */
   url: StorageRepo["url"];
   /** The login username of the author of the pull request */
-  user: string;
+  username: string;
   /** The url of the detected Jira ticket */
   jiraUrl?: string;
+  /** Indicates if this pull request is in draft */
+  draft: boolean;
+}
+
+/**
+ * The parsed information of the Authenticated User
+ */
+interface AuthenticatedUserData {
+  /** The login username */
+  username: string;
 }
 
 /**
@@ -71,7 +92,7 @@ export default class GitHubClient {
   async getPullRequests(repo: {
     owner: string;
     name: string;
-  }): Promise<ParsedPullRequest[]> {
+  }): Promise<PullRequestData[]> {
     const headersList = {
       Accept: "application/json",
       Authorization: `token ${this.token}`,
@@ -91,13 +112,14 @@ export default class GitHubClient {
         throw new Error(data.message);
       }
 
-      return data.map((pullRequest: GitHubAPIPullRequest) => {
+      return data.map((pullRequest: PullRequestResponse) => {
         return {
           title: pullRequest.title,
           body: pullRequest.body !== null ? pullRequest.body : "",
           number: pullRequest.number,
           url: pullRequest.html_url,
-          user: pullRequest.user.login,
+          username: pullRequest.user.login,
+          draft: pullRequest.draft,
         };
       });
     } catch (error) {
@@ -170,5 +192,39 @@ export default class GitHubClient {
     });
 
     return Promise.all(reposDataWithPullRequests);
+  }
+
+  /**
+   * Fetches the authenticated user's information from the configured
+   * personal access token that is passed into this client upon calling the
+   * constructor.
+   * @return An object that holds various pieces of information about the current user
+   */
+  async getAuthenticatedUser(): Promise<AuthenticatedUserData> {
+    try {
+      const headersList = {
+        Accept: "application/json",
+        Authorization: `token ${this.token}`,
+      };
+
+      const response = await fetch(`https://api.github.com/user`, {
+        method: "GET",
+        headers: headersList,
+      });
+
+      if (response.status !== 200) {
+        throw new Error((await response.json()).message);
+      }
+      const data: AuthenticatedUserResponse = await response.json();
+
+      return {
+        username: data.login,
+      };
+    } catch (error) {
+      console.error("e");
+      return {
+        username: "",
+      };
+    }
   }
 }

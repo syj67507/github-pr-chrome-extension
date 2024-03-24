@@ -4,24 +4,15 @@ import AccordionSummary from "@mui/material/AccordionSummary";
 import AccordionDetails from "@mui/material/AccordionDetails";
 import Box from "@mui/material/Box";
 import Stack from "@mui/material/Stack";
-import PullRequest from "./PullRequest";
-import RepoTitle from "./RepoTitle";
-import NoPullRequest from "./NoPullRequest";
+import RepoHeader from "./RepoHeader";
 import { type RepoData } from "../../../../data";
 
-interface RepoSectionProps {
+interface RepoSectionProps extends React.PropsWithChildren {
   /** The data of the repo to show for this section */
   repo: RepoData;
-  /** The string to filter what pull requests to show for this repo section */
-  filter: string;
 }
 
-export default function RepoSection({ repo, filter }: RepoSectionProps) {
-  const { pullRequests } = repo;
-  const prsToShow = pullRequests.filter((pullRequest) =>
-    JSON.stringify(pullRequest).toLowerCase().includes(filter.toLowerCase())
-  );
-
+export default function RepoSection({ repo, children }: RepoSectionProps) {
   return (
     <Box>
       <Accordion elevation={0} disableGutters square>
@@ -45,7 +36,7 @@ export default function RepoSection({ repo, filter }: RepoSectionProps) {
               },
             }}
           >
-            <RepoTitle repo={repo} />
+            <RepoHeader repo={repo} />
           </Stack>
         </AccordionSummary>
         <AccordionDetails
@@ -55,14 +46,8 @@ export default function RepoSection({ repo, filter }: RepoSectionProps) {
           }}
         >
           <Stack width="100%" spacing={0}>
-            {prsToShow !== undefined &&
-              prsToShow.length > 0 &&
-              prsToShow.map((pullRequest) => (
-                <PullRequest key={pullRequest.url} pr={pullRequest} />
-              ))}
-            {prsToShow !== undefined && prsToShow.length <= 0 && (
-              <NoPullRequest repo={repo} />
-            )}
+            {/* Children here are intended to be the pull request components */}
+            {children}
           </Stack>
         </AccordionDetails>
       </Accordion>

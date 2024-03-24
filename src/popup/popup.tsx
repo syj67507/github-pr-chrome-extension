@@ -8,8 +8,10 @@ import PRDisplay from "./components/PRDisplay";
 import Settings from "./components/Settings";
 import RepoOptions from "./components/RepoOptions";
 
+type Page = "PR" | "Repos" | "Settings";
+
 function Popup() {
-  const [page, setPage] = useState("PR");
+  const [page, setPage] = useState<Page>("PR");
 
   return (
     <Stack
@@ -59,7 +61,7 @@ function Popup() {
         <Button
           sx={{
             color: "whitesmoke",
-            bgcolor: page === "Add" ? "#000" : undefined,
+            bgcolor: page === "Repos" ? "#000" : undefined,
           }}
           onClick={() => {
             setPage("Repos");

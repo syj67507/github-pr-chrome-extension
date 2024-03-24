@@ -151,7 +151,6 @@ export async function getToken(): Promise<Storage["token"]> {
  * @param {string} text The contents of the badge, will be converted into a string
  */
 export async function setBadge(text: number): Promise<void> {
-  console.log(Browser.browserAction);
   const browserAction =
     Browser.browserAction !== undefined
       ? Browser.browserAction

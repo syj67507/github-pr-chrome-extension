@@ -3,10 +3,10 @@ import IconButton from "@mui/material/IconButton";
 import Tooltip from "@mui/material/Tooltip";
 import GitHubIcon from "@mui/icons-material/GitHub";
 import { createTab } from "../../../../../data/extension";
-import type { ParsedPullRequest } from "../../../../../data/index";
+import type { PullRequestData } from "../../../../../data/index";
 
 interface GitHubIconButtonProps {
-  pr: ParsedPullRequest;
+  pr: PullRequestData;
 }
 
 export default function GitHubIconButton({ pr }: GitHubIconButtonProps) {
