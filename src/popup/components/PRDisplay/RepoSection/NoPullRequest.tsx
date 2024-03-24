@@ -2,14 +2,13 @@ import React from "react";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import { createTab } from "../../../../data/extension";
-import { type RepoData } from "../../../../data";
 
 interface NoPullRequestProps {
-  /** The data of the repo to show for this section */
-  repo: RepoData;
+  /** The url of the repo for this display component */
+  url: string;
 }
 
-export default function NoPullRequest({ repo }: NoPullRequestProps) {
+export default function NoPullRequest({ url }: NoPullRequestProps) {
   return (
     <Box
       sx={{
@@ -22,8 +21,8 @@ export default function NoPullRequest({ repo }: NoPullRequestProps) {
         },
       }}
       onClick={() => {
-        createTab(`${repo.url}/pulls`).catch(() => {
-          console.error(`failed to create tab with url: ${repo.url}/pulls`);
+        createTab(`${url}/pulls`).catch(() => {
+          console.error(`failed to create tab with url: ${url}/pulls`);
         });
       }}
     >

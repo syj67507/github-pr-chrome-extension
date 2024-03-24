@@ -6,6 +6,8 @@ import RepoSection from "./RepoSection";
 import Loading from "../Loading";
 import { getToken, getRepositories, setBadge } from "../../../data/extension";
 import "regenerator-runtime";
+import PullRequest from "./RepoSection/PullRequest";
+import NoPullRequest from "./RepoSection/NoPullRequest";
 
 export default function PRDisplay() {
   const [data, setData] = useState<RepoData[] | null>(null);
@@ -22,8 +24,8 @@ export default function PRDisplay() {
         const token = await getToken();
         const client = new GitHubClient(token);
 
-        const repos = await getRepositories();
-        const reposData = await client.getRepoData(repos);
+        const storageRepos = await getRepositories();
+        const reposData = await client.getRepoData(storageRepos);
 
         setData(reposData);
         setLoading(false);
@@ -49,30 +51,38 @@ export default function PRDisplay() {
 
   return (
     <Stack width="100%">
+      {/* Filtering search box */}
+      <TextField
+        variant="standard"
+        placeholder="filter"
+        value={filter}
+        onChange={(e) => {
+          setFilter(e.target.value);
+        }}
+        inputProps={{
+          style: { textAlign: "center" },
+        }}
+      />
+
       {loading && <Loading />}
       {/* TODO error message when fetching */}
-
-      {/* Filtering search box */}
-      {data != null && data.length > 0 && (
-        <TextField
-          variant="standard"
-          placeholder="filter"
-          value={filter}
-          onChange={(e) => {
-            setFilter(e.target.value);
-          }}
-          inputProps={{
-            style: { textAlign: "center" },
-          }}
-        />
-      )}
 
       {data != null &&
         data.length > 0 &&
         data.map((repo) => {
-          return <RepoSection key={repo.url} repo={repo} filter={filter} />;
+          const filtered = repo.pullRequests.filter((pullRequest) =>
+            JSON.stringify(pullRequest)
+              .toLowerCase()
+              .includes(filter.toLowerCase())
+          );
+          return (
+            <RepoSection key={repo.url} repo={repo}>
+              {filtered.length > 0
+                ? filtered.map((pr) => <PullRequest key={pr.url} pr={pr} />)
+                : filtered.length === 0 && <NoPullRequest url={repo.url} />}
+            </RepoSection>
+          );
         })}
-      {/* TODO Nothing to show when data.length === 0 */}
     </Stack>
   );
 }

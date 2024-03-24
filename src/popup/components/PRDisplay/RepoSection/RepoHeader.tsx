@@ -12,7 +12,7 @@ interface RepoTitleProps {
   repo: RepoData;
 }
 
-export default function RepoTitle({ repo }: RepoTitleProps) {
+export default function RepoHeader({ repo }: RepoTitleProps) {
   return (
     <Box
       sx={{
