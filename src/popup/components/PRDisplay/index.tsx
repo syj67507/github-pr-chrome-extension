@@ -10,11 +10,13 @@ import NoPullRequest from "./RepoSection/NoPullRequest";
 import Filters from "./Filters/Filters";
 
 export default function PRDisplay() {
+  const [username, setUsername] = useState("");
   const [data, setData] = useState<RepoData[] | null>(null);
   const [loading, setLoading] = useState(true);
   // const [error, setError] = useState(false); // TODO display error
   const [filters, setFilters] = useState({
-    showDrafts: false,
+    includeDrafts: true,
+    showMine: false,
     textFilter: "",
   });
 
@@ -27,9 +29,18 @@ export default function PRDisplay() {
         const token = await getToken();
         const client = new GitHubClient(token);
 
+        // Fetch data
         const storageRepos = await getRepositories();
-        const reposData = await client.getRepoData(storageRepos);
+        const userPromise = client.getAuthenticatedUser();
+        const reposDataPromise = client.getRepoData(storageRepos);
 
+        // Using promise all to make calls in parallel
+        const [user, reposData] = await Promise.all([
+          userPromise,
+          reposDataPromise,
+        ]);
+
+        setUsername(user.username);
         setData(reposData);
         setLoading(false);
 
@@ -45,6 +56,7 @@ export default function PRDisplay() {
         console.error(e);
         setLoading(false);
         setData(null);
+        setUsername("");
       }
     }
     getPRs().catch((e) => {
@@ -64,15 +76,23 @@ export default function PRDisplay() {
       {data != null &&
         data.length > 0 &&
         data.map((repo) => {
-          let filtered = repo.pullRequests.filter((pullRequest) =>
-            JSON.stringify(pullRequest)
+          // Show only those pull requests that contain the text filter
+          let filtered = repo.pullRequests.filter((pullRequest) => {
+            return JSON.stringify(Object.values(pullRequest))
               .toLowerCase()
-              .includes(filters.textFilter.toLowerCase())
-          );
+              .includes(filters.textFilter.toLowerCase());
+          });
+
+          // Show only the users pull requests if specified by the user
+          if (filters.showMine) {
+            filtered = filtered.filter(
+              (pullRequest) => pullRequest.username === username
+            );
+          }
 
           // Show draft pull requests if specified by the user
-          if (!filters.showDrafts) {
-            filtered = filtered.filter((pr) => !pr.draft);
+          if (!filters.includeDrafts) {
+            filtered = filtered.filter((pullRequest) => !pullRequest.draft);
           }
 
           return (

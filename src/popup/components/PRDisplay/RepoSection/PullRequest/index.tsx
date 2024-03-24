@@ -20,13 +20,13 @@ export default function PullRequest({ pr }: PullRequestProps) {
         "&:hover": { bgcolor: "whitesmoke" },
       }}
       padding={1}
-      bgcolor={pr.draft ? "red" : "white"}
+      color={pr.draft ? "#AAA" : "black"}
     >
       <GitHubIconButton pr={pr} />
       <JiraIconButton jiraUrl={pr.jiraUrl} />
       <Stack overflow="hidden">
         <Typography variant="caption" fontStyle="italic">
-          {pr.user}
+          {pr.username}
         </Typography>
         <Typography
           variant="caption"
@@ -36,6 +36,7 @@ export default function PullRequest({ pr }: PullRequestProps) {
             textOverflow: "ellipsis",
           }}
         >
+          {pr.draft && "DRAFT - "}
           {pr.title}
         </Typography>
       </Stack>

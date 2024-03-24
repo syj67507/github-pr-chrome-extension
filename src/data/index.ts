@@ -24,6 +24,15 @@ interface PullRequestResponse {
   draft: boolean;
 }
 
+/**
+ * The raw JSON response body when fetching the authenticated user from
+ * GitHub's API
+ */
+interface AuthenticatedUserResponse {
+  /** The login username */
+  login: string;
+}
+
 export interface RepoData {
   /** The owner of the repo */
   owner: string;
@@ -48,11 +57,19 @@ export interface PullRequestData {
   /** The url of the pull request */
   url: StorageRepo["url"];
   /** The login username of the author of the pull request */
-  user: string;
+  username: string;
   /** The url of the detected Jira ticket */
   jiraUrl?: string;
   /** Indicates if this pull request is in draft */
   draft: boolean;
+}
+
+/**
+ * The parsed information of the Authenticated User
+ */
+interface AuthenticatedUserData {
+  /** The login username */
+  username: string;
 }
 
 /**
@@ -101,7 +118,7 @@ export default class GitHubClient {
           body: pullRequest.body !== null ? pullRequest.body : "",
           number: pullRequest.number,
           url: pullRequest.html_url,
-          user: pullRequest.user.login,
+          username: pullRequest.user.login,
           draft: pullRequest.draft,
         };
       });
@@ -175,5 +192,29 @@ export default class GitHubClient {
     });
 
     return Promise.all(reposDataWithPullRequests);
+  }
+
+  /**
+   * Fetches the authenticated user's information from the configured
+   * personal access token that is passed into this client upon calling the
+   * constructor.
+   * @return An object that holds various pieces of information about the current user
+   */
+  async getAuthenticatedUser(): Promise<AuthenticatedUserData> {
+    const headersList = {
+      Accept: "application/json",
+      Authorization: `token ${this.token}`,
+    };
+
+    const response = await fetch(`https://api.github.com/user`, {
+      method: "GET",
+      headers: headersList,
+    });
+
+    const data: AuthenticatedUserResponse = await response.json();
+
+    return {
+      username: data.login,
+    };
   }
 }

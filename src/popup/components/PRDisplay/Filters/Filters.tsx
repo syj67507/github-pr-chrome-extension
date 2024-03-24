@@ -1,14 +1,21 @@
+import { Typography } from "@mui/material";
 import Checkbox from "@mui/material/Checkbox";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Stack from "@mui/material/Stack";
 import TextField from "@mui/material/TextField";
+import Tooltip from "@mui/material/Tooltip";
 import React from "react";
 
 interface FiltersProps {
-  filters: { showDrafts: boolean; textFilter: string };
+  filters: {
+    showMine: boolean;
+    includeDrafts: boolean;
+    textFilter: string;
+  };
   setFilters: React.Dispatch<
     React.SetStateAction<{
-      showDrafts: boolean;
+      showMine: boolean;
+      includeDrafts: boolean;
       textFilter: string;
     }>
   >;
@@ -16,7 +23,11 @@ interface FiltersProps {
 
 export default function Filters({ filters, setFilters }: FiltersProps) {
   return (
-    <Stack>
+    <Stack
+      sx={{
+        borderBottom: "1px solid whitesmoke",
+      }}
+    >
       <TextField
         variant="standard"
         placeholder="filter"
@@ -35,21 +46,52 @@ export default function Filters({ filters, setFilters }: FiltersProps) {
         }}
       />
       <Stack paddingX={1} direction="row" justifyContent="space-evenly">
-        <FormControlLabel
-          label="Show Drafts"
-          control={
-            <Checkbox
-              checked={filters.showDrafts}
-              onChange={() => {
-                setFilters({
-                  ...filters,
-                  showDrafts: !filters.showDrafts,
-                });
-              }}
-              inputProps={{ "aria-label": "controlled" }}
-            />
-          }
-        />
+        <Tooltip
+          title="If checked, then the pull requests displayed will include those that are marked as drafts"
+          followCursor
+          disableInteractive
+          enterDelay={500}
+          enterNextDelay={500}
+        >
+          <FormControlLabel
+            label={<Typography variant="caption">Include Drafts</Typography>}
+            control={
+              <Checkbox
+                checked={filters.includeDrafts}
+                onChange={() => {
+                  setFilters({
+                    ...filters,
+                    includeDrafts: !filters.includeDrafts,
+                  });
+                }}
+                inputProps={{ "aria-label": "controlled" }}
+              />
+            }
+          />
+        </Tooltip>
+        <Tooltip
+          title="If checked, then only your pull requests will be shown"
+          followCursor
+          disableInteractive
+          enterDelay={500}
+          enterNextDelay={500}
+        >
+          <FormControlLabel
+            label={<Typography variant="caption">Show Mine</Typography>}
+            control={
+              <Checkbox
+                checked={filters.showMine}
+                onChange={() => {
+                  setFilters({
+                    ...filters,
+                    showMine: !filters.showMine,
+                  });
+                }}
+                inputProps={{ "aria-label": "controlled" }}
+              />
+            }
+          />
+        </Tooltip>
       </Stack>
     </Stack>
   );
