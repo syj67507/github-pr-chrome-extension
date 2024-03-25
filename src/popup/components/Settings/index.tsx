@@ -11,17 +11,16 @@ export default function Settings() {
   return (
     <Stack width="100%">
       {alertType !== "none" && (
-        <Alert
-          severity={alertType}
-          onClose={() => {
-            setAlertType("none");
-          }}
-          sx={{
-            margin: 1,
-          }}
-        >
-          {alertMessage}
-        </Alert>
+        <Stack padding={1}>
+          <Alert
+            severity={alertType}
+            onClose={() => {
+              setAlertType("none");
+            }}
+          >
+            {alertMessage} - Shams
+          </Alert>
+        </Stack>
       )}
       <AccessTokenSetting
         setAlertType={setAlertType}
