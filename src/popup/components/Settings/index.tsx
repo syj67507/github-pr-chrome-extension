@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import Alert, { type AlertColor } from "@mui/material/Alert";
 import Stack from "@mui/material/Stack";
-import ClearStorageSetting from "./ClearStorageSetting";
+import ResetStorageSetting from "./ResetStorageSetting";
 import AccessTokenSetting from "./AccessTokenSetting";
 
 export default function Settings() {
@@ -18,7 +18,7 @@ export default function Settings() {
               setAlertType("none");
             }}
           >
-            {alertMessage} - Shams
+            {alertMessage}
           </Alert>
         </Stack>
       )}
@@ -26,7 +26,7 @@ export default function Settings() {
         setAlertType={setAlertType}
         setAlertMessage={setAlertMessage}
       />
-      <ClearStorageSetting
+      <ResetStorageSetting
         setAlertType={setAlertType}
         setAlertMessage={setAlertMessage}
       />

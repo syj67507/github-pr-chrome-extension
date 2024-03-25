@@ -10,7 +10,7 @@ interface ClearStorageSettingProps {
   setAlertMessage: React.Dispatch<React.SetStateAction<string>>;
 }
 
-export default function ClearStorageSetting({
+export default function ResetStorageSetting({
   setAlertType,
   setAlertMessage,
 }: ClearStorageSettingProps) {
