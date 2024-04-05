@@ -30,11 +30,20 @@ export default function Filters({ filters, setFilters }: FiltersProps) {
   return (
     <Stack
       sx={{
-        borderBottom: "1px solid whitesmoke",
+        width: "100%",
+        display: "flex",
+        flexDirection: "column",
+        // borderBottom: "1px solid whitesmoke",
+        borderRadius: 2,
+        // color: "white",
+        bgcolor: "white",
+        padding: 1,
+        boxShadow: "1px 1px 3px black",
       }}
     >
       <TextField
-        variant="standard"
+        variant="outlined"
+        size="small"
         placeholder="filter"
         value={filters.textFilter}
         onChange={(e) => {
@@ -44,13 +53,14 @@ export default function Filters({ filters, setFilters }: FiltersProps) {
           });
         }}
         inputProps={{
-          style: { textAlign: "center" },
+            style: { textAlign: "center", padding: 4 },
         }}
         sx={{
           bgcolor: "white",
+
         }}
       />
-      <Stack paddingX={1} direction="row" justifyContent="space-evenly">
+      <Stack paddingX={1} display="flex" flexDirection="row" justifyContent="flex-start">
         <Tooltip
           title="If checked, then the pull requests displayed will include those that are marked as drafts"
           followCursor
@@ -72,6 +82,9 @@ export default function Filters({ filters, setFilters }: FiltersProps) {
                 inputProps={{ "aria-label": "controlled" }}
               />
             }
+            sx={{
+              flex: 1
+            }}
           />
         </Tooltip>
         <Tooltip
@@ -82,6 +95,9 @@ export default function Filters({ filters, setFilters }: FiltersProps) {
           enterNextDelay={500}
         >
           <FormControlLabel
+            sx={{
+              flex: 1
+            }}
             label={<Typography variant="caption">Show Mine</Typography>}
             control={
               <Checkbox

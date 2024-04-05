@@ -1,7 +1,5 @@
-import React from "react";
-import Accordion from "@mui/material/Accordion";
-import AccordionSummary from "@mui/material/AccordionSummary";
-import AccordionDetails from "@mui/material/AccordionDetails";
+import React, { useState } from "react";
+import Collapse from "@mui/material/Collapse";
 import Box from "@mui/material/Box";
 import Stack from "@mui/material/Stack";
 import RepoHeader from "./RepoHeader";
@@ -13,44 +11,51 @@ interface RepoSectionProps extends React.PropsWithChildren {
 }
 
 export default function RepoSection({ repo, children }: RepoSectionProps) {
+  const [isOpen, setIsOpen] = useState(false);
+
   return (
-    <Box>
-      <Accordion elevation={0} disableGutters square>
-        <AccordionSummary
-          sx={{
-            padding: 0,
-            "& .MuiAccordionSummary-content": {
-              margin: 0,
-            },
+    <Box
+      sx={{
+        width: "100%",
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        justifyContent: "center",
+        boxShadow: "1px 1px 3px black",
+        borderRadius: 2,
+        bgcolor: "white",
+      }}
+    >
+      <Stack
+        width="100%"
+        display="flex"
+        flexDirection="row"
+        alignItems="center"
+        bgcolor="#222"
+        color="whitesmoke"
+        sx={{
+          borderRadius: "inherit", // makes sure the corners aren't overriden back to right angles
+          "&:hover": {
+            cursor: "pointer",
+            bgcolor: "#101",
+          },
+        }}
+      >
+        <RepoHeader
+          repo={repo}
+          onOpen={() => {
+            setIsOpen(!isOpen);
           }}
-        >
-          <Stack
-            width="100%"
-            display="flex"
-            flexDirection="row"
-            alignItems="center"
-            sx={{
-              "&:hover": {
-                cursor: "pointer",
-                bgcolor: "whitesmoke",
-              },
-            }}
-          >
-            <RepoHeader repo={repo} />
-          </Stack>
-        </AccordionSummary>
-        <AccordionDetails
-          sx={{
-            margin: 0,
-            padding: 0,
-          }}
-        >
+        />
+      </Stack>
+      <Stack width="100%">
+        <Collapse in={isOpen} timeout={500}>
           <Stack width="100%" spacing={0}>
             {/* Children here are intended to be the pull request components */}
             {children}
           </Stack>
-        </AccordionDetails>
-      </Accordion>
+        </Collapse>
+      </Stack>
     </Box>
   );
 }

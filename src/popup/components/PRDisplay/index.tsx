@@ -66,11 +66,14 @@ export default function PRDisplay() {
   }, []);
 
   return (
-    <Stack width="100%">
+    <Stack width="100%" bgcolor="whitesmoke">
       {/* Filtering search box */}
-      <Filters filters={filters} setFilters={setFilters} />
+      <Stack width="100%" padding={1} display="flex" flexDirection="column" alignItems="center">
+        <Filters filters={filters} setFilters={setFilters} />
+      </Stack>
       {loading && <Loading />}
       {/* TODO error message when fetching */}
+      <Stack width="100%" padding={1} spacing={1}>
       {data != null &&
         data.length > 0 &&
         data.map((repo) => {
@@ -101,6 +104,7 @@ export default function PRDisplay() {
             </RepoSection>
           );
         })}
+      </Stack>
       {data != null && data.length === 0 && (
         <Stack justifyContent="center" alignItems="center" padding={1}>
           <Typography variant="body2" textAlign="center">

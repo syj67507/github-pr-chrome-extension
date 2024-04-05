@@ -41,17 +41,21 @@ function Popup() {
         sx={{
           width: "100%",
           padding: 1.5,
-          background: "linear-gradient(#222, #000)",
+          background: "#111",
           display: "flex",
           justifyContent: "center",
         }}
       >
         <Button
-          // variant="h6"
           sx={{
             color: "whitesmoke",
+            borderRadius: 2,
             bgcolor: page === "PR" ? "#000" : undefined,
+            "&:hover": {
+              bgcolor: "#222",
+            },
           }}
+          disableRipple
           onClick={() => {
             setPage("PR");
           }}
@@ -62,7 +66,11 @@ function Popup() {
           sx={{
             color: "whitesmoke",
             bgcolor: page === "Repos" ? "#000" : undefined,
+            "&:hover": {
+              bgcolor: "#222",
+            },
           }}
+          disableRipple
           onClick={() => {
             setPage("Repos");
           }}
@@ -73,7 +81,11 @@ function Popup() {
           sx={{
             color: "whitesmoke",
             bgcolor: page === "Settings" ? "#000" : undefined,
+            "&:hover": {
+              bgcolor: "#222",
+            },
           }}
+          disableRipple
           onClick={() => {
             setPage("Settings");
           }}
