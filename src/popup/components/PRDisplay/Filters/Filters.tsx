@@ -5,6 +5,7 @@ import Stack from "@mui/material/Stack";
 import TextField from "@mui/material/TextField";
 import Tooltip from "@mui/material/Tooltip";
 import React from "react";
+import Card from "../../Card/Card";
 
 interface FiltersProps {
   /** Object that contains the current state of user filters */
@@ -28,19 +29,7 @@ interface FiltersProps {
 
 export default function Filters({ filters, setFilters }: FiltersProps) {
   return (
-    <Stack
-      sx={{
-        width: "100%",
-        display: "flex",
-        flexDirection: "column",
-        // borderBottom: "1px solid whitesmoke",
-        borderRadius: 2,
-        // color: "white",
-        bgcolor: "white",
-        padding: 1,
-        boxShadow: "1px 1px 3px black",
-      }}
-    >
+    <Card>
       <TextField
         variant="outlined"
         size="small"
@@ -53,14 +42,17 @@ export default function Filters({ filters, setFilters }: FiltersProps) {
           });
         }}
         inputProps={{
-            style: { textAlign: "center", padding: 4 },
+          style: { textAlign: "center", padding: 4 },
         }}
-        sx={{
-          bgcolor: "white",
-
-        }}
+        fullWidth
       />
-      <Stack paddingX={1} display="flex" flexDirection="row" justifyContent="flex-start">
+      <Stack
+        paddingX={1}
+        display="flex"
+        flexDirection="row"
+        justifyContent="flex-start"
+        width="100%"
+      >
         <Tooltip
           title="If checked, then the pull requests displayed will include those that are marked as drafts"
           followCursor
@@ -83,7 +75,7 @@ export default function Filters({ filters, setFilters }: FiltersProps) {
               />
             }
             sx={{
-              flex: 1
+              flex: 1,
             }}
           />
         </Tooltip>
@@ -96,7 +88,7 @@ export default function Filters({ filters, setFilters }: FiltersProps) {
         >
           <FormControlLabel
             sx={{
-              flex: 1
+              flex: 1,
             }}
             label={<Typography variant="caption">Show Mine</Typography>}
             control={
@@ -114,6 +106,6 @@ export default function Filters({ filters, setFilters }: FiltersProps) {
           />
         </Tooltip>
       </Stack>
-    </Stack>
+    </Card>
   );
 }

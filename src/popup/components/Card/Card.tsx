@@ -1,7 +1,13 @@
 import React from "react";
 import Box from "@mui/material/Box";
+import { type SxProps } from "@mui/material";
 
-export default function Card({ children }: React.PropsWithChildren) {
+interface CardProps extends React.PropsWithChildren {
+  /** sx properties that can be added or overridden to this card component */
+  sx?: SxProps;
+}
+
+export default function Card({ children, sx }: CardProps) {
   return (
     <Box
       sx={{
@@ -13,7 +19,7 @@ export default function Card({ children }: React.PropsWithChildren) {
         justifyContent: "center",
         boxShadow: "1px 1px 3px black",
         borderRadius: 2,
-        bgcolor: "white",
+        ...sx,
       }}
     >
       {children}

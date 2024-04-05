@@ -67,20 +67,12 @@ export default function PRDisplay() {
   }, []);
 
   return (
-    <Stack width="100%" bgcolor="whitesmoke">
+    <Stack width="100%" bgcolor="whitesmoke" padding={1} spacing={1}>
       {/* Filtering search box */}
-      <Stack
-        width="100%"
-        padding={1}
-        display="flex"
-        flexDirection="column"
-        alignItems="center"
-      >
-        <Filters filters={filters} setFilters={setFilters} />
-      </Stack>
+      <Filters filters={filters} setFilters={setFilters} />
       {loading && <Loading />}
       {/* TODO error message when fetching */}
-      <Stack width="100%" padding={1} spacing={1}>
+      <Stack width="100%" spacing={1}>
         {data != null &&
           data.length > 0 &&
           data.map((repo) => {

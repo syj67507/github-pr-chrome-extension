@@ -4,6 +4,7 @@ import Box from "@mui/material/Box";
 import Stack from "@mui/material/Stack";
 import RepoHeader from "./RepoHeader";
 import { type RepoData } from "../../../../data";
+import Card from "../../Card/Card";
 
 interface RepoSectionProps extends React.PropsWithChildren {
   /** The data of the repo to show for this section */
@@ -14,16 +15,9 @@ export default function RepoSection({ repo, children }: RepoSectionProps) {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <Box
+    <Card
       sx={{
-        width: "100%",
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-        justifyContent: "center",
-        boxShadow: "1px 1px 3px black",
-        borderRadius: 2,
-        bgcolor: "white",
+        padding: 0,
       }}
     >
       <Stack
@@ -31,10 +25,10 @@ export default function RepoSection({ repo, children }: RepoSectionProps) {
         display="flex"
         flexDirection="row"
         alignItems="center"
-        bgcolor="#222"
         color="whitesmoke"
         sx={{
-          borderRadius: "inherit", // makes sure the corners aren't overriden back to right angles
+          borderRadius: "inherit",
+          bgcolor: "#222",
           "&:hover": {
             cursor: "pointer",
             bgcolor: "#101",
@@ -48,7 +42,7 @@ export default function RepoSection({ repo, children }: RepoSectionProps) {
           }}
         />
       </Stack>
-      <Stack width="100%">
+      <Stack width="100%" bgcolor="white" borderRadius="inherit">
         <Collapse in={isOpen} timeout={500}>
           <Stack width="100%" spacing={0}>
             {/* Children here are intended to be the pull request components */}
@@ -56,6 +50,6 @@ export default function RepoSection({ repo, children }: RepoSectionProps) {
           </Stack>
         </Collapse>
       </Stack>
-    </Box>
+    </Card>
   );
 }
