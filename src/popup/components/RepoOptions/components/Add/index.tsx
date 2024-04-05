@@ -32,15 +32,14 @@ export default function Add({ onSave }: AddProps) {
       direction="column"
       alignItems="center"
       justifyContent="center"
-      borderBottom="1px solid whitesmoke"
     >
-      <Typography variant="body1" textAlign="center">
+      <Typography variant="body1" textAlign="left">
         Add a repository by filling out the following fields and clicking save.
       </Typography>
       <TextField
         label="Repository URL"
         placeholder="https://github.com/<username>/<repositoryName>"
-        variant="standard"
+        variant="outlined"
         value={repository}
         onChange={(e) => {
           setRepository(e.target.value);
@@ -51,7 +50,7 @@ export default function Add({ onSave }: AddProps) {
         label="(Optional) JIRA Project Tag"
         helperText="'TAG' as in TAG-1234"
         placeholder="TAG,PROJ,..."
-        variant="standard"
+        variant="outlined"
         value={rawJiraTags}
         onChange={(e) => {
           setRawJiraTags(e.target.value);
@@ -64,7 +63,7 @@ export default function Add({ onSave }: AddProps) {
           jiraDomain ?? "<domain>"
         }/browse/TAG-1234`}
         placeholder="https://jira.company.com"
-        variant="standard"
+        variant="outlined"
         value={jiraDomain}
         onChange={(e) => {
           setJiraDomain(e.target.value);

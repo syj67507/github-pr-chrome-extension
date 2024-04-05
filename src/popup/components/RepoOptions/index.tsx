@@ -31,14 +31,27 @@ export default function Repos() {
   }, []);
 
   return (
-    <Box>
-      <Add
-        onSave={async (repo, jiraTags, jiraDomain) => {
-          await addRepository(repo, jiraTags, jiraDomain);
-          setRepos(await getRepositories());
-          console.log(await getRepositories());
+    <Box
+      sx={{
+        bgcolor: "whitesmoke",
+      }}
+    >
+      <Box
+        sx={{
+          margin: 2, // temp
+          bgcolor: "white",
+          borderRadius: 2,
+          boxShadow: "1px 1px 3px black",
         }}
-      />
+      >
+        <Add
+          onSave={async (repo, jiraTags, jiraDomain) => {
+            await addRepository(repo, jiraTags, jiraDomain);
+            setRepos(await getRepositories());
+            console.log(await getRepositories());
+          }}
+        />
+      </Box>
       <Saved
         repos={repos}
         loading={loading}

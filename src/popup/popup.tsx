@@ -11,7 +11,7 @@ import RepoOptions from "./components/RepoOptions";
 type Page = "PR" | "Repos" | "Settings";
 
 function Popup() {
-  const [page, setPage] = useState<Page>("PR");
+  const [page, setPage] = useState<Page>("Repos");
 
   return (
     <Stack

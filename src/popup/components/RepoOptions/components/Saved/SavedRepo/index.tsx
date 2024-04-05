@@ -26,11 +26,11 @@ export default function SavedRepo({ repo, onRemove, bgcolor }: SavedRepoProps) {
       {/* Saved information */}
       <Stack direction="column" alignItems="flex-start" width="100%">
         <Typography variant="caption">{repo.url}</Typography>
-        {repo.jiraDomain != null && (
-          <Typography variant="caption">{repo.jiraDomain}</Typography>
-        )}
         {repo.jiraTags != null && (
           <Typography variant="caption">{repo.jiraTags.join(",")}</Typography>
+        )}
+        {repo.jiraDomain != null && (
+          <Typography variant="caption">{repo.jiraDomain}</Typography>
         )}
       </Stack>
 
