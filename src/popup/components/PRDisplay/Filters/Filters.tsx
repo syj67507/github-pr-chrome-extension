@@ -44,6 +44,9 @@ export default function Filters({ filters, setFilters }: FiltersProps) {
         inputProps={{
           style: { textAlign: "center", padding: 4 },
         }}
+        sx={{
+          paddingX: 1, // to make the width match with the rest of the alignment
+        }}
         fullWidth
       />
       <Stack
