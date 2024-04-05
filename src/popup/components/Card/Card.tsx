@@ -26,3 +26,7 @@ export default function Card({ children, sx }: CardProps) {
     </Box>
   );
 }
+
+Card.defaultProps = {
+  sx: {},
+};
