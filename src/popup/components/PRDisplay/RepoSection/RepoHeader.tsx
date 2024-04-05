@@ -10,9 +10,11 @@ import { type RepoData } from "../../../../data";
 interface RepoTitleProps {
   /** The data of the repo to show for this section */
   repo: RepoData;
+  /** The function to execute when click the expand button */
+  onOpen: React.MouseEventHandler<HTMLButtonElement>;
 }
 
-export default function RepoHeader({ repo }: RepoTitleProps) {
+export default function RepoHeader({ repo, onOpen: onExpand }: RepoTitleProps) {
   return (
     <Box
       sx={{
@@ -20,27 +22,43 @@ export default function RepoHeader({ repo }: RepoTitleProps) {
         display: "flex",
         flexDirection: "row",
         padding: 1,
-        borderBottom: "1px solid whitesmoke",
       }}
     >
-      <Box
-        sx={{
-          display: "flex",
-          flexDirection: "row",
-          flex: 1,
-          justifyContent: "center",
-          gap: 1,
-        }}
-        onClick={() => {
-          createTab(repo.url).catch(() => {
-            console.error(`failed to create tab with url: ${repo.url}`);
-          });
-        }}
+      <Tooltip
+        title={`${repo.url}`}
+        followCursor
+        disableInteractive
+        enterDelay={1000}
       >
-        <Typography variant="subtitle1" sx={{ fontWeight: "bold" }}>
-          {`${repo.owner}/${repo.name}`}
-        </Typography>
-      </Box>
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: "row",
+            flex: 1,
+            justifyContent: "flex-start",
+            gap: 1,
+            overflow: "hidden",
+            paddingLeft: 1,
+          }}
+          onClick={() => {
+            createTab(repo.url).catch(() => {
+              console.error(`failed to create tab with url: ${repo.url}`);
+            });
+          }}
+        >
+          <Typography
+            variant="subtitle1"
+            sx={{
+              fontWeight: "bold",
+              overflow: "hidden",
+              whiteSpace: "nowrap",
+              textOverflow: "ellipsis",
+            }}
+          >
+            {repo.name}
+          </Typography>
+        </Box>
+      </Tooltip>
       <Tooltip
         title={`${repo.pullRequests.length} open`}
         followCursor
@@ -52,6 +70,9 @@ export default function RepoHeader({ repo }: RepoTitleProps) {
           }}
         >
           <IconButton
+            onClick={(e) => {
+              onExpand(e);
+            }}
             sx={{
               "&:hover": {
                 bgcolor: "transparent",
@@ -61,12 +82,12 @@ export default function RepoHeader({ repo }: RepoTitleProps) {
             <ExpandMoreIcon
               sx={{
                 fontSize: 16,
-                color: "rgba(119, 119, 119, 0.25)",
+                color: "white",
                 "&:hover": {
-                  color: "rgba(119, 119, 119, 0.75)",
+                  color: "white",
                 },
                 "&:active": {
-                  color: "rgba(119, 119, 119, 1)",
+                  color: "white",
                 },
               }}
             />
