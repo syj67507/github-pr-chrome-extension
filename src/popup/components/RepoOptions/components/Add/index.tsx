@@ -3,13 +3,13 @@ import Button from "@mui/material/Button";
 import Stack from "@mui/material/Stack";
 import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
-import { type StorageRepo } from "../../../../../data/extension";
+import { type ConfiguredRepo } from "../../../../../data/extension";
 
 interface AddProps {
   onSave: (
-    repo: StorageRepo["url"],
-    jiraTags: StorageRepo["jiraTags"],
-    jiraDomain: StorageRepo["jiraDomain"]
+    repo: ConfiguredRepo["url"],
+    jiraTags: ConfiguredRepo["jiraTags"],
+    jiraDomain: ConfiguredRepo["jiraDomain"]
   ) => Promise<void>;
 }
 
@@ -26,7 +26,6 @@ export default function Add({ onSave }: AddProps) {
 
   return (
     <Stack
-      padding={2}
       spacing={2}
       width="100%"
       direction="column"
@@ -34,10 +33,12 @@ export default function Add({ onSave }: AddProps) {
       justifyContent="center"
     >
       <Typography variant="body1" textAlign="left">
-        Add a repository by filling out the following fields and clicking save.
+        Add or update a repository by filling out the following fields and
+        clicking save.
       </Typography>
       <TextField
         label="Repository URL"
+        helperText="The homepage URL of the repository on GitHub"
         placeholder="https://github.com/<username>/<repositoryName>"
         variant="outlined"
         value={repository}
@@ -45,9 +46,10 @@ export default function Add({ onSave }: AddProps) {
           setRepository(e.target.value);
         }}
         fullWidth
+        size="small"
       />
       <TextField
-        label="(Optional) JIRA Project Tag"
+        label="(Optional) Jira Project Tag"
         helperText="'TAG' as in TAG-1234"
         placeholder="TAG,PROJ,..."
         variant="outlined"
@@ -56,10 +58,11 @@ export default function Add({ onSave }: AddProps) {
           setRawJiraTags(e.target.value);
         }}
         fullWidth
+        size="small"
       />
       <TextField
-        label="(Optional) JIRA Domain"
-        helperText={`Domain to build the url to JIRA ticket ${
+        label="(Optional) Jira Domain URL"
+        helperText={`Base URL domain to build the url to Jira ticket ${
           jiraDomain ?? "<domain>"
         }/browse/TAG-1234`}
         placeholder="https://jira.company.com"
@@ -69,6 +72,7 @@ export default function Add({ onSave }: AddProps) {
           setJiraDomain(e.target.value);
         }}
         fullWidth
+        size="small"
       />
       <Stack width="100%" direction="row" justifyContent="flex-end" spacing={2}>
         <Button

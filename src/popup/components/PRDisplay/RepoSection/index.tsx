@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import Collapse from "@mui/material/Collapse";
-import Box from "@mui/material/Box";
 import Stack from "@mui/material/Stack";
 import RepoHeader from "./RepoHeader";
 import { type RepoData } from "../../../../data";

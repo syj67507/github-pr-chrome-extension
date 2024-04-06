@@ -98,14 +98,16 @@ export default function PRDisplay() {
             return (
               <RepoSection key={repo.url} repo={repo}>
                 {filtered.length > 0
-                  ? filtered.map((pr) => <PullRequest key={pr.url} pr={pr} />)
+                  ? filtered.map((pr) => (
+                      <PullRequest key={pr.url} pr={pr} repo={repo} />
+                    ))
                   : filtered.length === 0 && <NoPullRequest url={repo.url} />}
               </RepoSection>
             );
           })}
         {data != null && data.length === 0 && (
           <Card>
-            <Typography variant="body2" textAlign="left">
+            <Typography variant="body1" textAlign="left">
               Configure a repository under the Repos menu to start viewing pull
               requests for your favorite repositories!
             </Typography>

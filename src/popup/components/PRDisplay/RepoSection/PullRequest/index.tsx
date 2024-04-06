@@ -3,13 +3,15 @@ import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
 import JiraIconButton from "./JiraIconButton";
 import GitHubIconButton from "./GitHubIconButton";
-import type { PullRequestData } from "../../../../../data";
+import type { PullRequestData, RepoData } from "../../../../../data";
 
 interface PullRequestProps {
   pr: PullRequestData;
+  repo: RepoData;
 }
 
-export default function PullRequest({ pr }: PullRequestProps) {
+export default function PullRequest({ pr, repo }: PullRequestProps) {
+  console.log(repo);
   return (
     <Stack
       direction="row"
@@ -23,7 +25,7 @@ export default function PullRequest({ pr }: PullRequestProps) {
       color={pr.draft ? "#AAA" : "black"}
     >
       <GitHubIconButton pr={pr} />
-      <JiraIconButton jiraUrl={pr.jiraUrl} />
+      {repo.isJiraConfigured && <JiraIconButton jiraUrl={pr.jiraUrl} />}
       <Stack overflow="hidden">
         <Typography variant="caption" fontStyle="italic">
           {pr.username}

@@ -1,18 +1,19 @@
 import "regenerator-runtime";
 import React, { useEffect, useState } from "react";
-import Box from "@mui/material/Box";
+import Stack from "@mui/material/Stack";
 import Add from "./components/Add";
 import Saved from "./components/Saved";
 import {
-  type StorageRepo,
+  type ConfiguredRepo,
   addRepository,
   getRepositories,
   getStorage,
   removeRepository,
 } from "../../../data/extension";
+import Card from "../Card/Card";
 
 export default function Repos() {
-  const [repos, setRepos] = useState<StorageRepo[] | null>(null);
+  const [repos, setRepos] = useState<ConfiguredRepo[] | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
 
@@ -31,17 +32,17 @@ export default function Repos() {
   }, []);
 
   return (
-    <Box
+    <Stack
       sx={{
         bgcolor: "whitesmoke",
+        padding: 1,
       }}
+      spacing={1}
     >
-      <Box
+      <Card
         sx={{
-          margin: 2, // temp
+          padding: 2,
           bgcolor: "white",
-          borderRadius: 2,
-          boxShadow: "1px 1px 3px black",
         }}
       >
         <Add
@@ -51,17 +52,25 @@ export default function Repos() {
             console.log(await getRepositories());
           }}
         />
-      </Box>
-      <Saved
-        repos={repos}
-        loading={loading}
-        error={error}
-        onRemove={async (repo) => {
-          console.log("onRemove", repo.url);
-          await removeRepository(repo.url);
-          setRepos(await getRepositories());
+      </Card>
+
+      <Card
+        sx={{
+          padding: 2,
+          bgcolor: "white",
         }}
-      />
-    </Box>
+      >
+        <Saved
+          repos={repos}
+          loading={loading}
+          error={error}
+          onRemove={async (repo) => {
+            console.log("onRemove", repo.url);
+            await removeRepository(repo.url);
+            setRepos(await getRepositories());
+          }}
+        />
+      </Card>
+    </Stack>
   );
 }
