@@ -1,7 +1,5 @@
 import React, { useState } from "react";
-import BackspaceIcon from "@mui/icons-material/Backspace";
 import Button from "@mui/material/Button";
-import SaveIcon from "@mui/icons-material/Save";
 import Stack from "@mui/material/Stack";
 import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
@@ -80,7 +78,6 @@ export default function Add({ onSave }: AddProps) {
         <Button
           variant="outlined"
           color="error"
-          // endIcon={<BackspaceIcon />}
           onClick={() => {
             setRepository("");
             setRawJiraTags("");
@@ -102,7 +99,6 @@ export default function Add({ onSave }: AddProps) {
         <Button
           variant="outlined"
           disabled={!saveEnabled}
-          // endIcon={<SaveIcon />}
           onClick={() => {
             // implementation of onSave passed in as prop from Repos component
             const jiraTagsSanizited =
