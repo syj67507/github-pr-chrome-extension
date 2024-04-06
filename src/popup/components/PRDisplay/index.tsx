@@ -110,7 +110,7 @@ export default function PRDisplay() {
             );
           })}
         {data != null && data.length === 0 && (
-          <Card>
+          <Card sx={{ bgcolor: "white" }}>
             <Typography variant="body1" textAlign="left">
               Configure a repository under the Repos menu to start viewing pull
               requests for your favorite repositories!

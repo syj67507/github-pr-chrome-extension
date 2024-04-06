@@ -1,35 +1,18 @@
-import React, { useState } from "react";
-import Alert, { type AlertColor } from "@mui/material/Alert";
+import React from "react";
 import Stack from "@mui/material/Stack";
+import Card from "../Card/Card";
 import ResetStorageSetting from "./ResetStorageSetting";
 import AccessTokenSetting from "./AccessTokenSetting";
 
 export default function Settings() {
-  const [alertType, setAlertType] = useState<AlertColor | "none">("none");
-  const [alertMessage, setAlertMessage] = useState("");
-
   return (
-    <Stack width="100%">
-      {alertType !== "none" && (
-        <Stack padding={1}>
-          <Alert
-            severity={alertType}
-            onClose={() => {
-              setAlertType("none");
-            }}
-          >
-            {alertMessage}
-          </Alert>
-        </Stack>
-      )}
-      <AccessTokenSetting
-        setAlertType={setAlertType}
-        setAlertMessage={setAlertMessage}
-      />
-      <ResetStorageSetting
-        setAlertType={setAlertType}
-        setAlertMessage={setAlertMessage}
-      />
+    <Stack width="100%" padding={1} spacing={1}>
+      <Card>
+        <AccessTokenSetting />
+      </Card>
+      <Card>
+        <ResetStorageSetting />
+      </Card>
     </Stack>
   );
 }

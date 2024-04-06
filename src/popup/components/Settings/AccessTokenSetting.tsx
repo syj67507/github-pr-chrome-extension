@@ -2,39 +2,27 @@ import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
 import Link from "@mui/material/Link";
 import TextField from "@mui/material/TextField";
-import Button from "@mui/material/Button";
 import React, { useState } from "react";
-import { type AlertColor } from "@mui/material/Alert";
+import Snackbar from "@mui/material/Snackbar";
 import * as browser from "../../../data/extension";
+import SaveButton from "../Buttons/SaveButton";
 
-interface AccessTokenSettingProps {
-  setAlertType: React.Dispatch<React.SetStateAction<AlertColor | "none">>;
-  setAlertMessage: React.Dispatch<React.SetStateAction<string>>;
-}
-
-export default function AccessTokenSetting({
-  setAlertType,
-  setAlertMessage,
-}: AccessTokenSettingProps) {
+export default function AccessTokenSetting() {
   const [token, setToken] = useState("");
+  const [open, setOpen] = useState(false);
+  const [toastMessage, setToastMessage] = useState("");
 
   return (
-    <Stack
-      direction="column"
-      width="100%"
-      padding={2}
-      spacing={2}
-      borderBottom="1px solid whitesmoke"
-    >
-      <Typography variant="body1" textAlign="center">
+    <Stack direction="column" width="100%" padding={1} spacing={2}>
+      <Typography variant="body1" textAlign="left">
         Set your personal access token here. Create you personal access token
         under Developer Settings in your GitHub account.
       </Typography>
       <Link
         target="_blank" // new tab
-        textAlign="center"
+        textAlign="left"
         variant="body1"
-        href="https://docs.github.com/en/enterprise-server@3.4/authentication/keeping-your-account-and-data-secure/creating-a-personal-access-token"
+        href="https://docs.github.com/en/enterprise-server@3.12/authentication/keeping-your-account-and-data-secure/managing-your-personal-access-tokens#creating-a-fine-grained-personal-access-token"
       >
         Click here for more information
       </Link>
@@ -48,27 +36,38 @@ export default function AccessTokenSetting({
         }}
       />
       <Stack width="100%" direction="row" justifyContent="flex-end" spacing={2}>
-        <Button
-          variant="contained"
+        <SaveButton
           onClick={() => {
             browser
               .setToken(token)
               .then(() => {
-                setAlertType("success");
-                setAlertMessage("Personal access token saved!");
+                setToastMessage("Personal access token saved!");
+                setOpen(true);
                 setToken("");
               })
               .catch(() => {
+                setToastMessage("Failed to save personal access token.");
+                setOpen(true);
                 console.error("Failed to save personal access token");
-                setAlertType("error");
-                setAlertMessage("Failed to save personal access token.");
               });
           }}
           disabled={token === ""}
-        >
-          Save
-        </Button>
+        />
       </Stack>
+      <Snackbar
+        anchorOrigin={{ vertical: "bottom", horizontal: "left" }}
+        open={open}
+        onClose={() => {
+          setOpen(false);
+        }}
+        key="bottomleft"
+        sx={{
+          width: "fit-content",
+          borderRadius: 10,
+        }}
+        autoHideDuration={2000}
+        message={toastMessage}
+      />
     </Stack>
   );
 }
