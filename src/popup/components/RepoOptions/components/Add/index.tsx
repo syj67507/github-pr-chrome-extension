@@ -1,9 +1,10 @@
 import React, { useState } from "react";
-import Button from "@mui/material/Button";
 import Stack from "@mui/material/Stack";
 import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
 import { type ConfiguredRepo } from "../../../../../data/extension";
+import SaveButton from "../../../Buttons/SaveButton";
+import ClearButton from "../../../Buttons/ClearButton";
 
 interface AddProps {
   onSave: (
@@ -75,29 +76,14 @@ export default function Add({ onSave }: AddProps) {
         size="small"
       />
       <Stack width="100%" direction="row" justifyContent="flex-end" spacing={2}>
-        <Button
-          variant="outlined"
-          color="error"
+        <ClearButton
           onClick={() => {
             setRepository("");
             setRawJiraTags("");
             setJiraDomain("");
           }}
-          disableRipple
-          sx={{
-            borderRadius: 2,
-            textTransform: "none",
-            color: "#555a78",
-            bgcolor: "#f3fbfb",
-            "&:hover": {
-              bgcolor: "#f3fbfb",
-            },
-          }}
-        >
-          Clear
-        </Button>
-        <Button
-          variant="outlined"
+        />
+        <SaveButton
           disabled={!saveEnabled}
           onClick={() => {
             // implementation of onSave passed in as prop from Repos component
@@ -109,28 +95,13 @@ export default function Add({ onSave }: AddProps) {
               (e) => {
                 console.error(
                   `failed to save repo ${repository}, ${jiraDomain}, ${rawJiraTags}
-                  }`,
+                          }`,
                   e
                 );
               }
             );
           }}
-          disableRipple
-          sx={{
-            borderRadius: 2,
-            textTransform: "none",
-            color: "white",
-            bgcolor: "#1f883d",
-            "&:hover": {
-              bgcolor: "#1c823b",
-            },
-            "&.Mui-disabled": {
-              bgcolor: "white",
-            },
-          }}
-        >
-          Save
-        </Button>
+        />
       </Stack>
     </Stack>
   );

@@ -2,10 +2,10 @@ import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
 import Link from "@mui/material/Link";
 import TextField from "@mui/material/TextField";
-import Button from "@mui/material/Button";
 import React, { useState } from "react";
 import Snackbar from "@mui/material/Snackbar";
 import * as browser from "../../../data/extension";
+import SaveButton from "../Buttons/SaveButton";
 
 export default function AccessTokenSetting() {
   const [token, setToken] = useState("");
@@ -36,8 +36,7 @@ export default function AccessTokenSetting() {
         }}
       />
       <Stack width="100%" direction="row" justifyContent="flex-end" spacing={2}>
-        <Button
-          variant="contained"
+        <SaveButton
           onClick={() => {
             browser
               .setToken(token)
@@ -53,9 +52,7 @@ export default function AccessTokenSetting() {
               });
           }}
           disabled={token === ""}
-        >
-          Save
-        </Button>
+        />
       </Stack>
       <Snackbar
         anchorOrigin={{ vertical: "bottom", horizontal: "left" }}

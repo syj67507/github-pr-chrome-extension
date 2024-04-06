@@ -1,9 +1,9 @@
 import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
-import Button from "@mui/material/Button";
 import React, { useState } from "react";
 import Snackbar from "@mui/material/Snackbar";
 import * as browser from "../../../data/extension";
+import ClearButton from "../Buttons/ClearButton";
 
 export default function ResetStorageSetting() {
   const [open, setOpen] = useState(false);
@@ -15,9 +15,7 @@ export default function ResetStorageSetting() {
         Any issues may stem from invalid storage data. Reset the storage here.
       </Typography>
       <Stack width="100%" direction="row" justifyContent="flex-end" spacing={2}>
-        <Button
-          variant="contained"
-          color="error"
+        <ClearButton
           onClick={() => {
             browser
               .resetStorage()
@@ -31,9 +29,7 @@ export default function ResetStorageSetting() {
                 console.error("Failed to reset storage.");
               });
           }}
-        >
-          Clear
-        </Button>
+        />
       </Stack>
       <Snackbar
         anchorOrigin={{ vertical: "bottom", horizontal: "left" }}

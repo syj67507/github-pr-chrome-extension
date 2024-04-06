@@ -29,7 +29,7 @@ interface FiltersProps {
 
 export default function Filters({ filters, setFilters }: FiltersProps) {
   return (
-    <Card>
+    <Card sx={{ bgcolor: "white" }}>
       <TextField
         variant="outlined"
         size="small"
