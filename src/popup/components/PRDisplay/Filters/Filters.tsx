@@ -5,6 +5,7 @@ import Stack from "@mui/material/Stack";
 import TextField from "@mui/material/TextField";
 import Tooltip from "@mui/material/Tooltip";
 import React from "react";
+import Card from "../../Card/Card";
 
 interface FiltersProps {
   /** Object that contains the current state of user filters */
@@ -28,13 +29,10 @@ interface FiltersProps {
 
 export default function Filters({ filters, setFilters }: FiltersProps) {
   return (
-    <Stack
-      sx={{
-        borderBottom: "1px solid whitesmoke",
-      }}
-    >
+    <Card>
       <TextField
-        variant="standard"
+        variant="outlined"
+        size="small"
         placeholder="filter"
         value={filters.textFilter}
         onChange={(e) => {
@@ -44,13 +42,20 @@ export default function Filters({ filters, setFilters }: FiltersProps) {
           });
         }}
         inputProps={{
-          style: { textAlign: "center" },
+          style: { textAlign: "center", padding: 4 },
         }}
         sx={{
-          bgcolor: "white",
+          paddingX: 1, // to make the width match with the rest of the alignment
         }}
+        fullWidth
       />
-      <Stack paddingX={1} direction="row" justifyContent="space-evenly">
+      <Stack
+        paddingX={1}
+        display="flex"
+        flexDirection="row"
+        justifyContent="flex-start"
+        width="100%"
+      >
         <Tooltip
           title="If checked, then the pull requests displayed will include those that are marked as drafts"
           followCursor
@@ -72,6 +77,9 @@ export default function Filters({ filters, setFilters }: FiltersProps) {
                 inputProps={{ "aria-label": "controlled" }}
               />
             }
+            sx={{
+              flex: 1,
+            }}
           />
         </Tooltip>
         <Tooltip
@@ -82,6 +90,9 @@ export default function Filters({ filters, setFilters }: FiltersProps) {
           enterNextDelay={500}
         >
           <FormControlLabel
+            sx={{
+              flex: 1,
+            }}
             label={<Typography variant="caption">Show Mine</Typography>}
             control={
               <Checkbox
@@ -98,6 +109,6 @@ export default function Filters({ filters, setFilters }: FiltersProps) {
           />
         </Tooltip>
       </Stack>
-    </Stack>
+    </Card>
   );
 }

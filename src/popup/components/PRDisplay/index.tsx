@@ -9,6 +9,7 @@ import "regenerator-runtime";
 import PullRequest from "./RepoSection/PullRequest";
 import NoPullRequest from "./RepoSection/NoPullRequest";
 import Filters from "./Filters/Filters";
+import Card from "../Card/Card";
 
 export default function PRDisplay() {
   const [username, setUsername] = useState("");
@@ -66,49 +67,51 @@ export default function PRDisplay() {
   }, []);
 
   return (
-    <Stack width="100%">
+    <Stack width="100%" bgcolor="whitesmoke" padding={1} spacing={1}>
       {/* Filtering search box */}
       <Filters filters={filters} setFilters={setFilters} />
       {loading && <Loading />}
       {/* TODO error message when fetching */}
-      {data != null &&
-        data.length > 0 &&
-        data.map((repo) => {
-          // Show only those pull requests that contain the text filter
-          let filtered = repo.pullRequests.filter((pullRequest) => {
-            return JSON.stringify(Object.values(pullRequest))
-              .toLowerCase()
-              .includes(filters.textFilter.toLowerCase());
-          });
+      <Stack width="100%" spacing={1}>
+        {data != null &&
+          data.length > 0 &&
+          data.map((repo) => {
+            // Show only those pull requests that contain the text filter
+            let filtered = repo.pullRequests.filter((pullRequest) => {
+              return JSON.stringify(Object.values(pullRequest))
+                .toLowerCase()
+                .includes(filters.textFilter.toLowerCase());
+            });
 
-          // Show only the users pull requests if specified by the user
-          if (filters.showMine && username !== "") {
-            filtered = filtered.filter(
-              (pullRequest) => pullRequest.username === username
+            // Show only the users pull requests if specified by the user
+            if (filters.showMine && username !== "") {
+              filtered = filtered.filter(
+                (pullRequest) => pullRequest.username === username
+              );
+            }
+
+            // Show draft pull requests if specified by the user
+            if (!filters.includeDrafts) {
+              filtered = filtered.filter((pullRequest) => !pullRequest.draft);
+            }
+
+            return (
+              <RepoSection key={repo.url} repo={repo}>
+                {filtered.length > 0
+                  ? filtered.map((pr) => <PullRequest key={pr.url} pr={pr} />)
+                  : filtered.length === 0 && <NoPullRequest url={repo.url} />}
+              </RepoSection>
             );
-          }
-
-          // Show draft pull requests if specified by the user
-          if (!filters.includeDrafts) {
-            filtered = filtered.filter((pullRequest) => !pullRequest.draft);
-          }
-
-          return (
-            <RepoSection key={repo.url} repo={repo}>
-              {filtered.length > 0
-                ? filtered.map((pr) => <PullRequest key={pr.url} pr={pr} />)
-                : filtered.length === 0 && <NoPullRequest url={repo.url} />}
-            </RepoSection>
-          );
-        })}
-      {data != null && data.length === 0 && (
-        <Stack justifyContent="center" alignItems="center" padding={1}>
-          <Typography variant="body2" textAlign="center">
-            You don&apos;t have any repositories configured. Click on REPOS at
-            the top to configure some.
-          </Typography>
-        </Stack>
-      )}
+          })}
+        {data != null && data.length === 0 && (
+          <Card>
+            <Typography variant="body2" textAlign="left">
+              Configure a repository under the Repos menu to start viewing pull
+              requests for your favorite repositories!
+            </Typography>
+          </Card>
+        )}
+      </Stack>
     </Stack>
   );
 }
