@@ -94,8 +94,7 @@ export default function Add({ onSave }: AddProps) {
             onSave(repository, jiraTagsSanizited, jiraDomainSanizited).catch(
               (e) => {
                 console.error(
-                  `failed to save repo ${repository}, ${jiraDomain}, ${rawJiraTags}
-                          }`,
+                  `failed to save repo ${repository}, ${jiraDomain}, ${rawJiraTags}`,
                   e
                 );
               }
