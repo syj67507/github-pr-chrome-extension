@@ -1,5 +1,7 @@
 import React, { useState } from "react";
+import BackspaceIcon from "@mui/icons-material/Backspace";
 import Button from "@mui/material/Button";
+import SaveIcon from "@mui/icons-material/Save";
 import Stack from "@mui/material/Stack";
 import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
@@ -76,27 +78,31 @@ export default function Add({ onSave }: AddProps) {
       />
       <Stack width="100%" direction="row" justifyContent="flex-end" spacing={2}>
         <Button
-          variant="contained"
+          variant="outlined"
           color="error"
+          // endIcon={<BackspaceIcon />}
           onClick={() => {
             setRepository("");
             setRawJiraTags("");
             setJiraDomain("");
           }}
+          disableRipple
           sx={{
-            bgcolor: "whitesmoke",
-            color: "#444",
+            borderRadius: 2,
+            textTransform: "none",
+            color: "#555a78",
+            bgcolor: "#f3fbfb",
             "&:hover": {
-              bgcolor: "#dcdcdc",
-              color: "#444",
+              bgcolor: "#f3fbfb",
             },
           }}
         >
           Clear
         </Button>
         <Button
-          variant="contained"
+          variant="outlined"
           disabled={!saveEnabled}
+          // endIcon={<SaveIcon />}
           onClick={() => {
             // implementation of onSave passed in as prop from Repos component
             const jiraTagsSanizited =
@@ -113,10 +119,17 @@ export default function Add({ onSave }: AddProps) {
               }
             );
           }}
+          disableRipple
           sx={{
-            bgcolor: "#6cc644",
+            borderRadius: 2,
+            textTransform: "none",
+            color: "white",
+            bgcolor: "#1f883d",
             "&:hover": {
-              bgcolor: "#4f982e",
+              bgcolor: "#1c823b",
+            },
+            "&.Mui-disabled": {
+              bgcolor: "white",
             },
           }}
         >

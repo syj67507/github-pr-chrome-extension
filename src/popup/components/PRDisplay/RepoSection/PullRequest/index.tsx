@@ -7,11 +7,17 @@ import type { PullRequestData, RepoData } from "../../../../../data";
 
 interface PullRequestProps {
   pr: PullRequestData;
-  repo: RepoData;
+  /**
+   * Determines if Jira was configured by the user for the
+   * repo that this pull request is associated with
+   */
+  isJiraConfigured: boolean;
 }
 
-export default function PullRequest({ pr, repo }: PullRequestProps) {
-  console.log(repo);
+export default function PullRequest({
+  pr,
+  isJiraConfigured,
+}: PullRequestProps) {
   return (
     <Stack
       direction="row"
@@ -25,7 +31,7 @@ export default function PullRequest({ pr, repo }: PullRequestProps) {
       color={pr.draft ? "#AAA" : "black"}
     >
       <GitHubIconButton pr={pr} />
-      {repo.isJiraConfigured && <JiraIconButton jiraUrl={pr.jiraUrl} />}
+      {isJiraConfigured && <JiraIconButton jiraUrl={pr.jiraUrl} />}
       <Stack overflow="hidden">
         <Typography variant="caption" fontStyle="italic">
           {pr.username}

@@ -99,7 +99,11 @@ export default function PRDisplay() {
               <RepoSection key={repo.url} repo={repo}>
                 {filtered.length > 0
                   ? filtered.map((pr) => (
-                      <PullRequest key={pr.url} pr={pr} repo={repo} />
+                      <PullRequest
+                        key={pr.url}
+                        pr={pr}
+                        isJiraConfigured={repo.isJiraConfigured}
+                      />
                     ))
                   : filtered.length === 0 && <NoPullRequest url={repo.url} />}
               </RepoSection>

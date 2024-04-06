@@ -2,7 +2,7 @@ import React from "react";
 import IconButton from "@mui/material/IconButton";
 import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
-import CloseIcon from "@mui/icons-material/Close";
+import DeleteIcon from "@mui/icons-material/Delete";
 import { type ConfiguredRepo } from "../../../../../../data/extension";
 import Card from "../../../../Card/Card";
 
@@ -43,7 +43,7 @@ export default function SavedRepo({ repo, onRemove }: SavedRepoProps) {
           });
         }}
       >
-        <CloseIcon />
+        <DeleteIcon />
       </IconButton>
     </Card>
   );

@@ -91,15 +91,13 @@ export async function addRepository(
   // Check if the repo was already added
   // If found, grab the index to update it with the new values passed
   const repoAlreadyAddedIndex = storage.repos.findIndex(
-    (repo: { url: any }) => repo.url === repoUrl
+    (repo) => repo.url === repoUrl
   );
   if (repoAlreadyAddedIndex > -1) {
-    console.log("Updating");
     storage.repos[repoAlreadyAddedIndex] = repoToAdd;
   }
   // Otherwise add it to storage
   else {
-    console.log("Adding...");
     storage.repos.push(repoToAdd);
   }
 
