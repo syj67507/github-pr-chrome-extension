@@ -3,13 +3,21 @@ import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
 import JiraIconButton from "./JiraIconButton";
 import GitHubIconButton from "./GitHubIconButton";
-import type { PullRequestData } from "../../../../../data";
+import type { PullRequestData, RepoData } from "../../../../../data";
 
 interface PullRequestProps {
   pr: PullRequestData;
+  /**
+   * Determines if Jira was configured by the user for the
+   * repo that this pull request is associated with
+   */
+  isJiraConfigured: boolean;
 }
 
-export default function PullRequest({ pr }: PullRequestProps) {
+export default function PullRequest({
+  pr,
+  isJiraConfigured,
+}: PullRequestProps) {
   return (
     <Stack
       direction="row"
@@ -23,7 +31,7 @@ export default function PullRequest({ pr }: PullRequestProps) {
       color={pr.draft ? "#AAA" : "black"}
     >
       <GitHubIconButton pr={pr} />
-      <JiraIconButton jiraUrl={pr.jiraUrl} />
+      {isJiraConfigured && <JiraIconButton jiraUrl={pr.jiraUrl} />}
       <Stack overflow="hidden">
         <Typography variant="caption" fontStyle="italic">
           {pr.username}

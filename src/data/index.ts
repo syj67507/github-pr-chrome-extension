@@ -1,4 +1,4 @@
-import { type StorageRepo, type Storage } from "./extension";
+import { type ConfiguredRepo, type Storage } from "./extension";
 
 require("regenerator-runtime");
 
@@ -39,9 +39,11 @@ export interface RepoData {
   /** The name of the repo */
   name: string;
   /** The url of the repo */
-  url: StorageRepo["url"];
+  url: ConfiguredRepo["url"];
   /** All the pull requests open for this repo */
   pullRequests: PullRequestData[];
+  /** Determines if the user configured Jira for this repo */
+  isJiraConfigured: boolean;
 }
 
 /**
@@ -55,7 +57,7 @@ export interface PullRequestData {
   /** The issue number of the pull request */
   number: number;
   /** The url of the pull request */
-  url: StorageRepo["url"];
+  url: ConfiguredRepo["url"];
   /** The login username of the author of the pull request */
   username: string;
   /** The url of the detected Jira ticket */
@@ -137,7 +139,7 @@ export default class GitHubClient {
    * jiraDomain - The base domain for the JIRA project
    * @returns An array of repository information and it's pull request data
    */
-  async getRepoData(reposData: StorageRepo[]): Promise<RepoData[]> {
+  async getRepoData(reposData: ConfiguredRepo[]): Promise<RepoData[]> {
     if (!Array.isArray(reposData)) {
       return [];
     }
@@ -158,7 +160,7 @@ export default class GitHubClient {
       if (jiraDomain !== undefined && jiraTags !== undefined) {
         pullRequests = pullRequests.map((pr) => {
           // Find a JIRA ticket with provided
-          const ticketTags: StorageRepo["jiraTags"] = [];
+          const ticketTags: ConfiguredRepo["jiraTags"] = [];
           jiraTags.forEach((jiraTag) => {
             const regex = new RegExp(`${jiraTag}-\\d+`, "g");
             // const regex = new RegExp(jiraTag, "g"); // For testing
@@ -188,6 +190,7 @@ export default class GitHubClient {
         name,
         url,
         pullRequests,
+        isJiraConfigured: repoData.jiraDomain !== undefined,
       };
     });
 

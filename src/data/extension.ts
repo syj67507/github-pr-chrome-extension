@@ -16,12 +16,14 @@ const storageKey = "@ghpr-ext";
 
 /**
  * The data that represents a configured repo by the user that
- * is stored in the browser's synced storage
+ * is stored in the browser's synced storage. The stored data is not validated
+ * against the GitHub API, but will be used to generate the calls to fetch pull request
+ * data
  */
-export interface StorageRepo {
+export interface ConfiguredRepo {
   /** The url to the repository */
   url: string;
-  /** The domain of the Jira project ex: https://company.jira.com/ */
+  /** The domain of the Jira project ex: https://jira.company.com/ */
   jiraDomain?: string;
   /** A list of Jira project tags to be configured for a repository */
   jiraTags?: string[];
@@ -33,7 +35,7 @@ export interface StorageRepo {
  */
 export interface Storage {
   /** A list of user configured repos */
-  repos: StorageRepo[];
+  repos: ConfiguredRepo[];
   /** The GitHub personal access token */
   token: string;
 }
@@ -71,11 +73,11 @@ export async function setStorage(value: Storage): Promise<void> {
  * @param jiraDomain The domain of the Jira project ex: https://company.jira.com/
  */
 export async function addRepository(
-  repoUrl: StorageRepo["url"],
-  jiraTags: StorageRepo["jiraTags"],
-  jiraDomain: StorageRepo["jiraDomain"]
+  repoUrl: ConfiguredRepo["url"],
+  jiraTags: ConfiguredRepo["jiraTags"],
+  jiraDomain: ConfiguredRepo["jiraDomain"]
 ): Promise<void> {
-  const repoToAdd: StorageRepo = {
+  const repoToAdd: ConfiguredRepo = {
     url: repoUrl,
     jiraTags,
     jiraDomain,
@@ -86,14 +88,19 @@ export async function addRepository(
     storage.repos = [];
   }
 
-  // Do nothing if already added
-  if (
-    storage.repos.find((repo: { url: any }) => repo.url === repoUrl) != null
-  ) {
-    return;
+  // Check if the repo was already added
+  // If found, grab the index to update it with the new values passed
+  const repoAlreadyAddedIndex = storage.repos.findIndex(
+    (repo) => repo.url === repoUrl
+  );
+  if (repoAlreadyAddedIndex > -1) {
+    storage.repos[repoAlreadyAddedIndex] = repoToAdd;
+  }
+  // Otherwise add it to storage
+  else {
+    storage.repos.push(repoToAdd);
   }
 
-  storage.repos.push(repoToAdd);
   await setStorage(storage);
 }
 
@@ -102,7 +109,7 @@ export async function addRepository(
  * @param repoUrl The url of the repository
  */
 export async function removeRepository(
-  repoUrl: StorageRepo["url"]
+  repoUrl: ConfiguredRepo["url"]
 ): Promise<void> {
   const storage = await getStorage();
   if (storage.repos !== undefined && Array.isArray(storage.repos)) {
@@ -117,7 +124,7 @@ export async function removeRepository(
  * Get all the repositories that have been configured
  * @returns Returns all the repositories that have been configured
  */
-export async function getRepositories(): Promise<StorageRepo[]> {
+export async function getRepositories(): Promise<ConfiguredRepo[]> {
   const storage = await getStorage();
   return storage.repos;
 }
@@ -167,7 +174,7 @@ export async function setBadge(text: number): Promise<void> {
  * Creates a new tab and navigates to the provided URL
  * @param {string} url The URL to navigate to in the new tab
  */
-export async function createTab(url: StorageRepo["url"]): Promise<void> {
+export async function createTab(url: ConfiguredRepo["url"]): Promise<void> {
   await Browser.tabs.create({
     url: `${url}`,
   });

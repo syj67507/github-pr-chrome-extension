@@ -3,13 +3,13 @@ import Button from "@mui/material/Button";
 import Stack from "@mui/material/Stack";
 import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
-import { type StorageRepo } from "../../../../../data/extension";
+import { type ConfiguredRepo } from "../../../../../data/extension";
 
 interface AddProps {
   onSave: (
-    repo: StorageRepo["url"],
-    jiraTags: StorageRepo["jiraTags"],
-    jiraDomain: StorageRepo["jiraDomain"]
+    repo: ConfiguredRepo["url"],
+    jiraTags: ConfiguredRepo["jiraTags"],
+    jiraDomain: ConfiguredRepo["jiraDomain"]
   ) => Promise<void>;
 }
 
@@ -26,73 +26,78 @@ export default function Add({ onSave }: AddProps) {
 
   return (
     <Stack
-      padding={2}
       spacing={2}
       width="100%"
       direction="column"
       alignItems="center"
       justifyContent="center"
-      borderBottom="1px solid whitesmoke"
     >
-      <Typography variant="body1" textAlign="center">
-        Add a repository by filling out the following fields and clicking save.
+      <Typography variant="body1" textAlign="left">
+        Add or update a repository by filling out the following fields and
+        clicking save.
       </Typography>
       <TextField
         label="Repository URL"
+        helperText="The homepage URL of the repository on GitHub"
         placeholder="https://github.com/<username>/<repositoryName>"
-        variant="standard"
+        variant="outlined"
         value={repository}
         onChange={(e) => {
           setRepository(e.target.value);
         }}
         fullWidth
+        size="small"
       />
       <TextField
-        label="(Optional) JIRA Project Tag"
+        label="(Optional) Jira Project Tag"
         helperText="'TAG' as in TAG-1234"
         placeholder="TAG,PROJ,..."
-        variant="standard"
+        variant="outlined"
         value={rawJiraTags}
         onChange={(e) => {
           setRawJiraTags(e.target.value);
         }}
         fullWidth
+        size="small"
       />
       <TextField
-        label="(Optional) JIRA Domain"
-        helperText={`Domain to build the url to JIRA ticket ${
+        label="(Optional) Jira Domain URL"
+        helperText={`Base URL domain to build the url to Jira ticket ${
           jiraDomain ?? "<domain>"
         }/browse/TAG-1234`}
         placeholder="https://jira.company.com"
-        variant="standard"
+        variant="outlined"
         value={jiraDomain}
         onChange={(e) => {
           setJiraDomain(e.target.value);
         }}
         fullWidth
+        size="small"
       />
       <Stack width="100%" direction="row" justifyContent="flex-end" spacing={2}>
         <Button
-          variant="contained"
+          variant="outlined"
           color="error"
           onClick={() => {
             setRepository("");
             setRawJiraTags("");
             setJiraDomain("");
           }}
+          disableRipple
           sx={{
-            bgcolor: "whitesmoke",
-            color: "#444",
+            borderRadius: 2,
+            textTransform: "none",
+            color: "#555a78",
+            bgcolor: "#f3fbfb",
             "&:hover": {
-              bgcolor: "#dcdcdc",
-              color: "#444",
+              bgcolor: "#f3fbfb",
             },
           }}
         >
           Clear
         </Button>
         <Button
-          variant="contained"
+          variant="outlined"
           disabled={!saveEnabled}
           onClick={() => {
             // implementation of onSave passed in as prop from Repos component
@@ -110,10 +115,17 @@ export default function Add({ onSave }: AddProps) {
               }
             );
           }}
+          disableRipple
           sx={{
-            bgcolor: "#6cc644",
+            borderRadius: 2,
+            textTransform: "none",
+            color: "white",
+            bgcolor: "#1f883d",
             "&:hover": {
-              bgcolor: "#4f982e",
+              bgcolor: "#1c823b",
+            },
+            "&.Mui-disabled": {
+              bgcolor: "white",
             },
           }}
         >

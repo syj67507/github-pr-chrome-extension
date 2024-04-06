@@ -2,35 +2,35 @@ import React from "react";
 import IconButton from "@mui/material/IconButton";
 import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
-import CloseIcon from "@mui/icons-material/Close";
-import { type StorageRepo } from "../../../../../../data/extension";
+import DeleteIcon from "@mui/icons-material/Delete";
+import { type ConfiguredRepo } from "../../../../../../data/extension";
+import Card from "../../../../Card/Card";
 
 export interface SavedRepoProps {
   /** The repo of the saved repo */
-  repo: StorageRepo;
+  repo: ConfiguredRepo;
   /** Handler for when the remove button is clicked */
-  onRemove: (repo: StorageRepo) => Promise<void>;
-  /** The background color for the saved repo */
-  bgcolor: string;
+  onRemove: (repo: ConfiguredRepo) => Promise<void>;
 }
 
-export default function SavedRepo({ repo, onRemove, bgcolor }: SavedRepoProps) {
+export default function SavedRepo({ repo, onRemove }: SavedRepoProps) {
   return (
-    <Stack
-      direction="row"
-      padding={1}
-      alignItems="center"
-      width="100%"
-      bgcolor={bgcolor}
+    <Card
+      sx={{
+        display: "flex",
+        flexDirection: "row",
+        bgcolor: "whitesmoke",
+        color: "black",
+      }}
     >
       {/* Saved information */}
       <Stack direction="column" alignItems="flex-start" width="100%">
         <Typography variant="caption">{repo.url}</Typography>
-        {repo.jiraDomain != null && (
-          <Typography variant="caption">{repo.jiraDomain}</Typography>
-        )}
         {repo.jiraTags != null && (
           <Typography variant="caption">{repo.jiraTags.join(",")}</Typography>
+        )}
+        {repo.jiraDomain != null && (
+          <Typography variant="caption">{repo.jiraDomain}</Typography>
         )}
       </Stack>
 
@@ -43,8 +43,8 @@ export default function SavedRepo({ repo, onRemove, bgcolor }: SavedRepoProps) {
           });
         }}
       >
-        <CloseIcon />
+        <DeleteIcon />
       </IconButton>
-    </Stack>
+    </Card>
   );
 }
