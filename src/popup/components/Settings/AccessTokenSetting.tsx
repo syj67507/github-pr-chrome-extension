@@ -19,20 +19,14 @@ export default function AccessTokenSetting({
   const [token, setToken] = useState("");
 
   return (
-    <Stack
-      direction="column"
-      width="100%"
-      padding={2}
-      spacing={2}
-      borderBottom="1px solid whitesmoke"
-    >
-      <Typography variant="body1" textAlign="center">
+    <Stack direction="column" width="100%" padding={1} spacing={2}>
+      <Typography variant="body1" textAlign="left">
         Set your personal access token here. Create you personal access token
         under Developer Settings in your GitHub account.
       </Typography>
       <Link
         target="_blank" // new tab
-        textAlign="center"
+        textAlign="left"
         variant="body1"
         href="https://docs.github.com/en/enterprise-server@3.4/authentication/keeping-your-account-and-data-secure/creating-a-personal-access-token"
       >

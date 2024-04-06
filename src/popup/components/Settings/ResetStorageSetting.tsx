@@ -15,8 +15,8 @@ export default function ResetStorageSetting({
   setAlertMessage,
 }: ClearStorageSettingProps) {
   return (
-    <Stack direction="column" width="100%" padding={2} spacing={2}>
-      <Typography variant="body1" textAlign="center">
+    <Stack direction="column" width="100%" padding={1} spacing={2}>
+      <Typography variant="body1" textAlign="left">
         Any issues may stem from invalid storage data. Reset the storage here.
       </Typography>
       <Stack width="100%" direction="row" justifyContent="flex-end" spacing={2}>
