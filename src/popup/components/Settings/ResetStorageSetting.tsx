@@ -1,19 +1,14 @@
 import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
-import React from "react";
-import { type AlertColor } from "@mui/material/Alert";
+import React, { useState } from "react";
+import Snackbar from "@mui/material/Snackbar";
 import * as browser from "../../../data/extension";
 
-interface ClearStorageSettingProps {
-  setAlertType: React.Dispatch<React.SetStateAction<AlertColor | "none">>;
-  setAlertMessage: React.Dispatch<React.SetStateAction<string>>;
-}
+export default function ResetStorageSetting() {
+  const [open, setOpen] = useState(false);
+  const [toastMessage, setToastMessage] = useState("");
 
-export default function ResetStorageSetting({
-  setAlertType,
-  setAlertMessage,
-}: ClearStorageSettingProps) {
   return (
     <Stack direction="column" width="100%" padding={1} spacing={2}>
       <Typography variant="body1" textAlign="left">
@@ -27,19 +22,33 @@ export default function ResetStorageSetting({
             browser
               .resetStorage()
               .then(() => {
-                setAlertType("success");
-                setAlertMessage("Storage reset!");
+                setToastMessage("Storage reset!");
+                setOpen(true);
               })
               .catch(() => {
+                setToastMessage("Failed to reset storage.");
+                setOpen(true);
                 console.error("Failed to reset storage.");
-                setAlertType("error");
-                setAlertMessage("Failed to reset storage.");
               });
           }}
         >
           Clear
         </Button>
       </Stack>
+      <Snackbar
+        anchorOrigin={{ vertical: "bottom", horizontal: "left" }}
+        open={open}
+        onClose={() => {
+          setOpen(false);
+        }}
+        key="bottomleft"
+        sx={{
+          width: "fit-content",
+          borderRadius: 10,
+        }}
+        autoHideDuration={2000}
+        message={toastMessage}
+      />
     </Stack>
   );
 }
