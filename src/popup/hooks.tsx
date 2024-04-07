@@ -28,7 +28,7 @@ export function useSavedFilters() {
     async function getFilters() {
       setLoadingFilters(true);
       const savedFilters = await getFilterOptions();
-      setFilters(savedFilters);
+      setFilters(savedFilters ?? defaultFilters); // default to defaultFilters if not saved
       setLoadingFilters(false);
     }
     getFilters().catch((e) => {
