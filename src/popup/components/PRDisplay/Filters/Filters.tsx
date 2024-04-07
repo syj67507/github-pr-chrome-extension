@@ -1,4 +1,5 @@
-import { Typography } from "@mui/material";
+import { IconButton, Typography } from "@mui/material";
+import ClearIcon from "@mui/icons-material/Clear";
 import Checkbox from "@mui/material/Checkbox";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Stack from "@mui/material/Stack";
@@ -6,6 +7,7 @@ import TextField from "@mui/material/TextField";
 import Tooltip from "@mui/material/Tooltip";
 import React from "react";
 import Card from "../../Card/Card";
+import { saveFilterOptions } from "../../../../data/extension";
 
 interface FiltersProps {
   /** Object that contains the current state of user filters */
@@ -40,7 +42,38 @@ export default function Filters({ filters, setFilters }: FiltersProps) {
             ...filters,
             textFilter: e.target.value,
           });
+          saveFilterOptions({
+            ...filters,
+            textFilter: e.target.value,
+          }).catch((e) => {
+            console.error("failed to save filter state");
+          });
         }}
+        InputProps={{
+          endAdornment: (
+            <IconButton
+              sx={{
+                padding: 0, // set to 0 since padding of the button was expanding the textfield
+              }}
+              onClick={() => {
+                setFilters({
+                  ...filters,
+                  textFilter: "",
+                });
+                saveFilterOptions({
+                  ...filters,
+                  textFilter: "",
+                }).catch(() => {
+                  console.error("failed to save filter state");
+                });
+              }}
+            >
+              <ClearIcon />
+            </IconButton>
+          ),
+        }}
+        // apparently InputProps and inputProps are detected as duplicates
+        // eslint-disable-next-line react/jsx-no-duplicate-props
         inputProps={{
           style: { textAlign: "center", padding: 4 },
         }}
@@ -73,6 +106,12 @@ export default function Filters({ filters, setFilters }: FiltersProps) {
                     ...filters,
                     includeDrafts: !filters.includeDrafts,
                   });
+                  saveFilterOptions({
+                    ...filters,
+                    includeDrafts: !filters.includeDrafts,
+                  }).catch((e) => {
+                    console.error("failed to save filter state");
+                  });
                 }}
                 inputProps={{ "aria-label": "controlled" }}
               />
@@ -101,6 +140,12 @@ export default function Filters({ filters, setFilters }: FiltersProps) {
                   setFilters({
                     ...filters,
                     showMine: !filters.showMine,
+                  });
+                  saveFilterOptions({
+                    ...filters,
+                    showMine: !filters.showMine,
+                  }).catch((e) => {
+                    console.error("failed to save filter state");
                   });
                 }}
                 inputProps={{ "aria-label": "controlled" }}
