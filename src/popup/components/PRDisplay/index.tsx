@@ -1,75 +1,26 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
-import GitHubClient, { type RepoData } from "../../../data";
 import RepoSection from "./RepoSection";
 import Loading from "../Loading";
-import { getToken, getRepositories, setBadge } from "../../../data/extension";
 import "regenerator-runtime";
 import PullRequest from "./RepoSection/PullRequest";
 import NoPullRequest from "./RepoSection/NoPullRequest";
-import Filters from "./Filters/Filters";
+import FilterOptions from "./Filters/Filters";
 import Card from "../Card/Card";
+import { useGetPullRequests, useSavedFilters } from "../../hooks";
 
 export default function PRDisplay() {
-  const [username, setUsername] = useState("");
-  const [data, setData] = useState<RepoData[] | null>(null);
-  const [loading, setLoading] = useState(true);
-  // const [error, setError] = useState(false); // TODO display error
-  const [filters, setFilters] = useState({
-    includeDrafts: true,
-    showMine: false,
-    textFilter: "",
-  });
-
-  // On popup load, we need to fetch all the PRs
-  useEffect(() => {
-    async function getPRs() {
-      try {
-        setLoading(true);
-
-        const token = await getToken();
-        const client = new GitHubClient(token);
-
-        // Fetch data
-        const storageRepos = await getRepositories();
-        const userPromise = client.getAuthenticatedUser();
-        const reposDataPromise = client.getRepoData(storageRepos);
-
-        // Using promise all to make calls in parallel
-        const [user, reposData] = await Promise.all([
-          userPromise,
-          reposDataPromise,
-        ]);
-
-        setUsername(user.username);
-        setData(reposData);
-        setLoading(false);
-
-        // Updates the browser action badge
-        let count = 0;
-        reposData.forEach((repoData) => {
-          count += repoData.pullRequests.length;
-        });
-        setBadge(count).catch((e) => {
-          console.error(`failed to set the badge to ${count}`, e);
-        });
-      } catch (e) {
-        console.error(e);
-        setLoading(false);
-        setData(null);
-        setUsername("");
-      }
-    }
-    getPRs().catch((e) => {
-      console.error(`failed to getPRs()`, e);
-    });
-  }, []);
+  const { loadingFilters, filters, setFilters } = useSavedFilters();
+  const { loading, data, username } = useGetPullRequests();
 
   return (
     <Stack width="100%" bgcolor="whitesmoke" padding={1} spacing={1}>
       {/* Filtering search box */}
-      <Filters filters={filters} setFilters={setFilters} />
+      {loadingFilters && <Loading />}
+      {!loadingFilters && (
+        <FilterOptions filters={filters} setFilters={setFilters} />
+      )}
       {loading && <Loading />}
       {/* TODO error message when fetching */}
       <Stack width="100%" spacing={1}>
