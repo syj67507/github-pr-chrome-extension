@@ -1,20 +1,12 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
-import GitHubClient, { type RepoData } from "../../../data";
 import RepoSection from "./RepoSection";
 import Loading from "../Loading";
-import {
-  getToken,
-  getRepositories,
-  setBadge,
-  saveFilterOptions,
-  getSavedFilterOptions,
-} from "../../../data/extension";
 import "regenerator-runtime";
 import PullRequest from "./RepoSection/PullRequest";
 import NoPullRequest from "./RepoSection/NoPullRequest";
-import Filters from "./Filters/Filters";
+import FilterOptions from "./Filters/Filters";
 import Card from "../Card/Card";
 import { useGetPullRequests, useSavedFilters } from "../../hooks";
 
@@ -26,7 +18,9 @@ export default function PRDisplay() {
     <Stack width="100%" bgcolor="whitesmoke" padding={1} spacing={1}>
       {/* Filtering search box */}
       {loadingFilters && <Loading />}
-      {!loadingFilters && <Filters filters={filters} setFilters={setFilters} />}
+      {!loadingFilters && (
+        <FilterOptions filters={filters} setFilters={setFilters} />
+      )}
       {loading && <Loading />}
       {/* TODO error message when fetching */}
       <Stack width="100%" spacing={1}>

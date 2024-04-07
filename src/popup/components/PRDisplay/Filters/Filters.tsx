@@ -5,20 +5,16 @@ import FormControlLabel from "@mui/material/FormControlLabel";
 import Stack from "@mui/material/Stack";
 import TextField from "@mui/material/TextField";
 import Tooltip from "@mui/material/Tooltip";
-import React from "react";
+import React, { useState } from "react";
 import Card from "../../Card/Card";
-import { saveFilterOptions } from "../../../../data/extension";
+import { type Filters, saveFilterOptions } from "../../../../data/extension";
 
 interface FiltersProps {
-  /** Object that contains the current state of user filters */
-  filters: {
-    /** Determines whether to show the user's pull requests */
-    showMine: boolean;
-    /** Determines whether or not to include drafts in the display */
-    includeDrafts: boolean;
-    /** Text filter to look for pull requests that only have this text in it */
-    textFilter: string;
-  };
+  /**
+   * Object that contains the current state of user filters that mirrors
+   * what was saved to this extensions storage
+   */
+  filters: Filters;
   /** set function from the useState hook to set the state of the filters prop */
   setFilters: React.Dispatch<
     React.SetStateAction<{
@@ -29,7 +25,46 @@ interface FiltersProps {
   >;
 }
 
-export default function Filters({ filters, setFilters }: FiltersProps) {
+export default function FilterOptions({ filters, setFilters }: FiltersProps) {
+  const [debounceTimeout, setDebounceTimeout] = useState<NodeJS.Timeout>();
+
+  /**
+   * A handler that will call common functions when any of the
+   * filtering options have been changed
+   */
+  function handleOnChange(updatedFilters: Filters) {
+    setFilters(updatedFilters);
+
+    saveFilterOptions(updatedFilters).catch(() => {
+      console.error("failed to save filter state");
+    });
+  }
+
+  /**
+   * A handler that is the same as handleOnChange but debounced
+   * specifically made for the text filter to not be called on each
+   * individual change but only after the user has finished typing
+   */
+  function handleOnChangeDebounced(updatedFilters: Filters) {
+    setFilters(updatedFilters);
+
+    // Need to clear the previous timeout if the user hasn't finished typing
+    if (debounceTimeout != null) {
+      clearTimeout(debounceTimeout);
+    }
+
+    // The timeout will be the delay before checking if the user has
+    // finished updating the filters
+    const timeoutId = setTimeout(() => {
+      saveFilterOptions(updatedFilters).catch(() => {
+        console.error("failed to save filter state");
+      });
+    }, 300);
+
+    // Keep track of the new timeout on the latest change
+    setDebounceTimeout(timeoutId);
+  }
+
   return (
     <Card sx={{ bgcolor: "white" }}>
       <TextField
@@ -38,34 +73,25 @@ export default function Filters({ filters, setFilters }: FiltersProps) {
         placeholder="filter"
         value={filters.textFilter}
         onChange={(e) => {
-          setFilters({
+          const updatedFilters: Filters = {
             ...filters,
             textFilter: e.target.value,
-          });
-          saveFilterOptions({
-            ...filters,
-            textFilter: e.target.value,
-          }).catch((e) => {
-            console.error("failed to save filter state");
-          });
+          };
+          handleOnChangeDebounced(updatedFilters);
         }}
         InputProps={{
           endAdornment: (
             <IconButton
+              disableRipple
               sx={{
                 padding: 0, // set to 0 since padding of the button was expanding the textfield
               }}
               onClick={() => {
-                setFilters({
+                const updatedFilters: Filters = {
                   ...filters,
                   textFilter: "",
-                });
-                saveFilterOptions({
-                  ...filters,
-                  textFilter: "",
-                }).catch(() => {
-                  console.error("failed to save filter state");
-                });
+                };
+                handleOnChange(updatedFilters);
               }}
             >
               <ClearIcon />
@@ -102,16 +128,11 @@ export default function Filters({ filters, setFilters }: FiltersProps) {
               <Checkbox
                 checked={filters.includeDrafts}
                 onChange={() => {
-                  setFilters({
+                  const updatedFilters: Filters = {
                     ...filters,
                     includeDrafts: !filters.includeDrafts,
-                  });
-                  saveFilterOptions({
-                    ...filters,
-                    includeDrafts: !filters.includeDrafts,
-                  }).catch((e) => {
-                    console.error("failed to save filter state");
-                  });
+                  };
+                  handleOnChange(updatedFilters);
                 }}
                 inputProps={{ "aria-label": "controlled" }}
               />
@@ -137,16 +158,11 @@ export default function Filters({ filters, setFilters }: FiltersProps) {
               <Checkbox
                 checked={filters.showMine}
                 onChange={() => {
-                  setFilters({
+                  const updatedFilters: Filters = {
                     ...filters,
                     showMine: !filters.showMine,
-                  });
-                  saveFilterOptions({
-                    ...filters,
-                    showMine: !filters.showMine,
-                  }).catch((e) => {
-                    console.error("failed to save filter state");
-                  });
+                  };
+                  handleOnChange(updatedFilters);
                 }}
                 inputProps={{ "aria-label": "controlled" }}
               />
