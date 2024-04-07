@@ -1,13 +1,19 @@
 import { useEffect, useState } from "react";
 import {
   type Filters,
-  getSavedFilterOptions,
+  getFilterOptions,
   getRepositories,
   getToken,
   setBadge,
 } from "../data/extension";
 import GitHubClient, { type RepoData } from "../data";
 
+/**
+ * A hook to fetch the currently saved filtering options that was previously
+ * set by the user. If the call fails, then the default configuration
+ * for the filtering options will be returned instead
+ * @returns Returns a loadingFilters state variable, the filters themselves, and a setter for the filters
+ */
 export function useSavedFilters() {
   const defaultFilters: Filters = {
     textFilter: "",
@@ -21,7 +27,7 @@ export function useSavedFilters() {
   useEffect(() => {
     async function getFilters() {
       setLoadingFilters(true);
-      const savedFilters = await getSavedFilterOptions();
+      const savedFilters = await getFilterOptions();
       setFilters(savedFilters);
       setLoadingFilters(false);
     }
@@ -35,6 +41,10 @@ export function useSavedFilters() {
   return { loadingFilters, filters, setFilters };
 }
 
+/**
+ * A hook to fetch all pull requests for each repo that was configured by the user
+ * @returns Returns a loading state variable, the data, and the username
+ */
 export function useGetPullRequests() {
   const [username, setUsername] = useState("");
   const [data, setData] = useState<RepoData[] | null>(null);

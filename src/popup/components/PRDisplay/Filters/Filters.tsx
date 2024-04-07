@@ -12,7 +12,7 @@ import { type Filters, saveFilterOptions } from "../../../../data/extension";
 interface FiltersProps {
   /**
    * Object that contains the current state of user filters that mirrors
-   * what was saved to this extensions storage
+   * what was saved to this extension's storage
    */
   filters: Filters;
   /** set function from the useState hook to set the state of the filters prop */

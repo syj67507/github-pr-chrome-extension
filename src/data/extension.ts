@@ -38,7 +38,7 @@ export interface Storage {
   repos: ConfiguredRepo[];
   /** The GitHub personal access token */
   token: string;
-  /** Filters */
+  /** The current state of the user configured filters */
   filters: Filters;
 }
 
@@ -202,10 +202,10 @@ export async function saveFilterOptions(filters: Filters) {
 }
 
 /**
- * Returns the saved filter options that were previously set
+ * Returns the saved filter options that were previously set by the user
  * @returns The filter object
  */
-export async function getSavedFilterOptions() {
+export async function getFilterOptions() {
   const storage = await getStorage();
   return storage.filters;
 }
