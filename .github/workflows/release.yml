@@ -34,9 +34,9 @@ jobs:
           cd dist
           cd chrome
           zip -r ../ghpr-ext-chrome-${{ github.ref_name }}.zip .
-          zip -r ../ghpr-ext-firefox-${{ github.ref_name }}.zip .
-          cd ../firefox
           tar -czf ../ghpr-ext-chrome-${{ github.ref_name }}.tgz .
+          cd ../firefox
+          zip -r ../ghpr-ext-firefox-${{ github.ref_name }}.zip .
           tar -czf ../ghpr-ext-firefox-${{ github.ref_name }}.tgz .
 
       - name: Upload Release
