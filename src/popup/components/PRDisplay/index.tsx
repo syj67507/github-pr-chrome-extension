@@ -1,6 +1,6 @@
 import React from "react";
+import Alert from "@mui/material/Alert";
 import Stack from "@mui/material/Stack";
-import { Alert } from "@mui/material";
 import RepoSection from "./RepoSection";
 import Loading from "../Loading";
 import "regenerator-runtime";
@@ -13,7 +13,7 @@ import { useGetPullRequests, useSavedFilters } from "../../hooks";
 export default function PRDisplay() {
   const { loadingFilters, filters, setFilters } = useSavedFilters();
   const { loading, data, username, token } = useGetPullRequests();
-  console.log("token", token);
+
   return (
     <Stack width="100%" bgcolor="whitesmoke" padding={1} spacing={1}>
       {/* Filtering search box */}

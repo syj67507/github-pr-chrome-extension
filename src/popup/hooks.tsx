@@ -58,7 +58,6 @@ export function useGetPullRequests() {
         setLoading(true);
 
         const savedToken = await getToken();
-        console.log("settign token", token);
         const client = new GitHubClient(savedToken);
         setToken(savedToken);
 
