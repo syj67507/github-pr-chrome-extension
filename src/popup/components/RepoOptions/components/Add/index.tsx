@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import Snackbar from "@mui/material/Snackbar";
 import Stack from "@mui/material/Stack";
 import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
@@ -18,6 +19,8 @@ export default function Add({ onSave }: AddProps) {
   const [repository, setRepository] = useState("");
   const [rawJiraTags, setRawJiraTags] = useState("");
   const [jiraDomain, setJiraDomain] = useState("");
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
+  const [snackbarMessage, setSnackbarMessage] = useState("");
 
   const saveEnabled1 =
     repository !== "" && rawJiraTags === "" && jiraDomain === ""; // only repository field
@@ -91,17 +94,37 @@ export default function Add({ onSave }: AddProps) {
               rawJiraTags.length > 0 ? rawJiraTags.split(",") : undefined;
             const jiraDomainSanizited =
               jiraDomain.length > 0 ? jiraDomain : undefined;
-            onSave(repository, jiraTagsSanizited, jiraDomainSanizited).catch(
-              (e) => {
+            onSave(repository, jiraTagsSanizited, jiraDomainSanizited)
+              .then(() => {
+                setSnackbarMessage("Repository has been added/updated!");
+                setSnackbarOpen(true);
+              })
+              .catch((e) => {
+                setSnackbarMessage("Failed to add or update repository.");
+                setSnackbarOpen(true);
                 console.error(
                   `failed to save repo ${repository}, ${jiraDomain}, ${rawJiraTags}`,
                   e
                 );
-              }
-            );
+              });
           }}
         />
       </Stack>
+      <Snackbar
+        anchorOrigin={{ vertical: "bottom", horizontal: "left" }}
+        open={snackbarOpen}
+        onClose={() => {
+          setSnackbarOpen(false);
+          setSnackbarMessage("");
+        }}
+        key="bottomleft"
+        sx={{
+          width: "fit-content",
+          borderRadius: 10,
+        }}
+        autoHideDuration={2000}
+        message={snackbarMessage}
+      />
     </Stack>
   );
 }
