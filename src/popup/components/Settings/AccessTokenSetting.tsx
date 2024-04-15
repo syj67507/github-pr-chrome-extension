@@ -15,8 +15,13 @@ export default function AccessTokenSetting() {
   return (
     <Stack direction="column" width="100%" padding={1} spacing={2}>
       <Typography variant="body1" textAlign="left">
-        Set your personal access token here. Create you personal access token
-        under Developer Settings in your GitHub account.
+        Set your <strong>classic personal access token</strong> here. Create
+        your classic personal access token under
+        <strong> Developer Settings</strong> in your GitHub account.
+      </Typography>
+      <Typography variant="body1" textAlign="left">
+        Make sure to provide it the <strong>repo</strong> permissions and
+        <strong> authorize with SSO</strong> for any private repos.
       </Typography>
       <Link
         target="_blank" // new tab
@@ -24,10 +29,10 @@ export default function AccessTokenSetting() {
         variant="body1"
         href="https://docs.github.com/en/enterprise-server@3.12/authentication/keeping-your-account-and-data-secure/managing-your-personal-access-tokens#creating-a-fine-grained-personal-access-token"
       >
-        Click here for more information
+        Click here for more info on creating your personal access token
       </Link>
       <TextField
-        label="Personal Access Token"
+        label="Classic Personal Access Token"
         helperText="ghp_"
         variant="standard"
         value={token}

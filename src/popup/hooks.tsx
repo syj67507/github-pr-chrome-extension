@@ -49,6 +49,7 @@ export function useGetPullRequests() {
   const [username, setUsername] = useState("");
   const [data, setData] = useState<RepoData[] | null>(null);
   const [loading, setLoading] = useState(true);
+  const [token, setToken] = useState<string | undefined>();
   // const [error, setError] = useState(false); // TODO display error
 
   useEffect(() => {
@@ -56,8 +57,9 @@ export function useGetPullRequests() {
       try {
         setLoading(true);
 
-        const token = await getToken();
-        const client = new GitHubClient(token);
+        const savedToken = await getToken();
+        const client = new GitHubClient(savedToken);
+        setToken(savedToken);
 
         // Fetch data
         const storageRepos = await getRepositories();
@@ -94,5 +96,5 @@ export function useGetPullRequests() {
     });
   }, []);
 
-  return { username, data, loading };
+  return { username, data, loading, token };
 }
