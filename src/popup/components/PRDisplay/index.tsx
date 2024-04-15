@@ -39,8 +39,9 @@ export default function PRDisplay() {
                 paddingY: 0,
               }}
             >
-              You haven't set your personal access token yet. Go to settings and
-              save your token so that you can see all your pull requests!
+              You haven't set your classic personal access token yet. Go to
+              settings and save your token so that you can see all your pull
+              requests!
             </Alert>
           </Card>
         )}
