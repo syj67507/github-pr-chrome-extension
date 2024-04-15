@@ -1,6 +1,8 @@
 import React from "react";
 import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
+import WarningAmberIcon from "@mui/icons-material/WarningAmber";
+import { Alert } from "@mui/material";
 import RepoSection from "./RepoSection";
 import Loading from "../Loading";
 import "regenerator-runtime";
@@ -12,8 +14,8 @@ import { useGetPullRequests, useSavedFilters } from "../../hooks";
 
 export default function PRDisplay() {
   const { loadingFilters, filters, setFilters } = useSavedFilters();
-  const { loading, data, username } = useGetPullRequests();
-
+  const { loading, data, username, token } = useGetPullRequests();
+  console.log("token", token);
   return (
     <Stack width="100%" bgcolor="whitesmoke" padding={1} spacing={1}>
       {/* Filtering search box */}
@@ -24,6 +26,24 @@ export default function PRDisplay() {
       {loading && <Loading />}
       {/* TODO error message when fetching */}
       <Stack width="100%" spacing={1}>
+        {token === undefined && (
+          <Card
+            sx={{
+              bgcolor: "#e5f6fd",
+            }}
+          >
+            <Alert
+              severity="info"
+              sx={{
+                paddingX: 1,
+                paddingY: 0,
+              }}
+            >
+              You haven't set your personal access token yet. Go to settings and
+              save your token so that you can see all your pull requests!
+            </Alert>
+          </Card>
+        )}
         {data != null &&
           data.length > 0 &&
           data.map((repo) => {
@@ -61,11 +81,22 @@ export default function PRDisplay() {
             );
           })}
         {data != null && data.length === 0 && (
-          <Card sx={{ bgcolor: "white" }}>
-            <Typography variant="body1" textAlign="left">
-              Configure a repository under the Repos menu to start viewing pull
-              requests for your favorite repositories!
-            </Typography>
+          <Card
+            sx={{
+              bgcolor: "#e5f6fd",
+            }}
+          >
+            <Alert
+              severity="info"
+              sx={{
+                paddingX: 1,
+                paddingY: 0,
+              }}
+            >
+              You haven't configured any repositories yet. Configure a
+              repository under the Repos menu to start viewing pull requests for
+              your favorite repositories!
+            </Alert>
           </Card>
         )}
       </Stack>
