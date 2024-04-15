@@ -1,7 +1,5 @@
 import React from "react";
 import Stack from "@mui/material/Stack";
-import Typography from "@mui/material/Typography";
-import WarningAmberIcon from "@mui/icons-material/WarningAmber";
 import { Alert } from "@mui/material";
 import RepoSection from "./RepoSection";
 import Loading from "../Loading";
@@ -39,7 +37,7 @@ export default function PRDisplay() {
                 paddingY: 0,
               }}
             >
-              You haven't set your classic personal access token yet. Go to
+              You haven&apos;t set your classic personal access token yet. Go to
               settings and save your token so that you can see all your pull
               requests!
             </Alert>
@@ -94,7 +92,7 @@ export default function PRDisplay() {
                 paddingY: 0,
               }}
             >
-              You haven't configured any repositories yet. Configure a
+              You haven&apos;t configured any repositories yet. Configure a
               repository under the Repos menu to start viewing pull requests for
               your favorite repositories!
             </Alert>
