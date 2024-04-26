@@ -21,12 +21,16 @@ export default function Add({ onSave }: AddProps) {
   const [jiraDomain, setJiraDomain] = useState("");
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState("");
+  const [jiraDomainError, setJiraDomainError] = useState(false);
 
-  const saveEnabled1 =
-    repository !== "" && rawJiraTags === "" && jiraDomain === ""; // only repository field
-  const saveEnabled2 =
-    repository !== "" && rawJiraTags !== "" && jiraDomain !== ""; // specify both jira tags
-  const saveEnabled = saveEnabled1 || saveEnabled2;
+  const saveEnabledRepoOnly =
+    repository !== "" && rawJiraTags === "" && jiraDomain === "";
+  const saveEnabledRepoWithJira =
+    repository !== "" &&
+    rawJiraTags !== "" &&
+    jiraDomain !== "" &&
+    !jiraDomainError;
+  const saveEnabled = saveEnabledRepoOnly || saveEnabledRepoWithJira;
 
   return (
     <Stack
@@ -66,17 +70,22 @@ export default function Add({ onSave }: AddProps) {
       />
       <TextField
         label="(Optional) Jira Domain URL"
-        helperText={`Base URL domain to build the url to Jira ticket ${
-          jiraDomain ?? "<domain>"
+        helperText={`Base URL domain to build the url to Jira ticket. Make sure the following URL looks valid: ${
+          jiraDomain === "" ? "<domain>" : jiraDomain
         }/browse/TAG-1234`}
         placeholder="https://jira.company.com"
         variant="outlined"
         value={jiraDomain}
         onChange={(e) => {
           setJiraDomain(e.target.value);
+          setJiraDomainError(
+            !e.target.value.startsWith("https://") ||
+              e.target.value.endsWith("/")
+          );
         }}
         fullWidth
         size="small"
+        error={jiraDomainError}
       />
       <Stack width="100%" direction="row" justifyContent="flex-end" spacing={2}>
         <ClearButton

@@ -72,7 +72,7 @@ export async function setStorage(value: Storage): Promise<void> {
  * then this function will do nothing.
  * @param repoUrl The url of the repository
  * @param jiraTags A list of Jira project tags to be configured for a repository
- * @param jiraDomain The domain of the Jira project ex: https://company.jira.com/
+ * @param jiraDomain The domain of the Jira project ex: https://jira.company.com/
  */
 export async function addRepository(
   repoUrl: ConfiguredRepo["url"],
