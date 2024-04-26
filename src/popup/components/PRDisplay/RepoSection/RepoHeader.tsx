@@ -10,11 +10,11 @@ import { type RepoData } from "../../../../data";
 interface RepoTitleProps {
   /** The data of the repo to show for this section */
   repo: RepoData;
-  /** The function to execute when click the expand button */
-  onOpen: React.MouseEventHandler<HTMLButtonElement>;
+  /** The function to execute to expand the header */
+  onExpand: React.MouseEventHandler<HTMLDivElement>;
 }
 
-export default function RepoHeader({ repo, onOpen: onExpand }: RepoTitleProps) {
+export default function RepoHeader({ repo, onExpand }: RepoTitleProps) {
   return (
     <Box
       sx={{
@@ -34,11 +34,10 @@ export default function RepoHeader({ repo, onOpen: onExpand }: RepoTitleProps) {
           sx={{
             display: "flex",
             flexDirection: "row",
-            flex: 1,
             justifyContent: "flex-start",
             gap: 1,
             overflow: "hidden",
-            paddingLeft: 1,
+            paddingX: 1,
           }}
           onClick={() => {
             createTab(repo.url).catch(() => {
@@ -66,13 +65,16 @@ export default function RepoHeader({ repo, onOpen: onExpand }: RepoTitleProps) {
       >
         <Box
           sx={{
-            flex: 0,
+            flex: 1,
+            display: "flex",
+            flexDirection: "row",
+            justifyContent: "flex-end",
+          }}
+          onClick={(e) => {
+            onExpand(e);
           }}
         >
           <IconButton
-            onClick={(e) => {
-              onExpand(e);
-            }}
             sx={{
               "&:hover": {
                 bgcolor: "transparent",

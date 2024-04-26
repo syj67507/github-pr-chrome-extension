@@ -36,7 +36,7 @@ export default function RepoSection({ repo, children }: RepoSectionProps) {
       >
         <RepoHeader
           repo={repo}
-          onOpen={() => {
+          onExpand={() => {
             setIsOpen(!isOpen);
           }}
         />
