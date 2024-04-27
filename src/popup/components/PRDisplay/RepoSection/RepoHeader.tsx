@@ -10,11 +10,13 @@ import { type RepoData } from "../../../../data";
 interface RepoTitleProps {
   /** The data of the repo to show for this section */
   repo: RepoData;
-  /** The function to execute to expand the header */
-  onExpand: React.MouseEventHandler<HTMLDivElement>;
+  /** The function to execute when click the expand button */
+  onExpand: React.MouseEventHandler;
 }
 
 export default function RepoHeader({ repo, onExpand }: RepoTitleProps) {
+  const option: number = 2;
+
   return (
     <Box
       sx={{
@@ -34,10 +36,10 @@ export default function RepoHeader({ repo, onExpand }: RepoTitleProps) {
           sx={{
             display: "flex",
             flexDirection: "row",
-            justifyContent: "flex-start",
-            gap: 1,
             overflow: "hidden",
             paddingX: 1,
+            bgcolor: "yellow",
+            flex: "initial",
           }}
           onClick={() => {
             createTab(repo.url).catch(() => {
@@ -64,17 +66,29 @@ export default function RepoHeader({ repo, onExpand }: RepoTitleProps) {
         disableInteractive
       >
         <Box
-          sx={{
-            flex: 1,
-            display: "flex",
-            flexDirection: "row",
-            justifyContent: "flex-end",
-          }}
+          sx={{ bgcolor: "blue", flex: 1 }}
           onClick={(e) => {
-            onExpand(e);
+            if (option === 1) {
+              createTab(repo.url).catch(() => {
+                console.error(`failed to create tab with url: ${repo.url}`);
+              });
+            }
+            if (option === 2) {
+              onExpand(e);
+            }
           }}
-        >
+        />
+      </Tooltip>
+      <Tooltip
+        title={`${repo.pullRequests.length} open`}
+        followCursor
+        disableInteractive
+      >
+        <Box sx={{ flex: 0 }}>
           <IconButton
+            onClick={(e) => {
+              onExpand(e);
+            }}
             sx={{
               "&:hover": {
                 bgcolor: "transparent",
