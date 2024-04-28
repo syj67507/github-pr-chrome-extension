@@ -4,7 +4,11 @@ import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import IconButton from "@mui/material/IconButton";
 import Tooltip from "@mui/material/Tooltip";
 import Typography from "@mui/material/Typography";
-import { createTab } from "../../../../data/extension";
+import {
+  type BlankSpaceBehavior,
+  createTab,
+  getBlankSpaceBehavior,
+} from "../../../../data/extension";
 import { type RepoData } from "../../../../data";
 
 interface RepoTitleProps {
@@ -12,11 +16,14 @@ interface RepoTitleProps {
   repo: RepoData;
   /** The function to execute when click the expand button */
   onExpand: React.MouseEventHandler;
+  blankSpaceBehavior: BlankSpaceBehavior;
 }
 
-export default function RepoHeader({ repo, onExpand }: RepoTitleProps) {
-  const option: number = 2;
-
+export default function RepoHeader({
+  repo,
+  onExpand,
+  blankSpaceBehavior,
+}: RepoTitleProps) {
   return (
     <Box
       sx={{
@@ -68,12 +75,12 @@ export default function RepoHeader({ repo, onExpand }: RepoTitleProps) {
         <Box
           sx={{ bgcolor: "blue", flex: 1 }}
           onClick={(e) => {
-            if (option === 1) {
+            if (blankSpaceBehavior === "link") {
               createTab(repo.url).catch(() => {
                 console.error(`failed to create tab with url: ${repo.url}`);
               });
             }
-            if (option === 2) {
+            if (blankSpaceBehavior === "expand") {
               onExpand(e);
             }
           }}

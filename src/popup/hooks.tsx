@@ -5,6 +5,8 @@ import {
   getRepositories,
   getToken,
   setBadge,
+  getBlankSpaceBehavior,
+  type BlankSpaceBehavior,
 } from "../data/extension";
 import GitHubClient, { type RepoData } from "../data";
 
@@ -97,4 +99,24 @@ export function useGetPullRequests() {
   }, []);
 
   return { username, data, loading, token };
+}
+
+/**
+ * A hook to fetch the user's configuration for the Blank Space Setting
+ * @returns Returns a loading state variable, the data, and the username
+ */
+export function useGetBlankSpaceBehavior() {
+  const [blankSpaceBehavior, setBlankSpaceBehavior] =
+    useState<BlankSpaceBehavior>("expand");
+  useEffect(() => {
+    async function getBehavior() {
+      const behavior = await getBlankSpaceBehavior();
+      setBlankSpaceBehavior(behavior);
+    }
+    getBehavior().catch((e) => {
+      console.error("Failed to fetch blank space behavior", e);
+    });
+  }, []);
+
+  return blankSpaceBehavior;
 }
