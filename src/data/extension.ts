@@ -29,7 +29,7 @@ export interface ConfiguredRepo {
   jiraTags?: string[];
 }
 
-export type BlankSpaceBehavior = "expand" | "link";
+export type BlankSpaceBehavior = "expand" | "link" | undefined;
 
 /**
  * The data that represents what is stored for this extension in
@@ -230,9 +230,10 @@ export async function getBlankSpaceBehavior(): Promise<BlankSpaceBehavior> {
  * Sets the configuration on whether or not the user wants to expand the repo section
  * or wants to open the repo in a new tab
  */
-export async function setBlankSpaceBehavior(
+export async function setBlankSpaceBehaviorSetting(
   behavior: BlankSpaceBehavior
 ): Promise<void> {
   const storage = await getStorage();
   storage.blankSpaceBehavior = behavior;
+  await setStorage(storage);
 }

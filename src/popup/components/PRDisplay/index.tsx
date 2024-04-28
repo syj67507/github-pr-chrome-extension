@@ -17,7 +17,7 @@ import {
 export default function PRDisplay() {
   const { loadingFilters, filters, setFilters } = useSavedFilters();
   const { loading, data, username, token } = useGetPullRequests();
-  const blankSpaceBehavior = useGetBlankSpaceBehavior();
+  const [blankSpaceBehavior] = useGetBlankSpaceBehavior();
 
   return (
     <Stack width="100%" bgcolor="whitesmoke" padding={1} spacing={1}>

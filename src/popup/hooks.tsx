@@ -108,15 +108,21 @@ export function useGetPullRequests() {
 export function useGetBlankSpaceBehavior() {
   const [blankSpaceBehavior, setBlankSpaceBehavior] =
     useState<BlankSpaceBehavior>("expand");
+  const [loading, setLoading] = useState(true);
   useEffect(() => {
     async function getBehavior() {
       const behavior = await getBlankSpaceBehavior();
+      // eslint-disable-next-line no-promise-executor-return
       setBlankSpaceBehavior(behavior);
     }
-    getBehavior().catch((e) => {
-      console.error("Failed to fetch blank space behavior", e);
-    });
+    getBehavior()
+      .catch((e) => {
+        console.error("Failed to fetch blank space behavior", e);
+      })
+      .finally(() => {
+        setLoading(false);
+      });
   }, []);
 
-  return blankSpaceBehavior;
+  return [blankSpaceBehavior, setBlankSpaceBehavior, loading] as const;
 }
