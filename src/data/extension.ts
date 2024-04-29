@@ -43,7 +43,7 @@ export interface Storage {
   /** The current state of the user configured filters */
   filters: Filters;
   /** User setting to open section or go to repo when clicking blank space on the repo header */
-  blankSpaceBehavior?: HeaderClickBehavior;
+  headerClickBehavior?: HeaderClickBehavior;
 }
 
 /**
@@ -221,10 +221,10 @@ export async function getFilterOptions() {
  */
 export async function getHeaderClickBehavior(): Promise<HeaderClickBehavior> {
   const storage = await getStorage();
-  if (storage.blankSpaceBehavior === undefined) {
-    storage.blankSpaceBehavior = "expand";
+  if (storage.headerClickBehavior === undefined) {
+    storage.headerClickBehavior = "expand";
   }
-  return storage.blankSpaceBehavior;
+  return storage.headerClickBehavior;
 }
 
 /**
@@ -235,6 +235,6 @@ export async function saveHeaderClickBehavior(
   behavior: HeaderClickBehavior
 ): Promise<void> {
   const storage = await getStorage();
-  storage.blankSpaceBehavior = behavior;
+  storage.headerClickBehavior = behavior;
   await setStorage(storage);
 }
