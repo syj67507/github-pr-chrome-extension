@@ -5,9 +5,8 @@ import IconButton from "@mui/material/IconButton";
 import Tooltip from "@mui/material/Tooltip";
 import Typography from "@mui/material/Typography";
 import {
-  type BlankSpaceBehavior,
+  type HeaderClickBehavior,
   createTab,
-  getBlankSpaceBehavior,
 } from "../../../../data/extension";
 import { type RepoData } from "../../../../data";
 
@@ -16,14 +15,30 @@ interface RepoTitleProps {
   repo: RepoData;
   /** The function to execute when click the expand button */
   onExpand: React.MouseEventHandler;
-  blankSpaceBehavior: BlankSpaceBehavior;
+  /** The user configured behavior when the blank space in the header is clicked */
+  headerClickBehavior: HeaderClickBehavior;
 }
 
 export default function RepoHeader({
   repo,
   onExpand,
-  blankSpaceBehavior,
+  headerClickBehavior,
 }: RepoTitleProps) {
+  let extraHeaderSpaceFunction;
+  let extraHeaderSpaceToolTip = ``;
+  if (headerClickBehavior === "expand") {
+    extraHeaderSpaceFunction = onExpand;
+    extraHeaderSpaceToolTip = `${repo.pullRequests.length} open`;
+  }
+  if (headerClickBehavior === "link") {
+    extraHeaderSpaceFunction = () => {
+      createTab(repo.url).catch(() => {
+        console.error(`failed to create tab with url: ${repo.url}`);
+      });
+    };
+    extraHeaderSpaceToolTip = `${repo.url}`;
+  }
+
   return (
     <Box
       sx={{
@@ -45,7 +60,6 @@ export default function RepoHeader({
             flexDirection: "row",
             overflow: "hidden",
             paddingX: 1,
-            bgcolor: "yellow",
             flex: "initial",
           }}
           onClick={() => {
@@ -67,24 +81,8 @@ export default function RepoHeader({
           </Typography>
         </Box>
       </Tooltip>
-      <Tooltip
-        title={`${repo.pullRequests.length} open`}
-        followCursor
-        disableInteractive
-      >
-        <Box
-          sx={{ bgcolor: "blue", flex: 1 }}
-          onClick={(e) => {
-            if (blankSpaceBehavior === "link") {
-              createTab(repo.url).catch(() => {
-                console.error(`failed to create tab with url: ${repo.url}`);
-              });
-            }
-            if (blankSpaceBehavior === "expand") {
-              onExpand(e);
-            }
-          }}
-        />
+      <Tooltip title={extraHeaderSpaceToolTip} followCursor disableInteractive>
+        <Box sx={{ flex: 1 }} onClick={extraHeaderSpaceFunction} />
       </Tooltip>
       <Tooltip
         title={`${repo.pullRequests.length} open`}

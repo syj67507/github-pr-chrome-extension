@@ -9,7 +9,7 @@ import NoPullRequest from "./RepoSection/NoPullRequest";
 import FilterOptions from "./Filters/Filters";
 import Card from "../Card/Card";
 import {
-  useGetBlankSpaceBehavior,
+  useGetHeaderClickBehavior,
   useGetPullRequests,
   useSavedFilters,
 } from "../../hooks";
@@ -17,7 +17,7 @@ import {
 export default function PRDisplay() {
   const { loadingFilters, filters, setFilters } = useSavedFilters();
   const { loading, data, username, token } = useGetPullRequests();
-  const [blankSpaceBehavior] = useGetBlankSpaceBehavior();
+  const [headerClickBehavior] = useGetHeaderClickBehavior();
 
   return (
     <Stack width="100%" bgcolor="whitesmoke" padding={1} spacing={1}>
@@ -74,7 +74,7 @@ export default function PRDisplay() {
               <RepoSection
                 key={repo.url}
                 repo={repo}
-                blankSpaceBehavior={blankSpaceBehavior}
+                headerClickBehavior={headerClickBehavior}
               >
                 {filtered.length > 0
                   ? filtered.map((pr) => (

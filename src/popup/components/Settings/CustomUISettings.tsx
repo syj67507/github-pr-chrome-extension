@@ -8,21 +8,21 @@ import {
   Typography,
 } from "@mui/material";
 import React from "react";
-import { useGetBlankSpaceBehavior } from "../../hooks";
+import { useGetHeaderClickBehavior } from "../../hooks";
 import {
-  type BlankSpaceBehavior,
-  setBlankSpaceBehaviorSetting,
+  type HeaderClickBehavior,
+  saveHeaderClickBehavior,
 } from "../../../data/extension";
 
 export default function CustomUISettings() {
   const [blankSpaceBehavior, setBlankSpaceBehavior, loading] =
-    useGetBlankSpaceBehavior();
+    useGetHeaderClickBehavior();
 
   return (
     <Stack direction="column" width="100%" padding={1}>
       <Typography variant="body1" textAlign="left">
-        Select the behavior you wish to occur when you click on the empty space
-        between the repository name and the dropdown icon
+        The behavior when click the extra space between repo name and the
+        dropdown button
       </Typography>
       <Stack>
         {loading && (
@@ -37,9 +37,9 @@ export default function CustomUISettings() {
               row
               onChange={(e) => {
                 console.log(e.target.value);
-                setBlankSpaceBehavior(e.target.value as BlankSpaceBehavior);
-                setBlankSpaceBehaviorSetting(
-                  e.target.value as BlankSpaceBehavior
+                setBlankSpaceBehavior(e.target.value as HeaderClickBehavior);
+                saveHeaderClickBehavior(
+                  e.target.value as HeaderClickBehavior
                 ).catch((error) => {
                   console.error(
                     "Failed to set the blank space behavior setting",

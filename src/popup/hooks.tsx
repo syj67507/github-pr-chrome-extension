@@ -5,8 +5,8 @@ import {
   getRepositories,
   getToken,
   setBadge,
-  getBlankSpaceBehavior,
-  type BlankSpaceBehavior,
+  getHeaderClickBehavior,
+  type HeaderClickBehavior,
 } from "../data/extension";
 import GitHubClient, { type RepoData } from "../data";
 
@@ -105,24 +105,23 @@ export function useGetPullRequests() {
  * A hook to fetch the user's configuration for the Blank Space Setting
  * @returns Returns a loading state variable, the data, and the username
  */
-export function useGetBlankSpaceBehavior() {
-  const [blankSpaceBehavior, setBlankSpaceBehavior] =
-    useState<BlankSpaceBehavior>("expand");
+export function useGetHeaderClickBehavior() {
+  const [headerClickBehavior, setHeaderClickBehavior] =
+    useState<HeaderClickBehavior>("expand");
   const [loading, setLoading] = useState(true);
   useEffect(() => {
     async function getBehavior() {
-      const behavior = await getBlankSpaceBehavior();
-      // eslint-disable-next-line no-promise-executor-return
-      setBlankSpaceBehavior(behavior);
+      const behavior = await getHeaderClickBehavior();
+      setHeaderClickBehavior(behavior);
     }
     getBehavior()
       .catch((e) => {
-        console.error("Failed to fetch blank space behavior", e);
+        console.error("Failed to fetch header space behavior", e);
       })
       .finally(() => {
         setLoading(false);
       });
   }, []);
 
-  return [blankSpaceBehavior, setBlankSpaceBehavior, loading] as const;
+  return [headerClickBehavior, setHeaderClickBehavior, loading] as const;
 }

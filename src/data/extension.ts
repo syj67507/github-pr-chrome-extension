@@ -29,7 +29,7 @@ export interface ConfiguredRepo {
   jiraTags?: string[];
 }
 
-export type BlankSpaceBehavior = "expand" | "link" | undefined;
+export type HeaderClickBehavior = "expand" | "link";
 
 /**
  * The data that represents what is stored for this extension in
@@ -43,7 +43,7 @@ export interface Storage {
   /** The current state of the user configured filters */
   filters: Filters;
   /** User setting to open section or go to repo when clicking blank space on the repo header */
-  blankSpaceBehavior?: BlankSpaceBehavior;
+  blankSpaceBehavior?: HeaderClickBehavior;
 }
 
 /**
@@ -217,8 +217,9 @@ export async function getFilterOptions() {
 /**
  * Returns whether or not the user wants to expand the repo section
  * or wants to open the repo in a new tab
+ * @returns "expand" or "link", defaults to expand if not previously saved
  */
-export async function getBlankSpaceBehavior(): Promise<BlankSpaceBehavior> {
+export async function getHeaderClickBehavior(): Promise<HeaderClickBehavior> {
   const storage = await getStorage();
   if (storage.blankSpaceBehavior === undefined) {
     storage.blankSpaceBehavior = "expand";
@@ -230,8 +231,8 @@ export async function getBlankSpaceBehavior(): Promise<BlankSpaceBehavior> {
  * Sets the configuration on whether or not the user wants to expand the repo section
  * or wants to open the repo in a new tab
  */
-export async function setBlankSpaceBehaviorSetting(
-  behavior: BlankSpaceBehavior
+export async function saveHeaderClickBehavior(
+  behavior: HeaderClickBehavior
 ): Promise<void> {
   const storage = await getStorage();
   storage.blankSpaceBehavior = behavior;
