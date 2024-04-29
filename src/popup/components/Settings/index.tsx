@@ -2,6 +2,7 @@ import React from "react";
 import Stack from "@mui/material/Stack";
 import Card from "../Card/Card";
 import ResetStorageSetting from "./ResetStorageSetting";
+import CustomUISettings from "./CustomUISettings";
 import AccessTokenSetting from "./AccessTokenSetting";
 
 export default function Settings() {
@@ -12,6 +13,9 @@ export default function Settings() {
       </Card>
       <Card>
         <ResetStorageSetting />
+      </Card>
+      <Card>
+        <CustomUISettings />
       </Card>
     </Stack>
   );

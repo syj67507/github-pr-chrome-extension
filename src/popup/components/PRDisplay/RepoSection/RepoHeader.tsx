@@ -4,17 +4,41 @@ import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import IconButton from "@mui/material/IconButton";
 import Tooltip from "@mui/material/Tooltip";
 import Typography from "@mui/material/Typography";
-import { createTab } from "../../../../data/extension";
+import {
+  type HeaderClickBehavior,
+  createTab,
+} from "../../../../data/extension";
 import { type RepoData } from "../../../../data";
 
 interface RepoTitleProps {
   /** The data of the repo to show for this section */
   repo: RepoData;
   /** The function to execute when click the expand button */
-  onOpen: React.MouseEventHandler<HTMLButtonElement>;
+  onExpand: React.MouseEventHandler;
+  /** The user configured behavior when the blank space in the header is clicked */
+  headerClickBehavior: HeaderClickBehavior;
 }
 
-export default function RepoHeader({ repo, onOpen: onExpand }: RepoTitleProps) {
+export default function RepoHeader({
+  repo,
+  onExpand,
+  headerClickBehavior,
+}: RepoTitleProps) {
+  let extraHeaderSpaceFunction;
+  let extraHeaderSpaceToolTip = ``;
+  if (headerClickBehavior === "expand") {
+    extraHeaderSpaceFunction = onExpand;
+    extraHeaderSpaceToolTip = `${repo.pullRequests.length} open`;
+  }
+  if (headerClickBehavior === "link") {
+    extraHeaderSpaceFunction = () => {
+      createTab(repo.url).catch(() => {
+        console.error(`failed to create tab with url: ${repo.url}`);
+      });
+    };
+    extraHeaderSpaceToolTip = `${repo.url}`;
+  }
+
   return (
     <Box
       sx={{
@@ -34,11 +58,9 @@ export default function RepoHeader({ repo, onOpen: onExpand }: RepoTitleProps) {
           sx={{
             display: "flex",
             flexDirection: "row",
-            flex: 1,
-            justifyContent: "flex-start",
-            gap: 1,
             overflow: "hidden",
-            paddingLeft: 1,
+            paddingX: 1,
+            flex: "initial",
           }}
           onClick={() => {
             createTab(repo.url).catch(() => {
@@ -59,16 +81,15 @@ export default function RepoHeader({ repo, onOpen: onExpand }: RepoTitleProps) {
           </Typography>
         </Box>
       </Tooltip>
+      <Tooltip title={extraHeaderSpaceToolTip} followCursor disableInteractive>
+        <Box sx={{ flex: 1 }} onClick={extraHeaderSpaceFunction} />
+      </Tooltip>
       <Tooltip
         title={`${repo.pullRequests.length} open`}
         followCursor
         disableInteractive
       >
-        <Box
-          sx={{
-            flex: 0,
-          }}
-        >
+        <Box sx={{ flex: 0 }}>
           <IconButton
             onClick={(e) => {
               onExpand(e);

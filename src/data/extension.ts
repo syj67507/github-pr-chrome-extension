@@ -29,6 +29,8 @@ export interface ConfiguredRepo {
   jiraTags?: string[];
 }
 
+export type HeaderClickBehavior = "expand" | "link";
+
 /**
  * The data that represents what is stored for this extension in
  * the browser's synced storage
@@ -40,6 +42,8 @@ export interface Storage {
   token: string;
   /** The current state of the user configured filters */
   filters: Filters;
+  /** User setting to open section or go to repo when clicking blank space on the repo header */
+  headerClickBehavior?: HeaderClickBehavior;
 }
 
 /**
@@ -208,4 +212,29 @@ export async function saveFilterOptions(filters: Filters) {
 export async function getFilterOptions() {
   const storage = await getStorage();
   return storage.filters;
+}
+
+/**
+ * Returns whether or not the user wants to expand the repo section
+ * or wants to open the repo in a new tab
+ * @returns "expand" or "link", defaults to expand if not previously saved
+ */
+export async function getHeaderClickBehavior(): Promise<HeaderClickBehavior> {
+  const storage = await getStorage();
+  if (storage.headerClickBehavior === undefined) {
+    storage.headerClickBehavior = "expand";
+  }
+  return storage.headerClickBehavior;
+}
+
+/**
+ * Sets the configuration on whether or not the user wants to expand the repo section
+ * or wants to open the repo in a new tab
+ */
+export async function saveHeaderClickBehavior(
+  behavior: HeaderClickBehavior
+): Promise<void> {
+  const storage = await getStorage();
+  storage.headerClickBehavior = behavior;
+  await setStorage(storage);
 }

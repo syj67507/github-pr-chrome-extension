@@ -4,13 +4,19 @@ import Stack from "@mui/material/Stack";
 import RepoHeader from "./RepoHeader";
 import { type RepoData } from "../../../../data";
 import Card from "../../Card/Card";
+import { type HeaderClickBehavior } from "../../../../data/extension";
 
 interface RepoSectionProps extends React.PropsWithChildren {
   /** The data of the repo to show for this section */
   repo: RepoData;
+  headerClickBehavior: HeaderClickBehavior;
 }
 
-export default function RepoSection({ repo, children }: RepoSectionProps) {
+export default function RepoSection({
+  repo,
+  children,
+  headerClickBehavior,
+}: RepoSectionProps) {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
@@ -36,9 +42,10 @@ export default function RepoSection({ repo, children }: RepoSectionProps) {
       >
         <RepoHeader
           repo={repo}
-          onOpen={() => {
+          onExpand={() => {
             setIsOpen(!isOpen);
           }}
+          headerClickBehavior={headerClickBehavior}
         />
       </Stack>
       <Stack width="100%" bgcolor="white" borderRadius="inherit">

@@ -8,11 +8,16 @@ import PullRequest from "./RepoSection/PullRequest";
 import NoPullRequest from "./RepoSection/NoPullRequest";
 import FilterOptions from "./Filters/Filters";
 import Card from "../Card/Card";
-import { useGetPullRequests, useSavedFilters } from "../../hooks";
+import {
+  useGetHeaderClickBehavior,
+  useGetPullRequests,
+  useSavedFilters,
+} from "../../hooks";
 
 export default function PRDisplay() {
   const { loadingFilters, filters, setFilters } = useSavedFilters();
   const { loading, data, username, token } = useGetPullRequests();
+  const [headerClickBehavior] = useGetHeaderClickBehavior();
 
   return (
     <Stack width="100%" bgcolor="whitesmoke" padding={1} spacing={1}>
@@ -66,7 +71,11 @@ export default function PRDisplay() {
             }
 
             return (
-              <RepoSection key={repo.url} repo={repo}>
+              <RepoSection
+                key={repo.url}
+                repo={repo}
+                headerClickBehavior={headerClickBehavior}
+              >
                 {filtered.length > 0
                   ? filtered.map((pr) => (
                       <PullRequest
