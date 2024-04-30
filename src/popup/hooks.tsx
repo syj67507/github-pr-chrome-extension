@@ -7,6 +7,7 @@ import {
   setBadge,
   getHeaderClickBehavior,
   type HeaderClickBehavior,
+  getAnimatedExpandSetting,
 } from "../data/extension";
 import GitHubClient, { type RepoData } from "../data";
 
@@ -103,7 +104,7 @@ export function useGetPullRequests() {
 
 /**
  * A hook to fetch the user's configuration for the Blank Space Setting
- * @returns Returns a loading state variable, the data, and the username
+ * @returns Returns a loading state variable and the setting value
  */
 export function useGetHeaderClickBehavior() {
   const [headerClickBehavior, setHeaderClickBehavior] =
@@ -124,4 +125,30 @@ export function useGetHeaderClickBehavior() {
   }, []);
 
   return [headerClickBehavior, setHeaderClickBehavior, loading] as const;
+}
+
+/**
+ * A hook to fetch the user's configuration for the Animated Expand Setting
+ * @returns Returns a loading state variable and the setting value
+ */
+export function useGetAnimatedExpandSetting() {
+  const [animatedExpandSetting, setAnimatedExpandSetting] =
+    useState<boolean>(false);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    async function getSetting() {
+      const setting = await getAnimatedExpandSetting();
+      setAnimatedExpandSetting(setting);
+    }
+    getSetting()
+      .catch((e) => {
+        console.error("Failed to fetch animated expand setting", e);
+      })
+      .finally(() => {
+        setLoading(false);
+      });
+  }, []);
+
+  return [animatedExpandSetting, setAnimatedExpandSetting, loading] as const;
 }

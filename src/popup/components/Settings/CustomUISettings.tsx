@@ -6,10 +6,15 @@ import RadioGroup from "@mui/material/RadioGroup";
 import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
 import React from "react";
-import { useGetHeaderClickBehavior } from "../../hooks";
+import { Switch } from "@mui/material";
+import {
+  useGetAnimatedExpandSetting,
+  useGetHeaderClickBehavior,
+} from "../../hooks";
 import {
   type HeaderClickBehavior,
   saveHeaderClickBehavior,
+  saveAnimatedExpandSetting,
 } from "../../../data/extension";
 
 export default function CustomUISettings() {
@@ -34,7 +39,6 @@ export default function CustomUISettings() {
               value={blankSpaceBehavior}
               row
               onChange={(e) => {
-                console.log(e.target.value);
                 setBlankSpaceBehavior(e.target.value as HeaderClickBehavior);
                 saveHeaderClickBehavior(
                   e.target.value as HeaderClickBehavior
@@ -45,13 +49,20 @@ export default function CustomUISettings() {
                   );
                 });
               }}
+              sx={{ display: "flex", flexDirection: "row" }}
             >
               <FormControlLabel
                 value="expand"
                 control={<Radio />}
                 label="Expand"
+                sx={{ flex: 1 }}
               />
-              <FormControlLabel value="link" control={<Radio />} label="Link" />
+              <FormControlLabel
+                value="link"
+                control={<Radio />}
+                label="Link"
+                sx={{ flex: 1 }}
+              />
             </RadioGroup>
           </FormControl>
         )}

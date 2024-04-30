@@ -10,12 +10,14 @@ interface RepoSectionProps extends React.PropsWithChildren {
   /** The data of the repo to show for this section */
   repo: RepoData;
   headerClickBehavior: HeaderClickBehavior;
+  animatedExpandSetting: boolean;
 }
 
 export default function RepoSection({
   repo,
   children,
   headerClickBehavior,
+  animatedExpandSetting,
 }: RepoSectionProps) {
   const [isOpen, setIsOpen] = useState(false);
 
@@ -49,12 +51,20 @@ export default function RepoSection({
         />
       </Stack>
       <Stack width="100%" bgcolor="white" borderRadius="inherit">
-        <Collapse in={isOpen} timeout={500}>
+        {animatedExpandSetting && (
+          <Collapse in={isOpen} timeout={500}>
+            <Stack width="100%" spacing={0}>
+              {/* Children here are intended to be the pull request components */}
+              {children}
+            </Stack>
+          </Collapse>
+        )}
+        {!animatedExpandSetting && (
           <Stack width="100%" spacing={0}>
             {/* Children here are intended to be the pull request components */}
-            {children}
+            {isOpen && children}
           </Stack>
-        </Collapse>
+        )}
       </Stack>
     </Card>
   );

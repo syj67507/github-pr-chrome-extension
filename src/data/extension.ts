@@ -44,6 +44,8 @@ export interface Storage {
   filters: Filters;
   /** User setting to open section or go to repo when clicking blank space on the repo header */
   headerClickBehavior?: HeaderClickBehavior;
+  /** User setting to animate the expansion of a repo section or not */
+  animatedExpandSetting?: boolean;
 }
 
 /**
@@ -236,5 +238,30 @@ export async function saveHeaderClickBehavior(
 ): Promise<void> {
   const storage = await getStorage();
   storage.headerClickBehavior = behavior;
+  await setStorage(storage);
+}
+
+/**
+ * Gets the user's current configuration for if they want animated expansions or not
+ * @returns true if the user has set this configuration to be on, or false otherwise
+ */
+export async function getAnimatedExpandSetting(): Promise<boolean> {
+  const storage = await getStorage();
+  // default to false if not previously saved
+  if (storage.animatedExpandSetting === undefined) {
+    storage.animatedExpandSetting = false;
+  }
+  return storage.animatedExpandSetting;
+}
+
+/**
+ * Saves the value that the user wants to set the animated expansion setting to
+ * @param animatedExpandSetting {boolean} - the value of the animated expansion setting
+ */
+export async function saveAnimatedExpandSetting(
+  animatedExpandSetting: boolean
+): Promise<void> {
+  const storage = await getStorage();
+  storage.animatedExpandSetting = animatedExpandSetting;
   await setStorage(storage);
 }
