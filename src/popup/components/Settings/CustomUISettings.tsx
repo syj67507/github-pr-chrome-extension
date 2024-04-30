@@ -6,15 +6,10 @@ import RadioGroup from "@mui/material/RadioGroup";
 import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
 import React from "react";
-import { Switch } from "@mui/material";
-import {
-  useGetAnimatedExpandSetting,
-  useGetHeaderClickBehavior,
-} from "../../hooks";
+import { useGetHeaderClickBehavior } from "../../hooks";
 import {
   type HeaderClickBehavior,
   saveHeaderClickBehavior,
-  saveAnimatedExpandSetting,
 } from "../../../data/extension";
 
 export default function CustomUISettings() {
