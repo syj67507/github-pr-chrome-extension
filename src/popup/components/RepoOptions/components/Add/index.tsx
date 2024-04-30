@@ -33,10 +33,11 @@ export default function Add({ onSave }: AddProps) {
       spacing={2}
       width="100%"
       direction="column"
-      alignItems="center"
+      alignItems="flex-start"
       justifyContent="center"
     >
-      <Typography variant="body1" textAlign="left">
+      <Typography variant="body2">Add / Update Repositories</Typography>
+      <Typography variant="caption">
         Add or update a repository by filling out the following fields and
         clicking save.
       </Typography>

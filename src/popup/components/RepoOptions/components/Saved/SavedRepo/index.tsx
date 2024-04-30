@@ -24,7 +24,12 @@ export default function SavedRepo({ repo, onRemove }: SavedRepoProps) {
       }}
     >
       {/* Saved information */}
-      <Stack direction="column" alignItems="flex-start" width="100%">
+      <Stack
+        direction="column"
+        alignItems="flex-start"
+        width="100%"
+        paddingLeft={1}
+      >
         <Typography variant="caption">{repo.url}</Typography>
         {repo.jiraTags != null && (
           <Typography variant="caption">{repo.jiraTags.join(",")}</Typography>
