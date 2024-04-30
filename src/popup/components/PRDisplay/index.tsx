@@ -9,6 +9,7 @@ import NoPullRequest from "./RepoSection/NoPullRequest";
 import FilterOptions from "./Filters/Filters";
 import Card from "../Card/Card";
 import {
+  useGetAnimatedExpandSetting,
   useGetHeaderClickBehavior,
   useGetPullRequests,
   useSavedFilters,
@@ -18,6 +19,7 @@ export default function PRDisplay() {
   const { loadingFilters, filters, setFilters } = useSavedFilters();
   const { loading, data, username, token } = useGetPullRequests();
   const [headerClickBehavior] = useGetHeaderClickBehavior();
+  const [animatedExpandSetting] = useGetAnimatedExpandSetting();
 
   return (
     <Stack width="100%" bgcolor="whitesmoke" padding={1} spacing={1}>
@@ -75,6 +77,7 @@ export default function PRDisplay() {
                 key={repo.url}
                 repo={repo}
                 headerClickBehavior={headerClickBehavior}
+                animatedExpandSetting={animatedExpandSetting}
               >
                 {filtered.length > 0
                   ? filtered.map((pr) => (
