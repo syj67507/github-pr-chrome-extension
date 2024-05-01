@@ -24,7 +24,10 @@ export default function Saved({ repos, loading, error, onRemove }: SavedProps) {
           <CircularProgress />
         </Stack>
       )}
-      <Typography variant="body1" textAlign="left">
+      <Typography variant="body2" textAlign="left">
+        Saved Repositories
+      </Typography>
+      <Typography variant="caption" textAlign="left">
         {error && "An error occurred."}
         {repos !== null &&
           repos.length === 0 &&

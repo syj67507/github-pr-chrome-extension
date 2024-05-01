@@ -1,4 +1,7 @@
-import { Stack, Typography, CircularProgress, Switch } from "@mui/material";
+import Stack from "@mui/material/Stack";
+import Typography from "@mui/material/Typography";
+import CircularProgress from "@mui/material/CircularProgress";
+import Switch from "@mui/material/Switch";
 import React from "react";
 import { saveAnimatedExpandSetting } from "../../../data/extension";
 import { useGetAnimatedExpandSetting } from "../../hooks";
@@ -20,7 +23,7 @@ export default function AnimatedExpandSettingCard() {
         justifyContent="space-between"
         paddingX={1}
       >
-        <Typography variant="body1" textAlign="left">
+        <Typography variant="body2" textAlign="left">
           Animated expands for repo section
         </Typography>
         {animatedExpandLoading && (
@@ -46,7 +49,7 @@ export default function AnimatedExpandSettingCard() {
       </Stack>
 
       <Stack padding={1}>
-        <Typography variant="body2">
+        <Typography variant="caption">
           Turn this on if you want the repository section to open with a smooth
           transition. Note that there may be performance issues.
         </Typography>
