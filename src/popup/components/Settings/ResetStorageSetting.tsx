@@ -3,7 +3,7 @@ import Typography from "@mui/material/Typography";
 import React, { useState } from "react";
 import Snackbar from "@mui/material/Snackbar";
 import * as browser from "../../../data/extension";
-import ClearButton from "../Buttons/ClearButton";
+import ResetButton from "../Buttons/ResetButton";
 import Card from "../Card/Card";
 
 export default function ResetStorageSetting() {
@@ -22,7 +22,7 @@ export default function ResetStorageSetting() {
             Any issues may stem from invalid storage data and resetting storage
             can clear it
           </Typography>
-          <ClearButton
+          <ResetButton
             onClick={() => {
               browser
                 .resetStorage()

@@ -5,7 +5,7 @@ import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
 import { type ConfiguredRepo } from "../../../../../data/extension";
 import SaveButton from "../../../Buttons/SaveButton";
-import ClearButton from "../../../Buttons/ClearButton";
+import ResetButton from "../../../Buttons/ResetButton";
 
 interface AddProps {
   onSave: (
@@ -38,8 +38,8 @@ export default function Add({ onSave }: AddProps) {
     >
       <Typography variant="body2">Add / Update Repositories</Typography>
       <Typography variant="caption">
-        Add or update a repository by filling out the following fields and
-        clicking save.
+        Add a repository by filling out the following fields and clicking save.
+        Filling in the same repository URL will update it.
       </Typography>
       <TextField
         label="Repository URL"
@@ -80,7 +80,7 @@ export default function Add({ onSave }: AddProps) {
         size="small"
       />
       <Stack width="100%" direction="row" justifyContent="flex-end" spacing={2}>
-        <ClearButton
+        <ResetButton
           onClick={() => {
             setRepository("");
             setRawJiraTags("");

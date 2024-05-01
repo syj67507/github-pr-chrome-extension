@@ -1,7 +1,7 @@
 import { Button, type ButtonProps } from "@mui/material";
 import React from "react";
 
-export default function ClearButton(props: ButtonProps) {
+export default function ResetButton(props: ButtonProps) {
   return (
     <Button
       variant="outlined"
@@ -14,7 +14,7 @@ export default function ClearButton(props: ButtonProps) {
       // eslint-disable-next-line react/jsx-props-no-spreading
       {...props}
     >
-      Clear
+      Reset
     </Button>
   );
 }
