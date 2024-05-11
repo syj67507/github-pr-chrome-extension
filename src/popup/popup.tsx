@@ -2,7 +2,7 @@ import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
 import Stack from "@mui/material/Stack";
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import { render } from "react-dom";
 import PRDisplay from "./components/PRDisplay";
 import Settings from "./components/Settings";
@@ -12,6 +12,15 @@ type Page = "PR" | "Repos" | "Settings";
 
 function Popup() {
   const [page, setPage] = useState<Page>("PR");
+  const scrollRef = useRef<HTMLDivElement>();
+
+  function scrollToTop() {
+    if (scrollRef?.current != null) {
+      scrollRef.current.scrollTo({
+        top: 0,
+      });
+    }
+  }
 
   return (
     <Stack
@@ -46,6 +55,7 @@ function Popup() {
           disableRipple
           onClick={() => {
             setPage("PR");
+            scrollToTop();
           }}
         >
           PR
@@ -61,6 +71,7 @@ function Popup() {
           disableRipple
           onClick={() => {
             setPage("Repos");
+            scrollToTop();
           }}
         >
           Repos
@@ -76,12 +87,14 @@ function Popup() {
           disableRipple
           onClick={() => {
             setPage("Settings");
+            scrollToTop();
           }}
         >
           Settings
         </Button>
       </Box>
       <Box
+        ref={scrollRef}
         sx={{
           width: "100%",
           overflowY: "scroll",
