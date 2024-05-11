@@ -22,18 +22,6 @@ function Popup() {
       sx={{
         width: "400px",
         maxHeight: "600px",
-        overflowY: "scroll",
-        "&::-webkit-scrollbar": {
-          width: 8,
-        },
-        "&::-webkit-scrollbar-track": {
-          background: "rgba(0, 0, 0, 0.1)",
-        },
-        "&::-webkit-scrollbar-thumb": {
-          background: "rgba(0, 0, 0, 0.4)",
-        },
-        scrollbarColor: "rgba(0, 0, 0, 0.4) rgba(0, 0, 0, 0.1)",
-        scrollbarWidth: "thin",
       }}
     >
       <CssBaseline />
@@ -93,9 +81,27 @@ function Popup() {
           Settings
         </Button>
       </Box>
-      {page === "PR" && <PRDisplay />}
-      {page === "Repos" && <RepoOptions />}
-      {page === "Settings" && <Settings />}
+      <Box
+        sx={{
+          width: "100%",
+          overflowY: "scroll",
+          "&::-webkit-scrollbar": {
+            width: 8,
+          },
+          "&::-webkit-scrollbar-track": {
+            background: "rgba(0, 0, 0, 0.1)",
+          },
+          "&::-webkit-scrollbar-thumb": {
+            background: "rgba(0, 0, 0, 0.4)",
+          },
+          scrollbarColor: "rgba(0, 0, 0, 0.4) rgba(0, 0, 0, 0.1)",
+          scrollbarWidth: "thin",
+        }}
+      >
+        {page === "PR" && <PRDisplay />}
+        {page === "Repos" && <RepoOptions />}
+        {page === "Settings" && <Settings />}
+      </Box>
     </Stack>
   );
 }
