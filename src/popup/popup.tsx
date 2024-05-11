@@ -2,7 +2,7 @@ import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
 import Stack from "@mui/material/Stack";
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import { render } from "react-dom";
 import PRDisplay from "./components/PRDisplay";
 import Settings from "./components/Settings";
@@ -12,6 +12,15 @@ type Page = "PR" | "Repos" | "Settings";
 
 function Popup() {
   const [page, setPage] = useState<Page>("PR");
+  const scrollRef = useRef<HTMLDivElement>();
+
+  function scrollToTop() {
+    if (scrollRef?.current != null) {
+      scrollRef.current.scrollTo({
+        top: 0,
+      });
+    }
+  }
 
   return (
     <Stack
@@ -22,18 +31,6 @@ function Popup() {
       sx={{
         width: "400px",
         maxHeight: "600px",
-        overflowY: "scroll",
-        "&::-webkit-scrollbar": {
-          width: 8,
-        },
-        "&::-webkit-scrollbar-track": {
-          background: "rgba(0, 0, 0, 0.1)",
-        },
-        "&::-webkit-scrollbar-thumb": {
-          background: "rgba(0, 0, 0, 0.4)",
-        },
-        scrollbarColor: "rgba(0, 0, 0, 0.4) rgba(0, 0, 0, 0.1)",
-        scrollbarWidth: "thin",
       }}
     >
       <CssBaseline />
@@ -58,6 +55,7 @@ function Popup() {
           disableRipple
           onClick={() => {
             setPage("PR");
+            scrollToTop();
           }}
         >
           PR
@@ -73,6 +71,7 @@ function Popup() {
           disableRipple
           onClick={() => {
             setPage("Repos");
+            scrollToTop();
           }}
         >
           Repos
@@ -88,14 +87,34 @@ function Popup() {
           disableRipple
           onClick={() => {
             setPage("Settings");
+            scrollToTop();
           }}
         >
           Settings
         </Button>
       </Box>
-      {page === "PR" && <PRDisplay />}
-      {page === "Repos" && <RepoOptions />}
-      {page === "Settings" && <Settings />}
+      <Box
+        ref={scrollRef}
+        sx={{
+          width: "100%",
+          overflowY: "scroll",
+          "&::-webkit-scrollbar": {
+            width: 8,
+          },
+          "&::-webkit-scrollbar-track": {
+            background: "rgba(0, 0, 0, 0.1)",
+          },
+          "&::-webkit-scrollbar-thumb": {
+            background: "rgba(0, 0, 0, 0.4)",
+          },
+          scrollbarColor: "rgba(0, 0, 0, 0.4) rgba(0, 0, 0, 0.1)",
+          scrollbarWidth: "thin",
+        }}
+      >
+        {page === "PR" && <PRDisplay />}
+        {page === "Repos" && <RepoOptions />}
+        {page === "Settings" && <Settings />}
+      </Box>
     </Stack>
   );
 }
