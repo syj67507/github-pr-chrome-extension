@@ -228,8 +228,8 @@ export default class GitHubClient {
         pullRequests: data.pullRequests.nodes.map((node) => {
           const ticketTags: ConfiguredRepo["jiraTags"] = [];
           configuredRepo?.jiraTags?.forEach((jiraTag) => {
-            // const regex = new RegExp(`${jiraTag}-\\d+`, "g");
-            const regex = new RegExp(jiraTag, "g"); // For testing
+            const regex = new RegExp(`${jiraTag}-\\d+`, "g");
+            // const regex = new RegExp(jiraTag, "g"); // For testing
 
             const ticketsInTitle = node.title.match(regex);
             const ticketsInBody = node.body.match(regex);
