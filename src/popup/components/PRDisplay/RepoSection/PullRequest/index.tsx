@@ -1,10 +1,6 @@
 import React from "react";
 import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
-import DoneIcon from "@mui/icons-material/Done";
-import FeedbackOutlinedIcon from "@mui/icons-material/FeedbackOutlined";
-import ChatBubbleOutlineOutlinedIcon from "@mui/icons-material/ChatBubbleOutlineOutlined";
-import Tooltip from "@mui/material/Tooltip";
 import JiraIconButton from "./JiraIconButton";
 import GitHubIconButton from "./GitHubIconButton";
 import type { PullRequestData } from "../../../../../data";
