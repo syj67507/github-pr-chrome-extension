@@ -11,7 +11,7 @@ import {
 
 const alarmName = "fetchPRs";
 const delayInMinutes = 0;
-const periodInMinutes = 15 / 60;
+const periodInMinutes = 1;
 
 // Install logic
 // eslint-disable-next-line @typescript-eslint/no-misused-promises
