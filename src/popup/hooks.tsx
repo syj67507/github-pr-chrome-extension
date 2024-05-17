@@ -67,7 +67,7 @@ export function useGetPullRequests() {
         // Fetch data
         const storageRepos = await getRepositories();
         const userPromise = client.getAuthenticatedUser();
-        const reposDataPromise = client.getRepoDataNew(storageRepos);
+        const reposDataPromise = client.getRepoData(storageRepos);
 
         // Using promise all to make calls in parallel
         const [user, reposData] = await Promise.all([

@@ -11,7 +11,7 @@ export type PullRequestReviewState =
   | "APPROVED"
   | "CHANGES_REQUESTED"
   | "DISMISSED"
-  | null; // remove this later
+  | null; // This will be null when the user has not given a review
 
 /**
  * Test Raw
@@ -43,34 +43,14 @@ type PullRequestResponseRaw = Record<
 >;
 
 /**
- * The raw JSON response body when fetching a pull request from
- * GitHub's API
- */
-interface PullRequestResponse {
-  /** The title of the pull request */
-  title: string;
-  /** The description of the pull request */
-  body: string;
-  /** The issue number of the pull request */
-  number: number;
-  /** The url of the pull request */
-  html_url: string;
-  /** The user who is the author of the pull request */
-  user: {
-    /** The login username */
-    login: string;
-  };
-  /** Indicates if this pull request is in draft */
-  draft: boolean;
-}
-
-/**
  * The raw JSON response body when fetching the authenticated user from
  * GitHub's API
  */
 interface AuthenticatedUserResponse {
   /** The login username */
-  login: string;
+  viewer: {
+    login: string;
+  };
 }
 
 export interface RepoData {
@@ -128,152 +108,33 @@ export default class GitHubClient {
     this.token = token;
   }
 
-  /**
-   * Fetches pull request data for the provided repository
-   * @param {object} repo The repository's metadata
-   * @returns An array of pull request metadata for the provided repository
-   */
-  async getPullRequests(repo: {
-    owner: string;
-    name: string;
-  }): Promise<PullRequestData[]> {
+  async getAuthenticatedUser(): Promise<AuthenticatedUserData> {
+    const query = `
+        {
+          viewer {
+            login
+          }
+        }
+        `;
+
     const headersList = {
       Accept: "application/json",
       Authorization: `token ${this.token}`,
     };
 
-    try {
-      const response = await fetch(
-        `https://api.github.com/repos/${repo.owner}/${repo.name}/pulls`,
-        {
-          method: "GET",
-          headers: headersList,
-        }
-      );
-
-      const data = await response.json();
-      if (response.status !== 200) {
-        throw new Error(data.message);
-      }
-
-      return data.map((pullRequest: PullRequestResponse) => {
-        return {
-          title: pullRequest.title,
-          body: pullRequest.body !== null ? pullRequest.body : "",
-          number: pullRequest.number,
-          url: pullRequest.html_url,
-          username: pullRequest.user.login,
-          draft: pullRequest.draft,
-        };
-      });
-    } catch (error) {
-      console.error("e", error);
-      return [];
-    }
-  }
-
-  /**
-   * Fetch all relevant repo and pull request data to display from the repository url.
-   * If JIRA information was specified, this function will provide a URL to the JIRA ticket on success.
-   * @param reposData - An array where each element is an object of repo data, containing the url, jiraTag, and jiraDomain
-   * url - The url to the repository's main page (ex: https://github.com/syj67507/discord-bot)
-   * jiraTags - An array of JIRA project tags
-   * jiraDomain - The base domain for the JIRA project
-   * @returns An array of repository information and it's pull request data
-   */
-  async getRepoData(reposData: ConfiguredRepo[]): Promise<RepoData[]> {
-    if (!Array.isArray(reposData)) {
-      return [];
-    }
-
-    // map repoData to each of its pull requests
-    const reposDataWithPullRequests = reposData.map(async (repoData) => {
-      const { url, jiraTags, jiraDomain } = repoData;
-
-      const parsed = url.split("/");
-      const owner = parsed[3];
-      const name = parsed[4];
-
-      let pullRequests = await this.getPullRequests({
-        owner,
-        name,
-      });
-
-      if (jiraDomain !== undefined && jiraTags !== undefined) {
-        pullRequests = pullRequests.map((pr) => {
-          // Find a JIRA ticket with provided
-          const ticketTags: ConfiguredRepo["jiraTags"] = [];
-          jiraTags.forEach((jiraTag) => {
-            const regex = new RegExp(`${jiraTag}-\\d+`, "g");
-            // const regex = new RegExp(jiraTag, "g"); // For testing
-
-            const ticketsInTitle = pr.title.match(regex);
-            const ticketsInBody = pr.body.match(regex);
-
-            if (ticketsInTitle !== null) {
-              ticketTags.push(...ticketsInTitle);
-            }
-            if (ticketsInBody !== null) {
-              ticketTags.push(...ticketsInBody);
-            }
-          });
-          return {
-            ...pr,
-            jiraUrl:
-              ticketTags.length > 0
-                ? `${jiraDomain}/browse/${ticketTags[0]}` // grabs the first ticket detected
-                : undefined,
-          };
-        });
-      }
-
-      return {
-        owner,
-        name,
-        url,
-        pullRequests,
-        isJiraConfigured: repoData.jiraDomain !== undefined,
-      };
+    const response = await fetch(`https://api.github.com/graphql`, {
+      method: "POST",
+      headers: headersList,
+      body: JSON.stringify({ query }),
     });
-
-    return Promise.all(reposDataWithPullRequests);
+    const data = (await response.json()).data as AuthenticatedUserResponse;
+    const parsed: AuthenticatedUserData = {
+      username: data.viewer.login,
+    };
+    return parsed;
   }
 
-  /**
-   * Fetches the authenticated user's information from the configured
-   * personal access token that is passed into this client upon calling the
-   * constructor.
-   * @return An object that holds various pieces of information about the current user
-   */
-  async getAuthenticatedUser(): Promise<AuthenticatedUserData> {
-    try {
-      const headersList = {
-        Accept: "application/json",
-        Authorization: `token ${this.token}`,
-      };
-
-      const response = await fetch(`https://api.github.com/user`, {
-        method: "GET",
-        headers: headersList,
-      });
-
-      if (response.status !== 200) {
-        throw new Error((await response.json()).message);
-      }
-      const data: AuthenticatedUserResponse = await response.json();
-
-      return {
-        username: data.login,
-      };
-    } catch (error) {
-      console.error("e");
-      return {
-        username: "",
-      };
-    }
-  }
-
-  static randomAlphaString(): string {
+  private static randomAlphaString(): string {
     return Array(10)
       .fill(0)
       .map(() => String.fromCharCode(Math.random() * 26 + 97))
@@ -284,10 +145,12 @@ export default class GitHubClient {
    * Fetches the raw data for each repository that the user has configured
    * @param repositories
    */
-  async test(repositories: ConfiguredRepo[]): Promise<PullRequestResponseRaw> {
+  private async getRawRepoData(
+    repositories: ConfiguredRepo[]
+  ): Promise<PullRequestResponseRaw> {
     // Build each individual query for each repo
     const queries = repositories.map((repository) => {
-      const { url, jiraTags, jiraDomain } = repository;
+      const { url } = repository;
 
       const parsed = url.split("/");
       const owner = parsed[3];
@@ -345,10 +208,10 @@ export default class GitHubClient {
     return (await response.json()).data as PullRequestResponseRaw;
   }
 
-  async transform(
+  private static parseRawData(
     rawData: PullRequestResponseRaw,
     repositories: ConfiguredRepo[]
-  ): Promise<RepoData[]> {
+  ): RepoData[] {
     // need to do logic here to parse the title body and branch for the jira ticket
     // just copy it from the existing thing
 
@@ -393,13 +256,12 @@ export default class GitHubClient {
         }),
       });
     });
-    console.log("new", result, repositories);
     return result;
   }
 
-  async getRepoDataNew(repositories: ConfiguredRepo[]): Promise<RepoData[]> {
-    const rawData = await this.test(repositories);
-    const repoData = await this.transform(rawData, repositories);
+  async getRepoData(repositories: ConfiguredRepo[]): Promise<RepoData[]> {
+    const rawData = await this.getRawRepoData(repositories);
+    const repoData = GitHubClient.parseRawData(rawData, repositories);
     return repoData;
   }
 }

@@ -52,7 +52,7 @@ Browser.alarms.onAlarm.addListener(async (alarm) => {
     const client = new GitHubClient(token);
 
     let count = 0;
-    const reposData = await client.getRepoDataNew(repositories);
+    const reposData = await client.getRepoData(repositories);
     reposData.forEach((repoData) => {
       count += repoData.pullRequests.length;
     });
