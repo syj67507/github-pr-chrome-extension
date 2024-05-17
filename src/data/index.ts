@@ -14,7 +14,8 @@ export type PullRequestReviewState =
   | null; // This will be null when the user has not given a review
 
 /**
- * Test Raw
+ * The raw JSON response body when fetching the pull request data for a given
+ * repository  from GitHub's GraphQL API
  */
 type PullRequestResponseRaw = Record<
   string,
@@ -44,7 +45,7 @@ type PullRequestResponseRaw = Record<
 
 /**
  * The raw JSON response body when fetching the authenticated user from
- * GitHub's API
+ * GitHub's GraphQL API
  */
 interface AuthenticatedUserResponse {
   /** The login username */
@@ -143,7 +144,7 @@ export default class GitHubClient {
 
   /**
    * Fetches the raw data for each repository that the user has configured
-   * @param repositories
+   * @param repositories The user configured repositories in storage
    */
   private async getRawRepoData(
     repositories: ConfiguredRepo[]
@@ -212,9 +213,6 @@ export default class GitHubClient {
     rawData: PullRequestResponseRaw,
     repositories: ConfiguredRepo[]
   ): RepoData[] {
-    // need to do logic here to parse the title body and branch for the jira ticket
-    // just copy it from the existing thing
-
     const result: RepoData[] = [];
     Object.values(rawData).forEach((data) => {
       const configuredRepo = repositories.find((repo) => repo.url === data.url);
