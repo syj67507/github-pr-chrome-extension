@@ -3,6 +3,46 @@ import { type ConfiguredRepo, type Storage } from "./extension";
 require("regenerator-runtime");
 
 /**
+ * The review state the pull request can be in
+ */
+export type PullRequestReviewState =
+  | "PENDING"
+  | "COMMENTED"
+  | "APPROVED"
+  | "CHANGES_REQUESTED"
+  | "DISMISSED"
+  | null; // remove this later
+
+/**
+ * Test Raw
+ */
+type PullRequestResponseRaw = Record<
+  string,
+  {
+    name: string;
+    owner: {
+      login: string;
+    };
+    url: string;
+    pullRequests: {
+      nodes: Array<{
+        number: number;
+        title: string;
+        body: string;
+        url: string;
+        isDraft: boolean;
+        author: {
+          login: string;
+        };
+        viewerLatestReview: {
+          state: PullRequestReviewState;
+        } | null;
+      }>;
+    };
+  }
+>;
+
+/**
  * The raw JSON response body when fetching a pull request from
  * GitHub's API
  */
@@ -64,6 +104,8 @@ export interface PullRequestData {
   jiraUrl?: string;
   /** Indicates if this pull request is in draft */
   draft: boolean;
+  /** Indicates the type of the last review this user gave on the pull request */
+  viewerLatestReview: PullRequestReviewState;
 }
 
 /**
@@ -229,5 +271,135 @@ export default class GitHubClient {
         username: "",
       };
     }
+  }
+
+  static randomAlphaString(): string {
+    return Array(10)
+      .fill(0)
+      .map(() => String.fromCharCode(Math.random() * 26 + 97))
+      .join("");
+  }
+
+  /**
+   * Fetches the raw data for each repository that the user has configured
+   * @param repositories
+   */
+  async test(repositories: ConfiguredRepo[]): Promise<PullRequestResponseRaw> {
+    // Build each individual query for each repo
+    const queries = repositories.map((repository) => {
+      const { url, jiraTags, jiraDomain } = repository;
+
+      const parsed = url.split("/");
+      const owner = parsed[3];
+      const name = parsed[4];
+
+      const query = `
+        ${GitHubClient.randomAlphaString()} :repository(owner: "${owner}", name: "${name}") {
+          owner {
+            login
+          },
+          name,
+          url,
+          pullRequests(states: OPEN, first: 30, orderBy: {
+            field:CREATED_AT,
+            direction:DESC
+          }) {
+            nodes {
+              number,
+              title,
+              body,
+              url,
+              isDraft,
+              author {
+                login
+              },
+              viewerLatestReview {
+                state,
+              }
+            }
+          }
+        },
+      `;
+
+      return query;
+    });
+
+    // Merge it into one
+    const query = `
+    {
+      ${queries.join("\n")}
+    }
+    `;
+
+    const headersList = {
+      Accept: "application/json",
+      Authorization: `token ${this.token}`,
+    };
+
+    const response = await fetch(`https://api.github.com/graphql`, {
+      method: "POST",
+      headers: headersList,
+      body: JSON.stringify({ query }),
+    });
+
+    return (await response.json()).data as PullRequestResponseRaw;
+  }
+
+  async transform(
+    rawData: PullRequestResponseRaw,
+    repositories: ConfiguredRepo[]
+  ): Promise<RepoData[]> {
+    // need to do logic here to parse the title body and branch for the jira ticket
+    // just copy it from the existing thing
+
+    const result: RepoData[] = [];
+    Object.values(rawData).forEach((data) => {
+      const configuredRepo = repositories.find((repo) => repo.url === data.url);
+      const isJiraConfigured =
+        configuredRepo?.jiraDomain !== undefined &&
+        configuredRepo?.jiraTags !== undefined;
+
+      result.push({
+        name: data.name,
+        owner: data.owner.login,
+        url: data.url,
+        isJiraConfigured,
+        pullRequests: data.pullRequests.nodes.map((node) => {
+          const ticketTags: ConfiguredRepo["jiraTags"] = [];
+          configuredRepo?.jiraTags?.forEach((jiraTag) => {
+            // const regex = new RegExp(`${jiraTag}-\\d+`, "g");
+            const regex = new RegExp(jiraTag, "g"); // For testing
+
+            const ticketsInTitle = node.title.match(regex);
+            const ticketsInBody = node.body.match(regex);
+
+            if (ticketsInTitle !== null) {
+              ticketTags.push(...ticketsInTitle);
+            }
+            if (ticketsInBody !== null) {
+              ticketTags.push(...ticketsInBody);
+            }
+          });
+          return {
+            jiraUrl: ticketTags[0],
+            draft: node.isDraft,
+            number: node.number,
+            title: node.title,
+            body: node.body,
+            username: node.author.login,
+            viewerLatestReview: node.viewerLatestReview?.state ?? null,
+            url: node.url,
+          };
+        }),
+      });
+    });
+    console.log("new", result, repositories);
+    return result;
+  }
+
+  async getRepoDataNew(repositories: ConfiguredRepo[]): Promise<RepoData[]> {
+    const rawData = await this.test(repositories);
+    const repoData = await this.transform(rawData, repositories);
+    return repoData;
   }
 }

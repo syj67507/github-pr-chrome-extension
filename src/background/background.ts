@@ -11,7 +11,7 @@ import {
 
 const alarmName = "fetchPRs";
 const delayInMinutes = 0;
-const periodInMinutes = 1;
+const periodInMinutes = 15 / 60;
 
 // Install logic
 // eslint-disable-next-line @typescript-eslint/no-misused-promises
@@ -52,7 +52,7 @@ Browser.alarms.onAlarm.addListener(async (alarm) => {
     const client = new GitHubClient(token);
 
     let count = 0;
-    const reposData = await client.getRepoData(repositories);
+    const reposData = await client.getRepoDataNew(repositories);
     reposData.forEach((repoData) => {
       count += repoData.pullRequests.length;
     });
