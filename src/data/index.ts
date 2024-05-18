@@ -226,6 +226,7 @@ export default class GitHubClient {
         url: data.url,
         isJiraConfigured,
         pullRequests: data.pullRequests.nodes.map((node) => {
+          // Parse jira tickets if detected
           const ticketTags: ConfiguredRepo["jiraTags"] = [];
           configuredRepo?.jiraTags?.forEach((jiraTag) => {
             const regex = new RegExp(`${jiraTag}-\\d+`, "g");
@@ -241,8 +242,16 @@ export default class GitHubClient {
               ticketTags.push(...ticketsInBody);
             }
           });
+          let jiraUrl;
+          if (
+            configuredRepo?.jiraDomain !== undefined &&
+            ticketTags.length > 0
+          ) {
+            jiraUrl = `${configuredRepo.jiraDomain}/${ticketTags[0]}`;
+          }
+
           return {
-            jiraUrl: ticketTags[0],
+            jiraUrl,
             draft: node.isDraft,
             number: node.number,
             title: node.title,
