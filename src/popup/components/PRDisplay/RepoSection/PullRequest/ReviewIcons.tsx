@@ -12,6 +12,7 @@ export function ApprovedIcon() {
       disableInteractive
     >
       <DoneIcon
+        fontSize="small"
         sx={{
           color: "#1f883d",
         }}
@@ -28,6 +29,7 @@ export function ChangesRequestedIcon() {
       disableInteractive
     >
       <FeedbackOutlinedIcon
+        fontSize="small"
         sx={{
           color: "red",
         }}
@@ -44,6 +46,7 @@ export function CommentedIcon() {
       disableInteractive
     >
       <ChatBubbleOutlineOutlinedIcon
+        fontSize="small"
         sx={{
           color: "#767676",
         }}

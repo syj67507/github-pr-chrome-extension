@@ -15,6 +15,7 @@ export function PendingStatusChecksIcon() {
         sx={{
           color: "#DCAB08",
           fontSize: "10px",
+          cursor: "pointer",
         }}
       />
     </Tooltip>
@@ -28,6 +29,7 @@ export function SuccessStatusChecksIcon() {
         sx={{
           color: "#1f883d",
           fontSize: "16px",
+          cursor: "pointer",
         }}
       />
     </Tooltip>
@@ -41,6 +43,7 @@ export function FailedStatusChecksIcon() {
         sx={{
           color: "red",
           fontSize: "16px",
+          cursor: "pointer",
         }}
       />
     </Tooltip>
