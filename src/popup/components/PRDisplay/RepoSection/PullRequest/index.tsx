@@ -9,6 +9,7 @@ import {
   ChangesRequestedIcon,
   CommentedIcon,
 } from "./ReviewIcons";
+import { SuccessStatusChecksIcon } from "./StatusCheckIcons";
 
 interface PullRequestProps {
   pr: PullRequestData;
@@ -38,9 +39,12 @@ export default function PullRequest({
       <GitHubIconButton pr={pr} />
       {isJiraConfigured && <JiraIconButton jiraUrl={pr.jiraUrl} />}
       <Stack overflow="hidden" flex={1}>
-        <Typography variant="caption" fontStyle="italic">
-          {pr.username}
-        </Typography>
+        <Stack direction="row" alignItems="center" gap={1}>
+          <Typography variant="caption" fontStyle="italic">
+            {pr.username}
+          </Typography>
+          <SuccessStatusChecksIcon />
+        </Stack>
         <Typography
           variant="caption"
           sx={{

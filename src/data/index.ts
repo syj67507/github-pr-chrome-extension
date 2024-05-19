@@ -13,6 +13,30 @@ export type PullRequestReviewState =
   | "DISMISSED"
   | null; // This will be null when the user has not given a review
 
+export type CheckStatusRaw =
+  | "REQUESTED"
+  | "QUEUED"
+  | "IN_PROGRESS"
+  | "COMPLETED"
+  | "WAITING"
+  | "PENDING";
+
+export type CheckConclusionRaw =
+  | "ACTION_REQUIRED"
+  | "TIMED_OUT"
+  | "CANCELLED"
+  | "FAILURE"
+  | "SUCCESS"
+  | "NEUTRAL"
+  | "SKIPPED"
+  | "STARTUP_FAILURE"
+  | "STALE";
+
+interface CheckSuiteRaw {
+  status: CheckStatusRaw;
+  conclusion: CheckConclusionRaw;
+}
+
 /**
  * The raw JSON response body when fetching the pull request data for a given
  * repository  from GitHub's GraphQL API
@@ -38,6 +62,16 @@ type PullRequestResponseRaw = Record<
         viewerLatestReview: {
           state: PullRequestReviewState;
         } | null;
+        checksUrl: string;
+        commits: {
+          nodes: Array<{
+            commit: {
+              checkSuites: {
+                nodes: CheckSuiteRaw[];
+              };
+            };
+          }>;
+        };
       }>;
     };
   }
@@ -53,6 +87,8 @@ interface AuthenticatedUserResponse {
     login: string;
   };
 }
+
+export type ChecksState = "SUCCESS" | "FAILURE" | "PENDING" | "NONE";
 
 export interface RepoData {
   /** The owner of the repo */
@@ -87,6 +123,8 @@ export interface PullRequestData {
   draft: boolean;
   /** Indicates the type of the last review this user gave on the pull request */
   viewerLatestReview: PullRequestReviewState;
+  checksUrl: string;
+  checksState: ChecksState;
 }
 
 /**
@@ -140,6 +178,39 @@ export default class GitHubClient {
       .fill(0)
       .map(() => String.fromCharCode(Math.random() * 26 + 97))
       .join("");
+  }
+
+  /**
+   * Helper method to parse all the check suites and return the overall
+   * status of if the checks have passed, failed, are in progress, or none were configured.
+   * @
+   */
+  private static getCheckState(checkSuites: CheckSuiteRaw[]): ChecksState {
+    let overallStatus: ChecksState = "SUCCESS";
+    let hasPending = false;
+    checkSuites.forEach((checkSuite) => {
+      if (checkSuite.status === "IN_PROGRESS") {
+        hasPending = true;
+      }
+      if (
+        checkSuite.conclusion === "FAILURE" ||
+        checkSuite.conclusion === "TIMED_OUT" ||
+        checkSuite.conclusion === "CANCELLED"
+      ) {
+        overallStatus = "FAILURE";
+      }
+    });
+
+    if (hasPending) {
+      overallStatus = "PENDING";
+    }
+
+    // If there aren't any checks configured on the repository
+    if (checkSuites.length === 0) {
+      overallStatus = "NONE";
+    }
+
+    return overallStatus;
   }
 
   /**
@@ -251,7 +322,6 @@ export default class GitHubClient {
           configuredRepo?.jiraTags?.forEach((jiraTag) => {
             const regex = new RegExp(`${jiraTag}-\\d+`, "g");
             // const regex = new RegExp(jiraTag, "g"); // For testing
-
             const ticketsInTitle = node.title.match(regex);
             const ticketsInBody = node.body.match(regex);
 
@@ -270,25 +340,32 @@ export default class GitHubClient {
             jiraUrl = `${configuredRepo.jiraDomain}/${ticketTags[0]}`;
           }
 
+          // Determine checks state and conclusion
+          const checkSuites = node.commits.nodes[0].commit.checkSuites.nodes;
+          const checksState = GitHubClient.getCheckState(checkSuites);
+
           return {
+            checksState,
+            number: node.number,
+            checkSuite: node.commits.nodes[0].commit.checkSuites,
+            title: node.title,
             jiraUrl,
             draft: node.isDraft,
-            number: node.number,
-            title: node.title,
             body: node.body,
             username: node.author.login,
             viewerLatestReview: node.viewerLatestReview?.state ?? null,
             url: node.url,
+            checksUrl: node.checksUrl,
           };
         }),
       });
     });
+
     return result;
   }
 
   async getRepoData(repositories: ConfiguredRepo[]): Promise<RepoData[]> {
     const rawData = await this.getRawRepoData(repositories);
-    console.log("shams", rawData);
     const repoData = GitHubClient.parseRawData(rawData, repositories);
     return repoData;
   }
