@@ -1,6 +1,7 @@
 import React from "react";
 import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
+import Box from "@mui/material/Box";
 import JiraIconButton from "./JiraIconButton";
 import GitHubIconButton from "./GitHubIconButton";
 import type { PullRequestData } from "../../../../../data";
@@ -9,6 +10,12 @@ import {
   ChangesRequestedIcon,
   CommentedIcon,
 } from "./ReviewIcons";
+import {
+  FailedStatusChecksIcon,
+  PendingStatusChecksIcon,
+  SuccessStatusChecksIcon,
+} from "./StatusCheckIcons";
+import { createTab } from "../../../../../data/extension";
 
 interface PullRequestProps {
   pr: PullRequestData;
@@ -38,9 +45,22 @@ export default function PullRequest({
       <GitHubIconButton pr={pr} />
       {isJiraConfigured && <JiraIconButton jiraUrl={pr.jiraUrl} />}
       <Stack overflow="hidden" flex={1}>
-        <Typography variant="caption" fontStyle="italic">
-          {pr.username}
-        </Typography>
+        <Stack direction="row" alignItems="center" gap={1}>
+          <Typography variant="caption" fontStyle="italic">
+            {pr.username}
+          </Typography>
+          <Box
+            onClick={() => {
+              createTab(pr.checksUrl).catch(() => {
+                console.error(`Failed to create tab with url ${pr.checksUrl}`);
+              });
+            }}
+          >
+            {pr.checksState === "SUCCESS" && <SuccessStatusChecksIcon />}
+            {pr.checksState === "FAILURE" && <FailedStatusChecksIcon />}
+            {pr.checksState === "PENDING" && <PendingStatusChecksIcon />}
+          </Box>
+        </Stack>
         <Typography
           variant="caption"
           sx={{

@@ -13,6 +13,30 @@ export type PullRequestReviewState =
   | "DISMISSED"
   | null; // This will be null when the user has not given a review
 
+export type CheckStatusRaw =
+  | "REQUESTED"
+  | "QUEUED"
+  | "IN_PROGRESS"
+  | "COMPLETED"
+  | "WAITING"
+  | "PENDING";
+
+export type CheckConclusionRaw =
+  | "ACTION_REQUIRED"
+  | "TIMED_OUT"
+  | "CANCELLED"
+  | "FAILURE"
+  | "SUCCESS"
+  | "NEUTRAL"
+  | "SKIPPED"
+  | "STARTUP_FAILURE"
+  | "STALE";
+
+interface CheckSuiteRaw {
+  status: CheckStatusRaw;
+  conclusion: CheckConclusionRaw;
+}
+
 /**
  * The raw JSON response body when fetching the pull request data for a given
  * repository  from GitHub's GraphQL API
@@ -38,6 +62,16 @@ type PullRequestResponseRaw = Record<
         viewerLatestReview: {
           state: PullRequestReviewState;
         } | null;
+        checksUrl: string;
+        commits: {
+          nodes: Array<{
+            commit: {
+              checkSuites: {
+                nodes: CheckSuiteRaw[];
+              };
+            };
+          }>;
+        };
       }>;
     };
   }
@@ -53,6 +87,8 @@ interface AuthenticatedUserResponse {
     login: string;
   };
 }
+
+export type ChecksState = "SUCCESS" | "FAILURE" | "PENDING" | "NONE";
 
 export interface RepoData {
   /** The owner of the repo */
@@ -87,6 +123,8 @@ export interface PullRequestData {
   draft: boolean;
   /** Indicates the type of the last review this user gave on the pull request */
   viewerLatestReview: PullRequestReviewState;
+  checksUrl: string;
+  checksState: ChecksState;
 }
 
 /**
@@ -143,14 +181,52 @@ export default class GitHubClient {
   }
 
   /**
+   * Helper method to parse all the check suites and return the overall
+   * status of if the checks have passed, failed, are in progress, or none were configured.
+   * @
+   */
+  private static getCheckState(checkSuites: CheckSuiteRaw[]): ChecksState {
+    let overallStatus: ChecksState = "SUCCESS";
+    let hasPending = false;
+    checkSuites.forEach((checkSuite) => {
+      if (checkSuite.status === "IN_PROGRESS") {
+        hasPending = true;
+      }
+      if (
+        checkSuite.conclusion === "FAILURE" ||
+        checkSuite.conclusion === "TIMED_OUT" ||
+        checkSuite.conclusion === "CANCELLED"
+      ) {
+        overallStatus = "FAILURE";
+      }
+    });
+
+    if (hasPending) {
+      overallStatus = "PENDING";
+    }
+
+    // If there aren't any checks configured on the repository
+    if (checkSuites.length === 0) {
+      overallStatus = "NONE";
+    }
+
+    return overallStatus;
+  }
+
+  /**
    * Fetches the raw data for each repository that the user has configured
    * @param repositories The user configured repositories in storage
    */
   private async getRawRepoData(
     repositories: ConfiguredRepo[]
   ): Promise<PullRequestResponseRaw> {
-    // Build each individual query for each repo
-    const queries = repositories.map((repository) => {
+    const headersList = {
+      Accept: "application/json",
+      Authorization: `token ${this.token}`,
+    };
+
+    // Build each individual query for each repo and call the API
+    const queries = repositories.map(async (repository) => {
       const { url } = repository;
 
       const parsed = url.split("/");
@@ -158,55 +234,70 @@ export default class GitHubClient {
       const name = parsed[4];
 
       const query = `
-        ${GitHubClient.randomAlphaString()} :repository(owner: "${owner}", name: "${name}") {
-          owner {
-            login
-          },
-          name,
-          url,
-          pullRequests(states: OPEN, first: 30, orderBy: {
-            field:CREATED_AT,
-            direction:DESC
-          }) {
-            nodes {
-              number,
-              title,
-              body,
-              url,
-              isDraft,
-              author {
-                login
-              },
-              viewerLatestReview {
-                state,
+        query {
+          repository(owner: "${owner}", name: "${name}") {
+            owner {
+              login
+            },
+            name,
+            url,
+            pullRequests(states: OPEN, first: 30, orderBy: {
+              field:CREATED_AT,
+              direction:DESC
+            }) {
+              nodes {
+                number,
+                title,
+                body,
+                url,
+                isDraft,
+                author {
+                  login
+                },
+                viewerLatestReview {
+                  state,
+                },
+                checksUrl,
+                commits(last: 1) {
+                  nodes {
+                    commit {
+                      checkSuites(first: 50) {
+                        nodes {
+                          status,
+                          conclusion
+                        }
+                      }
+                    }
+                  }
+                }
               }
             }
           }
-        },
+        }
       `;
 
-      return query;
+      return fetch(`https://api.github.com/graphql`, {
+        method: "POST",
+        headers: headersList,
+        body: JSON.stringify({ query }),
+      });
     });
 
-    // Merge it into one
-    const query = `
-    {
-      ${queries.join("\n")}
-    }
-    `;
+    // Await the responses in parallel
+    const responses = await Promise.all(queries);
+    const rawDataResponse = await Promise.all(
+      responses.map(async (r) => r.json())
+    );
+    const rawData = rawDataResponse.map((r) => r.data);
 
-    const headersList = {
-      Accept: "application/json",
-      Authorization: `token ${this.token}`,
-    };
-
-    const response = await fetch(`https://api.github.com/graphql`, {
-      method: "POST",
-      headers: headersList,
-      body: JSON.stringify({ query }),
+    // Merge it all together
+    const result: PullRequestResponseRaw = {};
+    rawData.forEach((value) => {
+      result[GitHubClient.randomAlphaString()] = value.repository;
     });
+    console.log(result);
 
-    return (await response.json()).data as PullRequestResponseRaw;
+    return result;
   }
 
   private static parseRawData(
@@ -231,7 +322,6 @@ export default class GitHubClient {
           configuredRepo?.jiraTags?.forEach((jiraTag) => {
             const regex = new RegExp(`${jiraTag}-\\d+`, "g");
             // const regex = new RegExp(jiraTag, "g"); // For testing
-
             const ticketsInTitle = node.title.match(regex);
             const ticketsInBody = node.body.match(regex);
 
@@ -250,19 +340,27 @@ export default class GitHubClient {
             jiraUrl = `${configuredRepo.jiraDomain}/${ticketTags[0]}`;
           }
 
+          // Determine checks state and conclusion
+          const checkSuites = node.commits.nodes[0].commit.checkSuites.nodes;
+          const checksState = GitHubClient.getCheckState(checkSuites);
+
           return {
+            checksState,
+            number: node.number,
+            checkSuite: node.commits.nodes[0].commit.checkSuites,
+            title: node.title,
             jiraUrl,
             draft: node.isDraft,
-            number: node.number,
-            title: node.title,
             body: node.body,
             username: node.author.login,
             viewerLatestReview: node.viewerLatestReview?.state ?? null,
             url: node.url,
+            checksUrl: node.checksUrl,
           };
         }),
       });
     });
+
     return result;
   }
 
