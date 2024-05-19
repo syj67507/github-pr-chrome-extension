@@ -149,8 +149,13 @@ export default class GitHubClient {
   private async getRawRepoData(
     repositories: ConfiguredRepo[]
   ): Promise<PullRequestResponseRaw> {
-    // Build each individual query for each repo
-    const queries = repositories.map((repository) => {
+    const headersList = {
+      Accept: "application/json",
+      Authorization: `token ${this.token}`,
+    };
+
+    // Build each individual query for each repo and call the API
+    const queries = repositories.map(async (repository) => {
       const { url } = repository;
 
       const parsed = url.split("/");
@@ -158,55 +163,70 @@ export default class GitHubClient {
       const name = parsed[4];
 
       const query = `
-        ${GitHubClient.randomAlphaString()} :repository(owner: "${owner}", name: "${name}") {
-          owner {
-            login
-          },
-          name,
-          url,
-          pullRequests(states: OPEN, first: 30, orderBy: {
-            field:CREATED_AT,
-            direction:DESC
-          }) {
-            nodes {
-              number,
-              title,
-              body,
-              url,
-              isDraft,
-              author {
-                login
-              },
-              viewerLatestReview {
-                state,
+        query {
+          repository(owner: "${owner}", name: "${name}") {
+            owner {
+              login
+            },
+            name,
+            url,
+            pullRequests(states: OPEN, first: 30, orderBy: {
+              field:CREATED_AT,
+              direction:DESC
+            }) {
+              nodes {
+                number,
+                title,
+                body,
+                url,
+                isDraft,
+                author {
+                  login
+                },
+                viewerLatestReview {
+                  state,
+                },
+                checksUrl,
+                commits(last: 1) {
+                  nodes {
+                    commit {
+                      checkSuites(first: 50) {
+                        nodes {
+                          status,
+                          conclusion
+                        }
+                      }
+                    }
+                  }
+                }
               }
             }
           }
-        },
+        }
       `;
 
-      return query;
+      return fetch(`https://api.github.com/graphql`, {
+        method: "POST",
+        headers: headersList,
+        body: JSON.stringify({ query }),
+      });
     });
 
-    // Merge it into one
-    const query = `
-    {
-      ${queries.join("\n")}
-    }
-    `;
+    // Await the responses in parallel
+    const responses = await Promise.all(queries);
+    const rawDataResponse = await Promise.all(
+      responses.map(async (r) => r.json())
+    );
+    const rawData = rawDataResponse.map((r) => r.data);
 
-    const headersList = {
-      Accept: "application/json",
-      Authorization: `token ${this.token}`,
-    };
-
-    const response = await fetch(`https://api.github.com/graphql`, {
-      method: "POST",
-      headers: headersList,
-      body: JSON.stringify({ query }),
+    // Merge it all together
+    const result: PullRequestResponseRaw = {};
+    rawData.forEach((value) => {
+      result[GitHubClient.randomAlphaString()] = value.repository;
     });
+    console.log(result);
 
-    return (await response.json()).data as PullRequestResponseRaw;
+    return result;
   }
 
   private static parseRawData(
@@ -268,6 +288,7 @@ export default class GitHubClient {
 
   async getRepoData(repositories: ConfiguredRepo[]): Promise<RepoData[]> {
     const rawData = await this.getRawRepoData(repositories);
+    console.log("shams", rawData);
     const repoData = GitHubClient.parseRawData(rawData, repositories);
     return repoData;
   }
