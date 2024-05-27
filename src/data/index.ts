@@ -337,7 +337,7 @@ export default class GitHubClient {
             configuredRepo?.jiraDomain !== undefined &&
             ticketTags.length > 0
           ) {
-            jiraUrl = `${configuredRepo.jiraDomain}/${ticketTags[0]}`;
+            jiraUrl = `${configuredRepo.jiraDomain}/browse/${ticketTags[0]}`;
           }
 
           // Determine checks state and conclusion
