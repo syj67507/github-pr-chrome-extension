@@ -4,6 +4,7 @@ import ResetStorageSetting from "./ResetStorageSetting";
 import HeaderClickSetting from "./HeaderClickSetting";
 import AccessTokenSetting from "./AccessTokenSetting";
 import AnimatedExpandSettingCard from "./AnimatedExpandSettingCard";
+import StatusChecksSettingCard from "./StatusChecksSetting";
 
 export default function Settings() {
   return (
@@ -11,6 +12,7 @@ export default function Settings() {
       <AccessTokenSetting />
       <HeaderClickSetting />
       <AnimatedExpandSettingCard />
+      <StatusChecksSettingCard />
       <ResetStorageSetting />
     </Stack>
   );

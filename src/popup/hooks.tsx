@@ -8,6 +8,7 @@ import {
   getHeaderClickBehavior,
   type HeaderClickBehavior,
   getAnimatedExpandSetting,
+  getStatusChecksSetting,
 } from "../data/extension";
 import GitHubClient, { type RepoData } from "../data";
 
@@ -151,4 +152,30 @@ export function useGetAnimatedExpandSetting() {
   }, []);
 
   return [animatedExpandSetting, setAnimatedExpandSetting, loading] as const;
+}
+
+/**
+ * A hook to fetch the user's configuration for the Status Checks Setting
+ * @returns Returns a loading state variable and the setting value
+ */
+export function useGetStatusChecksSetting() {
+  const [statusChecksSetting, setStatusChecksSetting] =
+    useState<boolean>(false);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    async function getSetting() {
+      const setting = await getStatusChecksSetting();
+      setStatusChecksSetting(setting);
+    }
+    getSetting()
+      .catch((e) => {
+        console.error("Failed to fetch status check setting", e);
+      })
+      .finally(() => {
+        setLoading(false);
+      });
+  }, []);
+
+  return [statusChecksSetting, setStatusChecksSetting, loading] as const;
 }
