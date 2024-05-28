@@ -24,11 +24,13 @@ interface PullRequestProps {
    * repo that this pull request is associated with
    */
   isJiraConfigured: boolean;
+  statusChecksSetting: boolean;
 }
 
 export default function PullRequest({
   pr,
   isJiraConfigured,
+  statusChecksSetting,
 }: PullRequestProps) {
   return (
     <Stack
@@ -49,17 +51,21 @@ export default function PullRequest({
           <Typography variant="caption" fontStyle="italic">
             {pr.username}
           </Typography>
-          <Box
-            onClick={() => {
-              createTab(pr.checksUrl).catch(() => {
-                console.error(`Failed to create tab with url ${pr.checksUrl}`);
-              });
-            }}
-          >
-            {pr.checksState === "SUCCESS" && <SuccessStatusChecksIcon />}
-            {pr.checksState === "FAILURE" && <FailedStatusChecksIcon />}
-            {pr.checksState === "PENDING" && <PendingStatusChecksIcon />}
-          </Box>
+          {statusChecksSetting && (
+            <Box
+              onClick={() => {
+                createTab(pr.checksUrl).catch(() => {
+                  console.error(
+                    `Failed to create tab with url ${pr.checksUrl}`
+                  );
+                });
+              }}
+            >
+              {pr.checksState === "SUCCESS" && <SuccessStatusChecksIcon />}
+              {pr.checksState === "FAILURE" && <FailedStatusChecksIcon />}
+              {pr.checksState === "PENDING" && <PendingStatusChecksIcon />}
+            </Box>
+          )}
         </Stack>
         <Typography
           variant="caption"

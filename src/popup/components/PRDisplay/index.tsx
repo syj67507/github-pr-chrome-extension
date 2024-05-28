@@ -12,6 +12,7 @@ import {
   useGetAnimatedExpandSetting,
   useGetHeaderClickBehavior,
   useGetPullRequests,
+  useGetStatusChecksSetting,
   useSavedFilters,
 } from "../../hooks";
 
@@ -20,6 +21,7 @@ export default function PRDisplay() {
   const { loading, data, username, token } = useGetPullRequests();
   const [headerClickBehavior] = useGetHeaderClickBehavior();
   const [animatedExpandSetting] = useGetAnimatedExpandSetting();
+  const [statusChecksSetting] = useGetStatusChecksSetting();
 
   return (
     <Stack width="100%" bgcolor="whitesmoke" padding={1} spacing={1}>
@@ -85,6 +87,7 @@ export default function PRDisplay() {
                         key={pr.url}
                         pr={pr}
                         isJiraConfigured={repo.isJiraConfigured}
+                        statusChecksSetting={statusChecksSetting}
                       />
                     ))
                   : filtered.length === 0 && <NoPullRequest url={repo.url} />}
