@@ -60,7 +60,8 @@ export default function RepoHeader({
             flexDirection: "row",
             overflow: "hidden",
             paddingX: 1,
-            flex: "initial",
+            flex: 1,
+            minWidth: 0,
           }}
           onClick={() => {
             createTab(repo.url).catch(() => {
@@ -75,14 +76,36 @@ export default function RepoHeader({
               overflow: "hidden",
               whiteSpace: "nowrap",
               textOverflow: "ellipsis",
+              flex: 1,
+              minWidth: 0,
             }}
           >
             {repo.name}
           </Typography>
+          {repo.pullRequests.length> 0 && (
+            <Box
+              sx={{
+                backgroundColor: "#2076d2",
+                borderRadius: "50%",
+                marginLeft: 1,
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                padding: "0.25em",
+                aspectRatio: "1",
+                minWidth: "1.5em",
+                minHeight: "1.5em",
+              }}
+            >
+              <Typography variant="caption" sx={{ color: "white", fontWeight: "bold" }}>
+                {repo.pullRequests.length}
+              </Typography>
+            </Box>
+          )}
         </Box>
       </Tooltip>
       <Tooltip title={extraHeaderSpaceToolTip} followCursor disableInteractive>
-        <Box sx={{ flex: 1 }} onClick={extraHeaderSpaceFunction} />
+        <Box sx={{ flex: 0 }} onClick={extraHeaderSpaceFunction} />
       </Tooltip>
       <Tooltip
         title={`${repo.pullRequests.length} open`}
