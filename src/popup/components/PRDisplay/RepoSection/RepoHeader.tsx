@@ -46,6 +46,7 @@ export default function RepoHeader({
         display: "flex",
         flexDirection: "row",
         padding: 1,
+        alignItems: "center"
       }}
     >
       <Tooltip
@@ -60,8 +61,6 @@ export default function RepoHeader({
             flexDirection: "row",
             overflow: "hidden",
             paddingX: 1,
-            flex: 1,
-            minWidth: 0,
           }}
           onClick={() => {
             createTab(repo.url).catch(() => {
@@ -82,30 +81,38 @@ export default function RepoHeader({
           >
             {repo.name}
           </Typography>
-          {repo.pullRequests.length> 0 && (
+        </Box>
+      </Tooltip>
+      <Tooltip title={extraHeaderSpaceToolTip} followCursor disableInteractive>
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "flex-end",
+            flex: 1,
+          }}
+          onClick={extraHeaderSpaceFunction}
+        >
+          {repo.pullRequests.length > 0 && (
             <Box
               sx={{
                 backgroundColor: "#2076d2",
                 borderRadius: "50%",
-                marginLeft: 1,
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
-                padding: "0.25em",
-                aspectRatio: "1",
-                minWidth: "1.5em",
-                minHeight: "1.5em",
+                width: "2em",
+                height: "2em",
               }}
             >
-              <Typography variant="caption" sx={{ color: "white", fontWeight: "bold" }}>
+              <Typography
+                variant="caption"
+                sx={{ color: "white", fontWeight: "bold" }}
+              >
                 {repo.pullRequests.length}
               </Typography>
             </Box>
           )}
         </Box>
-      </Tooltip>
-      <Tooltip title={extraHeaderSpaceToolTip} followCursor disableInteractive>
-        <Box sx={{ flex: 0 }} onClick={extraHeaderSpaceFunction} />
       </Tooltip>
       <Tooltip
         title={`${repo.pullRequests.length} open`}
