@@ -17,12 +17,15 @@ interface RepoTitleProps {
   onExpand: React.MouseEventHandler;
   /** The user configured behavior when the blank space in the header is clicked */
   headerClickBehavior: HeaderClickBehavior;
+  /** The user configured setting for displaying a repo header badge for showing the number of pull requests */
+  repoHeaderBadgeSetting: boolean;
 }
 
 export default function RepoHeader({
   repo,
   onExpand,
   headerClickBehavior,
+  repoHeaderBadgeSetting,
 }: RepoTitleProps) {
   let extraHeaderSpaceFunction;
   let extraHeaderSpaceToolTip = ``;
@@ -46,7 +49,7 @@ export default function RepoHeader({
         display: "flex",
         flexDirection: "row",
         padding: 1,
-        alignItems: "center"
+        alignItems: "center",
       }}
     >
       <Tooltip
@@ -89,10 +92,11 @@ export default function RepoHeader({
             display: "flex",
             justifyContent: "flex-end",
             flex: 1,
+            height: "2em",
           }}
           onClick={extraHeaderSpaceFunction}
         >
-          {repo.pullRequests.length > 0 && (
+          {repoHeaderBadgeSetting && repo.pullRequests.length > 0 && (
             <Box
               sx={{
                 backgroundColor: "#2076d2",
@@ -101,7 +105,6 @@ export default function RepoHeader({
                 alignItems: "center",
                 justifyContent: "center",
                 width: "2em",
-                height: "2em",
               }}
             >
               <Typography

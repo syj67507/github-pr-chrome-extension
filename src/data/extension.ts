@@ -48,6 +48,8 @@ export interface Storage {
   animatedExpandSetting?: boolean;
   /** User setting to enable the status checks for each pull request */
   statusChecksSetting?: boolean;
+  /** User setting to enable a badge on the repo header for a repo section */
+  repoHeaderBadgeSetting?: boolean;
 }
 
 /**

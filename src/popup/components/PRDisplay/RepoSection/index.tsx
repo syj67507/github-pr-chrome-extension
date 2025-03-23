@@ -11,6 +11,8 @@ interface RepoSectionProps extends React.PropsWithChildren {
   repo: RepoData;
   headerClickBehavior: HeaderClickBehavior;
   animatedExpandSetting: boolean;
+  /** The user's configured setting for the repo header badge */
+  repoHeaderBadgeSetting: boolean;
 }
 
 export default function RepoSection({
@@ -18,6 +20,7 @@ export default function RepoSection({
   children,
   headerClickBehavior,
   animatedExpandSetting,
+  repoHeaderBadgeSetting,
 }: RepoSectionProps) {
   const [isOpen, setIsOpen] = useState(false);
 
@@ -48,6 +51,7 @@ export default function RepoSection({
             setIsOpen(!isOpen);
           }}
           headerClickBehavior={headerClickBehavior}
+          repoHeaderBadgeSetting={repoHeaderBadgeSetting}
         />
       </Stack>
       <Stack width="100%" bgcolor="white" borderRadius="inherit">
