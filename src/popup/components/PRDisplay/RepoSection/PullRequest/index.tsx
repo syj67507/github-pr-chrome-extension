@@ -4,7 +4,7 @@ import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 import JiraIconButton from "./JiraIconButton";
 import GitHubIconButton from "./GitHubIconButton";
-import type { PullRequestData } from "../../../../../data";
+import type { PullRequestData } from "../../../../../data/github";
 import {
   ApprovedIcon,
   ChangesRequestedIcon,

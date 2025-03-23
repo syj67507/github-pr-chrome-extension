@@ -1,4 +1,4 @@
-import { getStorage, setStorage } from "../extension";
+import { getStorage, setStorage } from "../storage";
 
 /**
  * Gets the user's current configuration for if they want to see a badge indicating how

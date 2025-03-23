@@ -3,8 +3,8 @@ import IconButton from "@mui/material/IconButton";
 import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
 import DeleteIcon from "@mui/icons-material/Delete";
-import { type ConfiguredRepo } from "../../../../../../data/extension";
 import Card from "../../../../Card/Card";
+import { type ConfiguredRepo } from "../../../../../../data/repositories";
 
 export interface SavedRepoProps {
   /** The repo of the saved repo */

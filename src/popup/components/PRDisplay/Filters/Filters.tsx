@@ -7,7 +7,7 @@ import TextField from "@mui/material/TextField";
 import Tooltip from "@mui/material/Tooltip";
 import React, { useState } from "react";
 import Card from "../../Card/Card";
-import { type Filters, saveFilterOptions } from "../../../../data/extension";
+import { type Filters, saveFilterOptions } from "../../../../data/filters";
 
 interface FiltersProps {
   /**

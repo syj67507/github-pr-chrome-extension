@@ -3,9 +3,9 @@ import Typography from "@mui/material/Typography";
 import CircularProgress from "@mui/material/CircularProgress";
 import Switch from "@mui/material/Switch";
 import React from "react";
-import { saveAnimatedExpandSetting } from "../../../data/extension";
 import { useGetAnimatedExpandSetting } from "../../hooks";
 import Card from "../Card/Card";
+import { saveAnimatedExpandSetting } from "../../../data/settings";
 
 export default function AnimatedExpandSettingCard() {
   const [
@@ -36,12 +36,14 @@ export default function AnimatedExpandSettingCard() {
             checked={animatedExpandSetting}
             onChange={(e) => {
               setAnimatedExpandSetting(e.target.checked);
-              saveAnimatedExpandSetting(e.target.checked).catch((error) => {
-                console.error(
-                  "Failed to set the animated expand setting",
-                  error
-                );
-              });
+              saveAnimatedExpandSetting(e.target.checked).catch(
+                (error: any) => {
+                  console.error(
+                    "Failed to set the animated expand setting",
+                    error
+                  );
+                }
+              );
             }}
             inputProps={{ "aria-label": "animated-expand-setting" }}
           />

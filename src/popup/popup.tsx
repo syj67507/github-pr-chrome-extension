@@ -2,13 +2,15 @@ import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
 import Stack from "@mui/material/Stack";
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, createContext } from "react";
 import { render } from "react-dom";
 import PRDisplay from "./components/PRDisplay";
 import Settings from "./components/Settings";
 import RepoOptions from "./components/RepoOptions";
 
 type Page = "PR" | "Repos" | "Settings";
+
+const ShamsContext = createContext("def");
 
 function Popup() {
   const [page, setPage] = useState<Page>("PR");
@@ -34,6 +36,9 @@ function Popup() {
       }}
     >
       <CssBaseline />
+      <ShamsContext.Provider value="asdf">
+        <Box>asdf</Box>
+      </ShamsContext.Provider>
       <Box
         sx={{
           width: "100%",

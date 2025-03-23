@@ -4,7 +4,7 @@ import Tooltip from "@mui/material/Tooltip";
 import JiraIcon from "./jira-icon.svg";
 import DisabledJiraIcon from "./jira-icon-disabled.svg";
 import { createTab } from "../../../../../data/extension";
-import { type PullRequestData } from "../../../../../data";
+import { type PullRequestData } from "../../../../../data/github";
 
 interface JiraIconButtonProps {
   /** The URL to the Jira Ticket */

@@ -3,9 +3,9 @@ import Snackbar from "@mui/material/Snackbar";
 import Stack from "@mui/material/Stack";
 import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
-import { type ConfiguredRepo } from "../../../../../data/extension";
 import SaveButton from "../../../Buttons/SaveButton";
 import ResetButton from "../../../Buttons/ResetButton";
+import { type ConfiguredRepo } from "../../../../../data/repositories";
 
 interface AddProps {
   onSave: (

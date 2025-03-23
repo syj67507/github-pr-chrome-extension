@@ -1,13 +1,9 @@
 import Browser from "webextension-polyfill";
 import "regenerator-runtime";
-import GitHubClient from "../data/index";
-import {
-  getToken,
-  getRepositories,
-  setBadge,
-  getStorage,
-  resetStorage,
-} from "../data/extension";
+import GitHubClient from "../data/github";
+import { setBadge } from "../data/extension";
+import { getToken, getRepositories } from "../data/repositories";
+import { getStorage, resetStorage } from "../data/storage";
 
 const alarmName = "fetchPRs";
 const delayInMinutes = 0;

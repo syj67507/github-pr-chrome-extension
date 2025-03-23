@@ -12,7 +12,6 @@ import {
   useGetAnimatedExpandSetting,
   useGetHeaderClickBehavior,
   useGetPullRequests,
-  useGetRepoHeaderBadgeSetting,
   useGetStatusChecksSetting,
   useSavedFilters,
 } from "../../hooks";
@@ -23,7 +22,6 @@ export default function PRDisplay() {
   const [headerClickBehavior] = useGetHeaderClickBehavior();
   const [animatedExpandSetting] = useGetAnimatedExpandSetting();
   const [statusChecksSetting] = useGetStatusChecksSetting();
-  const [repoHeaderBadgeSetting] = useGetRepoHeaderBadgeSetting();
 
   return (
     <Stack width="100%" bgcolor="whitesmoke" padding={1} spacing={1}>
@@ -82,7 +80,6 @@ export default function PRDisplay() {
                 repo={repo}
                 headerClickBehavior={headerClickBehavior}
                 animatedExpandSetting={animatedExpandSetting}
-                repoHeaderBadgeSetting={repoHeaderBadgeSetting}
               >
                 {filtered.length > 0
                   ? filtered.map((pr) => (
