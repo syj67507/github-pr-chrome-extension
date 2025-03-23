@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React from "react";
 import Box from "@mui/material/Box";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import IconButton from "@mui/material/IconButton";
@@ -42,8 +42,6 @@ export default function RepoHeader({
     extraHeaderSpaceToolTip = `${repo.url}`;
   }
 
-  const ref = useRef<HTMLDivElement>();
-
   return (
     <Box
       sx={{
@@ -61,7 +59,6 @@ export default function RepoHeader({
         enterDelay={1000}
       >
         <Box
-          ref={ref}
           sx={{
             display: "flex",
             flexDirection: "row",

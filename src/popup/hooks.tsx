@@ -182,7 +182,7 @@ export function useGetStatusChecksSetting() {
 }
 
 /**
- * A hook to fetch the user's configuration for the Status Checks Setting
+ * A hook to fetch the user's configuration for the Repository Header Badge Setting
  * @returns Returns a loading state variable and the setting value
  */
 export function useGetRepoHeaderBadgeSetting() {

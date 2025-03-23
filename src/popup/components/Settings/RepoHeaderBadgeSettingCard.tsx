@@ -45,7 +45,7 @@ export default function RepoHeaderBadgeSettingCard() {
                 }
               );
             }}
-            inputProps={{ "aria-label": "status-check-setting" }}
+            inputProps={{ "aria-label": "repo-header-badge-setting" }}
           />
         )}
       </Stack>

@@ -5,7 +5,7 @@ import HeaderClickSetting from "./HeaderClickSetting";
 import AccessTokenSetting from "./AccessTokenSetting";
 import AnimatedExpandSettingCard from "./AnimatedExpandSettingCard";
 import StatusChecksSettingCard from "./StatusChecksSetting";
-import RepoHeaderBadgeSettingCard from "./RepoHeaderBadgeSetting";
+import RepoHeaderBadgeSettingCard from "./RepoHeaderBadgeSettingCard";
 
 export default function Settings() {
   return (
