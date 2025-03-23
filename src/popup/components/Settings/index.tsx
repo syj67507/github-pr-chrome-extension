@@ -5,6 +5,7 @@ import HeaderClickSetting from "./HeaderClickSetting";
 import AccessTokenSetting from "./AccessTokenSetting";
 import AnimatedExpandSettingCard from "./AnimatedExpandSettingCard";
 import StatusChecksSettingCard from "./StatusChecksSetting";
+import RepoHeaderBadgeSettingCard from "./RepoHeaderBadgeSetting";
 
 export default function Settings() {
   return (
@@ -12,6 +13,7 @@ export default function Settings() {
       <AccessTokenSetting />
       <HeaderClickSetting />
       <AnimatedExpandSettingCard />
+      <RepoHeaderBadgeSettingCard />
       <StatusChecksSettingCard />
       <ResetStorageSetting />
     </Stack>

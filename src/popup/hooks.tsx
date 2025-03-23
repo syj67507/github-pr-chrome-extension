@@ -11,6 +11,7 @@ import {
   getStatusChecksSetting,
 } from "../data/extension";
 import GitHubClient, { type RepoData } from "../data";
+import { getRepoHeaderBadgeSetting } from "../data/extension/repoHeaderBadgeSetting";
 
 /**
  * A hook to fetch the currently saved filtering options that was previously
@@ -178,4 +179,30 @@ export function useGetStatusChecksSetting() {
   }, []);
 
   return [statusChecksSetting, setStatusChecksSetting, loading] as const;
+}
+
+/**
+ * A hook to fetch the user's configuration for the Status Checks Setting
+ * @returns Returns a loading state variable and the setting value
+ */
+export function useGetRepoHeaderBadgeSetting() {
+  const [repoHeaderBadgeSetting, setRepoHeaderBadgeSetting] =
+    useState<boolean>(false);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    async function getSetting() {
+      const setting = await getRepoHeaderBadgeSetting();
+      setRepoHeaderBadgeSetting(setting);
+    }
+    getSetting()
+      .catch((e) => {
+        console.error("Failed to fetch repo header badge setting", e);
+      })
+      .finally(() => {
+        setLoading(false);
+      });
+  }, []);
+
+  return [repoHeaderBadgeSetting, setRepoHeaderBadgeSetting, loading] as const;
 }
