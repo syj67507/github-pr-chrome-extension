@@ -4,7 +4,7 @@
   "version": "0.0.3",
   "homepage_url": "https://github.com/syj67507/github-pr-chrome-extension",
   "manifest_version": 2,
-  "permissions": ["alarms", "storage", "tabs"],
+  "permissions": ["alarms", "storage"],
   "background": {
     "scripts": ["background.js"]
   },

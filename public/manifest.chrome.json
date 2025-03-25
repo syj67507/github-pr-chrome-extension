@@ -3,7 +3,7 @@
   "description": "See all of your repo's pull requests in one place!",
   "version": "0.0.3",
   "manifest_version": 3,
-  "permissions": ["alarms", "storage", "tabs"],
+  "permissions": ["alarms", "storage"],
   "background": {
     "service_worker": "background.js"
   },
