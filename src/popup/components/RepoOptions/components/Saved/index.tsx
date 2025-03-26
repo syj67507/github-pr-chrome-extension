@@ -4,7 +4,7 @@ import Typography from "@mui/material/Typography";
 import React, { useState } from "react";
 import Snackbar from "@mui/material/Snackbar";
 import SavedRepo, { type SavedRepoProps } from "./SavedRepo";
-import { type ConfiguredRepo } from "../../../../../data/extension";
+import { type ConfiguredRepo } from "../../../../../data/repositories";
 
 interface SavedProps {
   repos: ConfiguredRepo[] | null;

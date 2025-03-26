@@ -2,17 +2,15 @@ import React, { useState } from "react";
 import Collapse from "@mui/material/Collapse";
 import Stack from "@mui/material/Stack";
 import RepoHeader from "./RepoHeader";
-import { type RepoData } from "../../../../data";
+import { type RepoData } from "../../../../data/github";
 import Card from "../../Card/Card";
-import { type HeaderClickBehavior } from "../../../../data/extension";
+import { type HeaderClickBehavior } from "../../../../data/storage";
 
 interface RepoSectionProps extends React.PropsWithChildren {
   /** The data of the repo to show for this section */
   repo: RepoData;
   headerClickBehavior: HeaderClickBehavior;
   animatedExpandSetting: boolean;
-  /** The user's configured setting for the repo header badge */
-  repoHeaderBadgeSetting: boolean;
 }
 
 export default function RepoSection({
@@ -20,7 +18,6 @@ export default function RepoSection({
   children,
   headerClickBehavior,
   animatedExpandSetting,
-  repoHeaderBadgeSetting,
 }: RepoSectionProps) {
   const [isOpen, setIsOpen] = useState(false);
 
@@ -51,7 +48,6 @@ export default function RepoSection({
             setIsOpen(!isOpen);
           }}
           headerClickBehavior={headerClickBehavior}
-          repoHeaderBadgeSetting={repoHeaderBadgeSetting}
         />
       </Stack>
       <Stack width="100%" bgcolor="white" borderRadius="inherit">

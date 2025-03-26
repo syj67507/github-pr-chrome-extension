@@ -1,4 +1,5 @@
-import { type ConfiguredRepo, type Storage } from "./extension";
+import { type ConfiguredRepo } from "./repositories";
+import { type Storage } from "./storage";
 
 require("regenerator-runtime");
 

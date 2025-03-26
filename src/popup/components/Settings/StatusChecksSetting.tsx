@@ -3,9 +3,9 @@ import Typography from "@mui/material/Typography";
 import CircularProgress from "@mui/material/CircularProgress";
 import Switch from "@mui/material/Switch";
 import React from "react";
-import { saveStatusChecksSetting } from "../../../data/extension";
 import { useGetStatusChecksSetting } from "../../hooks";
 import Card from "../Card/Card";
+import { saveStatusChecksSetting } from "../../../data/settings";
 
 export default function StatusChecksSettingCard() {
   const [statusCheckSetting, setStatusCheckSetting, statusCheckLoading] =

@@ -5,7 +5,7 @@ import Switch from "@mui/material/Switch";
 import React from "react";
 import { useGetRepoHeaderBadgeSetting } from "../../hooks";
 import Card from "../Card/Card";
-import { saveRepoHeaderBadgeSetting } from "../../../data/extension/repoHeaderBadgeSetting";
+import { saveRepoHeaderBadgeSetting } from "../../../data/settings";
 
 export default function RepoHeaderBadgeSettingCard() {
   const [

@@ -7,11 +7,9 @@ import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
 import React from "react";
 import { useGetHeaderClickBehavior } from "../../hooks";
-import {
-  type HeaderClickBehavior,
-  saveHeaderClickBehavior,
-} from "../../../data/extension";
 import Card from "../Card/Card";
+import { saveHeaderClickBehavior } from "../../../data/settings";
+import { type HeaderClickBehavior } from "../../../data/storage";
 
 export default function HeaderClickSetting() {
   const [blankSpaceBehavior, setBlankSpaceBehavior, loading] =
@@ -38,7 +36,7 @@ export default function HeaderClickSetting() {
                   setBlankSpaceBehavior(e.target.value as HeaderClickBehavior);
                   saveHeaderClickBehavior(
                     e.target.value as HeaderClickBehavior
-                  ).catch((error) => {
+                  ).catch((error: any) => {
                     console.error(
                       "Failed to set the blank space behavior setting",
                       error

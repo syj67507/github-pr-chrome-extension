@@ -3,14 +3,14 @@ import React, { useEffect, useState } from "react";
 import Stack from "@mui/material/Stack";
 import Add from "./components/Add";
 import Saved from "./components/Saved";
+import Card from "../Card/Card";
 import {
   type ConfiguredRepo,
   addRepository,
   getRepositories,
-  getStorage,
   removeRepository,
-} from "../../../data/extension";
-import Card from "../Card/Card";
+} from "../../../data/repositories";
+import { getStorage } from "../../../data/storage";
 
 export default function Repos() {
   const [repos, setRepos] = useState<ConfiguredRepo[] | null>(null);

@@ -4,11 +4,10 @@ import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import IconButton from "@mui/material/IconButton";
 import Tooltip from "@mui/material/Tooltip";
 import Typography from "@mui/material/Typography";
-import {
-  type HeaderClickBehavior,
-  createTab,
-} from "../../../../data/extension";
-import { type RepoData } from "../../../../data";
+import { createTab } from "../../../../data/extension";
+import { type RepoData } from "../../../../data/github";
+import { type HeaderClickBehavior } from "../../../../data/storage";
+import { useGetRepoHeaderBadgeSetting } from "../../../hooks";
 
 interface RepoTitleProps {
   /** The data of the repo to show for this section */
@@ -17,16 +16,15 @@ interface RepoTitleProps {
   onExpand: React.MouseEventHandler;
   /** The user configured behavior when the blank space in the header is clicked */
   headerClickBehavior: HeaderClickBehavior;
-  /** The user configured setting for displaying a repo header badge for showing the number of pull requests */
-  repoHeaderBadgeSetting: boolean;
 }
 
 export default function RepoHeader({
   repo,
   onExpand,
   headerClickBehavior,
-  repoHeaderBadgeSetting,
 }: RepoTitleProps) {
+  const [repoHeaderBadgeSetting] = useGetRepoHeaderBadgeSetting();
+
   let extraHeaderSpaceFunction;
   let extraHeaderSpaceToolTip = ``;
   if (headerClickBehavior === "expand") {

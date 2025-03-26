@@ -1,17 +1,15 @@
 import { useEffect, useState } from "react";
+import GitHubClient, { type RepoData } from "../data/github";
+import { setBadge } from "../data/extension";
+import { type Filters, getFilterOptions } from "../data/filters";
+import { getToken, getRepositories } from "../data/repositories";
 import {
-  type Filters,
-  getFilterOptions,
-  getRepositories,
-  getToken,
-  setBadge,
   getHeaderClickBehavior,
-  type HeaderClickBehavior,
   getAnimatedExpandSetting,
   getStatusChecksSetting,
-} from "../data/extension";
-import GitHubClient, { type RepoData } from "../data";
-import { getRepoHeaderBadgeSetting } from "../data/extension/repoHeaderBadgeSetting";
+  getRepoHeaderBadgeSetting,
+} from "../data/settings";
+import { type HeaderClickBehavior } from "../data/storage";
 
 /**
  * A hook to fetch the currently saved filtering options that was previously

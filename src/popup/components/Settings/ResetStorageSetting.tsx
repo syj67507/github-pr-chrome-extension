@@ -2,7 +2,7 @@ import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
 import React, { useState } from "react";
 import Snackbar from "@mui/material/Snackbar";
-import * as browser from "../../../data/extension";
+import * as browser from "../../../data/storage";
 import ResetButton from "../Buttons/ResetButton";
 import Card from "../Card/Card";
 

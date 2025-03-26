@@ -4,7 +4,7 @@ import Link from "@mui/material/Link";
 import TextField from "@mui/material/TextField";
 import React, { useState } from "react";
 import Snackbar from "@mui/material/Snackbar";
-import * as browser from "../../../data/extension";
+import * as browser from "../../../data/repositories";
 import SaveButton from "../Buttons/SaveButton";
 import Card from "../Card/Card";
 

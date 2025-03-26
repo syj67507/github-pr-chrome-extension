@@ -3,7 +3,7 @@ import IconButton from "@mui/material/IconButton";
 import Tooltip from "@mui/material/Tooltip";
 import GitHubIcon from "@mui/icons-material/GitHub";
 import { createTab } from "../../../../../data/extension";
-import type { PullRequestData } from "../../../../../data/index";
+import type { PullRequestData } from "../../../../../data/github";
 
 interface GitHubIconButtonProps {
   pr: PullRequestData;
